@@ -22,3 +22,11 @@ sections.forEach(section => {
     section.classList.add('hidden'); // Initially hidden
     observer.observe(section);
 });
+
+
+// Parallax Effect for Hero Section
+window.addEventListener('scroll', function () {
+    const hero = document.querySelector('.hero');
+    let scrollPosition = window.scrollY;
+    hero.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
+});
