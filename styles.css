@@ -4,75 +4,98 @@ body {
     margin: 0;
     padding: 0;
     color: #333;
+    background: #f7f7f7;
     line-height: 1.6;
+    scroll-behavior: smooth;
 }
 
-h1, h2 {
-    margin-bottom: 10px;
+/* Section Animations */
+.hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-p, ul {
-    margin: 10px 0;
+.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-a {
-    color: #007BFF;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Header Section */
+/* Hero Section */
 .hero {
     text-align: center;
-    padding: 50px 20px;
-    background: #f4f4f4;
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #007BFF, #0056b3);
+    color: white;
 }
 
 .hero h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     margin-bottom: 10px;
 }
 
 .hero p {
     font-size: 1.2em;
-    color: #555;
 }
 
-/* Sections */
+/* Navigation */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+header nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #007BFF;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+header nav a:hover {
+    background: #007BFF;
+    color: white;
+}
+
+/* Section Styling */
 .section {
-    padding: 40px 20px;
+    padding: 60px 20px;
     max-width: 800px;
     margin: auto;
-    text-align: left;
-}
-
-.section h2 {
+    text-align: center;
+    background: white;
     margin-bottom: 20px;
-    color: #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.section ul {
-    list-style: none;
-    padding: 0;
+/* Buttons and Links */
+a {
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
-.section ul li {
-    background: #f9f9f9;
-    margin: 5px 0;
-    padding: 10px;
-    border-left: 4px solid #007BFF;
+a:hover {
+    color: #0056b3;
 }
 
-.experience-item {
-    margin-bottom: 30px;
-}
-
+/* Footer */
 footer {
     text-align: center;
-    padding: 10px;
+    padding: 20px 0;
     background: #333;
-    color: #fff;
+    color: white;
+    position: relative;
 }
