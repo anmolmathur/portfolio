@@ -26,7 +26,7 @@ body {
 .hero {
     position: relative;
     height: 100vh; /* Full viewport height */
-    /*background: url('images/anmolmathur_whiteshirt.JPG'); /* Replace with your photo file path */ 
+    background: url('/images/anmolmathur_whiteshirt.JPG'); /* Replace with your photo file path */
     display: flex;
     justify-content: center;
     align-items: center;
