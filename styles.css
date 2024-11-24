@@ -1,55 +1,38 @@
-/* General Reset */
-body, h1, h2, p, a {
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    color: #333;
+    line-height: 1.6;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    scroll-behavior: smooth;
+h1, h2 {
+    margin-bottom: 10px;
+}
+
+p, ul {
+    margin: 10px 0;
 }
 
 a {
+    color: #007BFF;
     text-decoration: none;
-    color: inherit;
 }
 
-header.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    padding: 10px 20px;
+a:hover {
+    text-decoration: underline;
 }
 
-header.navbar nav {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-header.navbar nav a:hover {
-    color: #0073e6;
-}
-
-/* Hero Section */
+/* Header Section */
 .hero {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     text-align: center;
-    background: #f7f7f7;
+    padding: 50px 20px;
+    background: #f4f4f4;
 }
 
 .hero h1 {
-    font-size: 3em;
+    font-size: 2.5em;
     margin-bottom: 10px;
 }
 
@@ -58,61 +41,38 @@ header.navbar nav a:hover {
     color: #555;
 }
 
-/* About Section */
-.about {
-    padding: 60px 20px;
-    text-align: center;
-    background: white;
+/* Sections */
+.section {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: auto;
+    text-align: left;
 }
 
-.about h2 {
+.section h2 {
     margin-bottom: 20px;
-    font-size: 2.5em;
+    color: #333;
 }
 
-/* Work Section */
-.work {
-    padding: 60px 20px;
-    background: #f7f7f7;
+.section ul {
+    list-style: none;
+    padding: 0;
 }
 
-.work h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.section ul li {
+    background: #f9f9f9;
+    margin: 5px 0;
+    padding: 10px;
+    border-left: 4px solid #007BFF;
 }
 
-.work-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+.experience-item {
+    margin-bottom: 30px;
 }
 
-.work-item {
-    width: 300px;
-    text-align: center;
-}
-
-.work-item img {
-    width: 100%;
-    border-radius: 5px;
-}
-
-/* Contact Section */
-.contact {
-    padding: 60px 20px;
-    text-align: center;
-    background: white;
-}
-
-.contact a {
-    color: #0073e6;
-}
-
-/* Footer */
 footer {
     text-align: center;
-    padding: 10px 0;
+    padding: 10px;
     background: #333;
-    color: white;
+    color: #fff;
 }
