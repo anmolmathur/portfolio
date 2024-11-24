@@ -39,13 +39,14 @@ body {
 }
 
 /* Navigation */
+/* Header Styles */
 header {
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
     background: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 10px 0;
 }
 
@@ -68,9 +69,11 @@ header nav a:hover {
     color: white;
 }
 
+
 /* Section Styling */
 .section {
-    padding: 60px 20px;
+    padding: 80px 20px; /* Add extra padding to account for the sticky header */
+    margin-top: -40px; /* Offset to align better after scrolling */
     max-width: 800px;
     margin: auto;
     text-align: center;
@@ -79,6 +82,8 @@ header nav a:hover {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+
 
 /* Buttons and Links */
 a {
