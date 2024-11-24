@@ -1,3 +1,4 @@
+console.log("JavaScript is working!");
 // Smooth scrolling for navigation links
 document.querySelectorAll('header nav a').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
