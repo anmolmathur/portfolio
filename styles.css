@@ -22,11 +22,11 @@ body {
 }
 
 /* Hero Section */
-./* Hero Section with Background Image */
+/* Hero Section with Background Image */
 .hero {
     position: relative;
     height: 100vh; /* Full viewport height */
-    background: url('./images/anmolmathur_whiteshirt.JPG'); /* Replace with your photo file path */
+    background: url('./images/your-photo.jpg') no-repeat center center/cover; /* Replace with your photo file path */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,6 +35,12 @@ body {
     font-size: 1.5em;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+.hero {
+    background: red; /* Temporary test */
+    height: 100vh;
+}
+
 
 /* Dark overlay to make text readable */
 .hero .overlay {
