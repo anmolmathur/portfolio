@@ -620,6 +620,14 @@ main {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
+
+.timeline-date:hover {
+  background-color: #0078D7; /* Change background on hover */
+  color: #fff;              /* Change text color on hover */
+  transform: scale(1.1);    /* Slight zoom effect */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
 /* Style the date as a rounded rectangle */
 .timeline-location {
  /* font-size: 1rem;           Adjust font size */
