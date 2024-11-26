@@ -246,7 +246,7 @@ header {
 
 
 /* Skills Section Styling */
-#skills {
+.skills {
     padding: 60px 20px;
     background-color: #f2f2f2;
 }
