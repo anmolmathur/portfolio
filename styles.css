@@ -203,8 +203,8 @@ header {
 .timeline-item .company-details img {
     width: auto;
     height: 60px;
-    margin-bottom: 10px;
-    /* border-radius: 100%;   Make square instead of Round */
+    /* margin-bottom: 10px;
+     border-radius: 100%;   Make square instead of Round */
 }
 
 .timeline-item .company-details h4,
