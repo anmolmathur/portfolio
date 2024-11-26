@@ -649,3 +649,22 @@ main {
   transform: scale(1.1);    /* Slight zoom effect */
   transition: all 0.3s ease; /* Smooth transition */
 }
+
+
+.audio-player {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.audio-player p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333; /* Adjust text color as needed */
+}
+
+audio {
+  width: 100%;
+  max-width: 400px; /* Restrict max width */
+  outline: none;
+  border-radius: 8px; /* Rounded edges for modern look */
+}
