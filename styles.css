@@ -605,3 +605,39 @@ main {
     flex: 1;
 }
 
+/* Style the date as a rounded rectangle */
+.timeline-date {
+ /* font-size: 1rem;           Adjust font size */
+ /* font-weight: bold;         Make text bold */
+ /* color: #0078D7;            Text color */
+ /*background-color: #f2f4f8;  Background color */
+  padding: 5px 20px;       /* Padding for rectangle shape */
+  border-radius: 15px;      /* Rounded edges */
+  display: inline-block;    /* Keeps the shape inline */
+  text-align: center;       /* Center the text inside */
+  margin: 10px 0;           /* Space around the element */
+  border: 1px solid #0078D7; /* Optional border for emphasis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Style the date as a rounded rectangle */
+.timeline-location {
+ /* font-size: 1rem;           Adjust font size */
+ /* font-weight: bold;         Make text bold */
+ /* color: #0078D7;            Text color */
+ /*background-color: #f2f4f8;  Background color */
+  padding: 5px 20px;       /* Padding for rectangle shape */
+  border-radius: 15px;      /* Rounded edges */
+  display: inline-block;    /* Keeps the shape inline */
+  text-align: center;       /* Center the text inside */
+  margin: 10px 0;           /* Space around the element */
+  border: 1px solid #0078D7; /* Optional border for emphasis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.timeline-location:hover {
+  background-color: #0078D7; /* Change background on hover */
+  color: #fff;              /* Change text color on hover */
+  transform: scale(1.1);    /* Slight zoom effect */
+  transition: all 0.3s ease; /* Smooth transition */
+}
