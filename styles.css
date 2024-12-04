@@ -673,6 +673,7 @@ audio {
 
 
 /* General Styles for Collapsible Section */
+/*
 #collapsible-section.contact {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -680,8 +681,9 @@ audio {
     overflow: hidden;
     transition: max-height 0.3s ease-out;
 }
+*/
 
-/* Section Header */
+/* Section Header 
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -690,6 +692,7 @@ audio {
     background-color: #f8f9fa;
     cursor: pointer;
 }
+*/
 
 /* Toggle Button */
 .toggle-btn {
@@ -704,7 +707,7 @@ audio {
 /* Hidden Content (Initially Collapsed) */
 .contact-container {
     padding: 0 20px;
-    max-height: 0;
+    max-height: 100;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
 }
@@ -715,7 +718,7 @@ audio {
     padding: 20px;
 }
 
-/* Social Icons */
+/* Social Icons 
 .social-icons {
     display: flex;
     gap: 10px;
@@ -731,6 +734,7 @@ audio {
 .social-icons .icon:hover {
     color: #007bff;
 }
+*/
 
 /* Mobile Specific Styles */
 @media (max-width: 768px) {
