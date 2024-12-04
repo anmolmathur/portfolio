@@ -668,3 +668,100 @@ audio {
   outline: none;
   border-radius: 8px; /* Rounded edges for modern look */
 }
+
+
+
+
+/* 4thDec Contact Section Styles */
+.contact .form-group {
+  margin-bottom: 1rem;
+}
+
+.contact label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.contact input,
+.contact textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.contact button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact button:hover {
+  background-color: #0056b3;
+}
+
+.contact .contact-details p {
+  margin: 0.5rem 0;
+}
+
+.contact .contact-details a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.contact .contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* Default Desktop View (no collapsible behavior) */
+.section-header {
+  display: none; /* Hide toggle header for desktops */
+}
+
+.section-content {
+  max-height: none; /* Always expanded on desktop */
+  overflow: visible;
+}
+
+/* Mobile View with Collapsible Behavior */
+@media screen and (max-width: 768px) {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+
+  .section-header h2 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .toggle-btn {
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+  }
+
+  .section-content {
+    max-height: 100px; /* Initial collapsed height */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 1rem;
+    background-color: #fff;
+  }
+
+  .section-content.expanded {
+    max-height: 1000px; /* Large enough to show all content */
+  }
+}
+
