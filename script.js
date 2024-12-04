@@ -63,20 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineItems.forEach((item) => observer.observe(item));
 });
 
-// Enable collapsible functionality only for mobile devices
-if (window.matchMedia("(max-width: 768px)").matches) {
-  document.querySelectorAll('.collapsible-section').forEach(section => {
-    const header = section.querySelector('.section-header');
-    const content = section.querySelector('.section-content');
-    const button = section.querySelector('.toggle-btn');
 
-    header.addEventListener('click', () => {
-      // Toggle expanded class
-      content.classList.toggle('expanded');
 
-      // Update the button text
-      button.textContent = content.classList.contains('expanded') ? '−' : '+';
+
+
+// Add event listener to toggle button
+document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.querySelector("#collapsible-section.contact .toggle-btn");
+    const contactContainer = document.querySelector("#collapsible-section.contact .contact-container");
+
+    toggleBtn.addEventListener("click", () => {
+        // Toggle expanded class
+        contactContainer.classList.toggle("expanded");
+
+        // Change button text between "+" and "-"
+        toggleBtn.textContent = contactContainer.classList.contains("expanded") ? "-" : "+";
     });
-  });
-}
+});
+
 
