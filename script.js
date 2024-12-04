@@ -64,21 +64,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
-
-// Add event listener to toggle button
-document.addEventListener("DOMContentLoaded", () => {
-    const toggleBtn = document.querySelector("#collapsible-section.contact .toggle-btn");
-    const contactContainer = document.querySelector("#collapsible-section.contact .contact-container");
-
-    toggleBtn.addEventListener("click", () => {
-        // Toggle expanded class
-        contactContainer.classList.toggle("expanded");
-
-        // Change button text between "+" and "-"
-        toggleBtn.textContent = contactContainer.classList.contains("expanded") ? "-" : "+";
-    });
-});
-
-
