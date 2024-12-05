@@ -63,26 +63,47 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineItems.forEach((item) => observer.observe(item));
 });
 
-// For Read More Section to work
+// Function to handle the visibility of sections based on screen size
+function handleSectionVisibility() {
+    const isMobile = window.innerWidth <= 512; // Define mobile breakpoint
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Add toggle functionality to buttons
-    document.querySelectorAll(".toggle-btn").forEach((button) => {
-        button.addEventListener("click", function () {
-            const targetId = button.getAttribute("data-toggle");
-            const targetElement = document.getElementById(targetId);
+    document.querySelectorAll('.section-content').forEach((content) => {
+        if (isMobile) {
+            // Collapse sections on mobile by default
+            content.style.display = 'none';
+            const button = content.closest('section').querySelector('.toggle-btn');
+            if (button) button.textContent = 'Read More';
+        } else {
+            // Expand sections on desktop by default
+            content.style.display = 'block';
+            const button = content.closest('section').querySelector('.toggle-btn');
+            if (button) button.textContent = '';
+        }
+    });
+}
 
-            if (targetElement) {
-                // Toggle visibility of the details section
-                if (targetElement.classList.contains("hidden")) {
-                    targetElement.classList.remove("hidden");
-                    button.textContent = "Read Less"; // Change to minus when expanded
-                } else {
-                    targetElement.classList.add("hidden");
-                    button.textContent = "Read More"; // Change to plus when collapsed
-                }
-            }
-        });
+// Run visibility handler on page load
+handleSectionVisibility();
+
+// Update visibility on window resize
+window.addEventListener('resize', handleSectionVisibility);
+
+// Toggle functionality for the button
+document.querySelectorAll('.toggle-btn').forEach((button) => {
+    button.addEventListener('click', function () {
+        const content = this.closest('section').querySelector('.section-content');
+
+        if (!content) return;
+
+        // Toggle visibility
+        const isCollapsed = content.style.display === 'none' || content.style.display === '';
+
+        if (isCollapsed) {
+            content.style.display = 'block';
+            this.textContent = 'Read Less';
+        } else {
+            content.style.display = 'none';
+            this.textContent = 'Read More';
+        }
     });
 });
-

@@ -697,9 +697,11 @@ audio {
     height: 30px;
     font-size: 10px;
     cursor: pointer;
-    position : relative;
+    /*position : relative;
     top: 10px;
-    right: 10px;
+    right: 10px; */
+    display: none;
+    margin: 10px auto;
 /*    display: flex; 
     align-items: right;
     justify-content: right; */
@@ -718,5 +720,16 @@ audio {
     display: none;
 }
 
+/* to show the read more only on mobile */
+/* Show the button only on mobile view */
 
+@media (max-width: 512px) {
+    .toggle-btn {
+        display: block; 
+    } 
+}
 
+/* Default state for section content in web view (expanded) */
+.section-content {
+    display: block; /* Expanded on web view */
+}
