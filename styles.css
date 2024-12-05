@@ -733,3 +733,52 @@ audio {
 .section-content {
     display: block; /* Expanded on web view */
 }
+
+/* for the Resume Download Buttons */
+
+
+.resume-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    color: #00509E;
+    background-color: #F1F9GA;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.resume-download-btn i {
+    font-size: 1.5rem;
+}
+
+.resume-download-btn:hover {
+    background-color: #0056b3;
+    color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.footer-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    font-size: 14px;
+    padding: 8px 15px;
+    color: #ffffff;
+    background-color: #335;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.footer-download-btn i {
+    font-size: 1.3rem;
+}
+
+.footer-download-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
