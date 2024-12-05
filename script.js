@@ -63,4 +63,26 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineItems.forEach((item) => observer.observe(item));
 });
 
+// For Read More Section to work
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Add toggle functionality to buttons
+    document.querySelectorAll(".toggle-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetId = button.getAttribute("data-toggle");
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                // Toggle visibility of the details section
+                if (targetElement.classList.contains("hidden")) {
+                    targetElement.classList.remove("hidden");
+                    button.textContent = "Read Less"; // Change to minus when expanded
+                } else {
+                    targetElement.classList.add("hidden");
+                    button.textContent = "Read More"; // Change to plus when collapsed
+                }
+            }
+        });
+    });
+});
 

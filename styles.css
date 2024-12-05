@@ -669,4 +669,54 @@ audio {
   border-radius: 8px; /* Rounded edges for modern look */
 }
 
+/* this section is for Read More in each section */
+
+.collapsible-section {
+    position: relative;
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
+
+.section-header {
+/*    display: flex;
+    justify-content: space-between; 
+    align-items: center; */
+    position: relative;
+}
+
+.toggle-btn {
+/*    background-color: #007bff; */
+    color: #000;
+    border: none;
+/*    border-radius: 50%; */
+    width: 100px;
+    height: 30px;
+    font-size: 10px;
+    cursor: pointer;
+    position : relative;
+    top: 10px;
+    right: 10px;
+/*    display: flex; 
+    align-items: right;
+    justify-content: right; */
+}
+
+.toggle-btn:hover {
+    background-color: #D3D3D3;
+}
+
+.contact-details {
+    padding: 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+.contact-details.hidden {
+    display: none;
+}
+
+
 
