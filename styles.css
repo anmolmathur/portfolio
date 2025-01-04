@@ -496,7 +496,8 @@ header {
 /* Contact Section Styling */
 #contact {
     padding: 60px 20px;
-    background-color: #e9f5fc; /* Light blue shade */
+    /* background-color: #e9f5fc; */
+    background-color: #e9f5ff; /* Light blue shade */
     margin-bottom: 10px; /* Space before the Footer */
 }
 
