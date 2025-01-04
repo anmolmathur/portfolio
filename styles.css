@@ -785,7 +785,7 @@ audio {
 /* Publications Section Styling */
 #publications {
     padding: 60px 20px;
-    background-color: #f4f8fb;
+    background-color: #ebe2ed;
 }
 
 #publications .section-header {
@@ -802,8 +802,9 @@ audio {
 .publications-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
+    align-items: center;
+    gap: 40px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -813,6 +814,7 @@ audio {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
 }
 
 .publication-card:hover {
