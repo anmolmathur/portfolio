@@ -1,0 +1,260 @@
+% Anmol Mathur - Modern LaTeX Resume
+% Using Montserrat as the primary font
+
+\documentclass[a4paper,11pt]{article}
+
+% Packages
+\usepackage[margin=1.0cm]{geometry} % Page margins
+\usepackage{fontspec} % For custom fonts
+\usepackage{titlesec} % For section formatting
+\usepackage{enumitem} % For list customization
+\usepackage{xcolor} % For colors
+\usepackage{fontawesome5} % For icons
+\usepackage{hyperref} % For links
+\usepackage{tabularx} % For tables
+\usepackage{multicol} % For multi-column layouts
+\usepackage{graphicx} % For images
+
+% Font setup
+\setmainfont{Montserrat}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+% Define colors
+\definecolor{primary}{RGB}{0, 79, 145} % Deep blue
+\definecolor{secondary}{RGB}{100, 100, 100} % Gray
+\definecolor{accent}{RGB}{220, 220, 220} % Light gray
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primary,
+    urlcolor=primary
+}
+
+% Header and footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[C]{\thepage}
+
+% Custom section formatting
+\titleformat{\section}
+    {\Large\bfseries\color{primary}}
+    {}{0em}
+    {}
+    [\vspace{-0.5em}\rule{\textwidth}{1pt}]
+
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{primary}}
+    {}{0em}
+    {}
+
+% Custom spacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+% Custom commands
+\newcommand{\workperiod}[2]{{\small \textit{#1} | #2}}
+\newcommand{\contactitem}[2]{\textbf{\small #1} & #2 \\}
+\newcommand{\skillitem}[1]{\item[\textbullet] #1}
+
+% Begin document
+\begin{document}
+
+% Remove page numbers from first page
+\thispagestyle{empty}
+
+% Header with name and title
+\begin{center}
+    \textbf{\Huge\color{primary} ANMOL MATHUR}\\
+    \vspace{0.2em}
+    {\Large\color{secondary} TECHNOLOGY LEADER}
+\end{center}
+
+% Contact information
+\vspace{0.5em}
+\begin{center}
+\begin{tabular}{rl rl}
+    \contactitem{\faPhone}{+91 - 9867191999} & \contactitem{\faEnvelope}{anmolm@gmail.com} \\
+    \contactitem{\faLinkedin}{linkedin.com/in/anmolmathur} & \contactitem{\faMapMarker}{Mumbai, India} \\
+\end{tabular}
+\end{center}
+
+% Professional Summary
+\section{PROFESSIONAL SUMMARY}
+Technology leader with 23+ years of experience, including 15 years in banking and financial services. Proven track record in digital transformation, cost optimization, and enterprise technology implementation. Skilled in managing large technology teams across multiple geographies while driving strategic objectives.
+
+% Expertise
+\section{EXPERTISE}
+\begin{multicols}{2}
+\begin{itemize}[leftmargin=*]
+    \skillitem{Banking Technology Leadership}
+    \skillitem{Digital Transformation}
+    \skillitem{IT Cost \& Infrastructure Management}
+    \skillitem{System Architecture Design}
+    \skillitem{Vendor Management}
+    \skillitem{Full Project Life Cycle Management}
+    \skillitem{Leadership \& Team Building}
+    \skillitem{Multi-Cloud Optimization (AWS/GCP/Azure)}
+    \skillitem{Agile Methodologies}
+    \skillitem{Process \& Product Roadmap}
+    \skillitem{Artificial Intelligence Implementation}
+    \skillitem{Microservice Architecture}
+    \skillitem{Data Analytics}
+\end{itemize}
+\end{multicols}
+
+% Professional Experience
+\section{PROFESSIONAL EXPERIENCE}
+
+% Current Position
+\subsection{HEAD TECHNOLOGY \& VP ENGINEERING}
+\workperiod{Hungama Digital Media Entertainment}{June 2023 - Present}
+
+\begin{itemize}[leftmargin=*]
+    \item Lead technology department for Hungama Digital's portfolio of brands (Hungama Gold, BollywoodHungama, etc.)
+    \item Transformed technology stack into Kubernetes using CNCF technologies, reducing technology OPEX by >50\% from 3Cr to 1.4Cr
+    \item Implemented organizational AI strategy through Trypromptly no-code platform and GPU infrastructure
+    \item Manage 66+ member technology team while ensuring SLAs of 98\%+ uptime
+    \item Successfully executed cloud audits and migration of services in a multi-cloud environment
+\end{itemize}
+
+\subsection{HEAD TECHNOLOGY \& VP ENGINEERING}
+\workperiod{Times Professional Learning (TimesPro)}{Sep 2021 - Mar 2023}
+
+\begin{itemize}[leftmargin=*]
+    \item Led technology development, product development, and IT operations
+    \item Conceptualized learning management and sales management products
+    \item Built and led a technology team of 40+ professionals within 1 year
+    \item Consolidated technology vendor/SAAS products and initiated digital transformation
+\end{itemize}
+
+\subsection{TECHNOLOGY DIRECTOR}
+\workperiod{Xfinite Technologies (Mzaalo)}{Jan 2020 - Aug 2021}
+
+\begin{itemize}[leftmargin=*]
+    \item Served as technology head, product head, and ad operations head for OTT/UGC/blockchain platform
+    \item Built and led team of 20+ within a tech startup environment
+    \item Developed product and technology architecture from 0 to 10K users
+    \item Established digital ad revenue business by liaising with technology, publishers, and marketing partners
+\end{itemize}
+
+\subsection{TECHNOLOGY DIRECTOR \& HEAD OUTSOURCING}
+\workperiod{Digitas India (Client - Formula 1)}{Dec 2016 - Jan 2020}
+
+\begin{itemize}[leftmargin=*]
+    \item Led technology division for India operations working with Formula 1
+    \item Built and managed team of 35+ including architects, developers, and project managers
+    \item Directed technology teams across Digitas clients with 150+ technologists
+    \item Delivered architecture solutions using agile methodologies
+\end{itemize}
+
+\subsection{CHIEF TECHNOLOGY OFFICER (CTO)}
+\workperiod{Ogaan Media (Elle \& SquareInch)}{Jan 2016 - Dec 2016}
+
+\begin{itemize}[leftmargin=*]
+    \item Led strategic design, development, and implementation of multiple media websites
+    \item Directed concept, product development, and implementation of e-commerce IT startup
+    \item Managed revenue streams using online advertising and complete IT portfolio
+    \item Led selection of strategic partners and onboarding of business partners
+\end{itemize}
+
+\subsection{VP IT DEVELOPMENT}
+\workperiod{Hong Kong \& Shanghai Bank (HSBC)}{Aug 2008 - Jan 2016}
+
+\begin{itemize}[leftmargin=*]
+    \item Managed receivables business software for HSBC's corporate banking division across regions
+    \item Led implementation of Intellect NNC for cash management business
+    \item Oversaw alternate delivery channel portfolio for retail banking
+    \item Implemented automatic clearing house (ACH) proposition for India
+    \item Directed software delivery for retail banking channels applications
+\end{itemize}
+
+\subsection{PROJECT MANAGER/BUSINESS ANALYST}
+\workperiod{Oracle Financial Services (formerly i-flex solutions)}{Dec 2001 - Aug 2008}
+
+\begin{itemize}[leftmargin=*]
+    \item Managed global cash management software implementation for Citibank
+    \item Led team of 12-25 resources for development across multiple phases
+    \item Built generic interface between multiple banking systems for Citigroup
+    \item Ensured CMMI Level 5 compliance and SQA standards for all deliverables
+\end{itemize}
+
+% Technical Expertise
+\section{TECHNICAL EXPERTISE}
+
+\subsection{BANKING \& FINANCIAL SYSTEMS}
+\begin{multicols}{2}
+\begin{itemize}[leftmargin=*]
+    \skillitem{Core Banking}
+    \skillitem{Receivables Management}
+    \skillitem{Cash Management}
+    \skillitem{Trade Finance}
+    \skillitem{ATM Networks}
+    \skillitem{Internet Banking}
+    \skillitem{Mobile Banking}
+    \skillitem{Call Centers}
+\end{itemize}
+\end{multicols}
+
+\subsection{TECHNOLOGY STACK}
+\begin{multicols}{2}
+\begin{itemize}[leftmargin=*]
+    \skillitem{\textbf{Cloud:} AWS, GCP, Azure, Websphere, APIGEE}
+    \skillitem{\textbf{CMS:} Salesforce, Moodle, Strapi, Contentful}
+    \skillitem{\textbf{Programming:} Java, PHP, Python, Ruby, NodeJS}
+    \skillitem{\textbf{Frontend:} ReactJS, VueJS}
+    \skillitem{\textbf{Data:} SQL, NoSQL, Big Data, Big Query}
+    \skillitem{\textbf{Analytics:} Tableau, Power BI}
+    \skillitem{\textbf{AI:} OpenAI GPT-4o, Llama 3, Trypromptly}
+\end{itemize}
+\end{multicols}
+
+% Education
+\section{EDUCATION}
+
+\begin{tabularx}{\textwidth}{X X}
+    \textbf{Michigan State University} | 2021 & \textbf{NMIMS, University of Mumbai} | 2004-2008 \\
+    Effective Leadership and Management Certification & MBA, Marketing \\
+    & \\
+    \textbf{VESIT, University of Mumbai} | 1997-2001 & \textbf{Bhavans, University of Mumbai} | 1999-2001 \\
+    Bachelor of Engineering (B.E), Electronics & Higher Secondary Course (HSC), Science \\
+\end{tabularx}
+
+% International Exposure and Languages
+\section{ADDITIONAL INFORMATION}
+
+\begin{tabularx}{\textwidth}{X X}
+\begin{minipage}[t]{0.45\textwidth}
+    \textbf{INTERNATIONAL EXPOSURE}
+    \begin{itemize}[leftmargin=*]
+        \skillitem{New York, USA - 1 year}
+        \skillitem{London, UK - 4 months}
+        \skillitem{Hong Kong, China - 4 months}
+    \end{itemize}
+\end{minipage}
+&
+\begin{minipage}[t]{0.45\textwidth}
+    \textbf{LANGUAGES}
+    \begin{itemize}[leftmargin=*]
+        \skillitem{English}
+        \skillitem{Hindi}
+    \end{itemize}
+\end{minipage}
+\end{tabularx}
+
+% Personal note
+\vspace{1em}
+\begin{center}
+    \textit{Passionate football player, coaching technology teams, organizations and clients to new heights of productivity and success!}
+\end{center}
+
+\end{document}
