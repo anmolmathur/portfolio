@@ -745,7 +745,7 @@ audio {
     font-size: 1.2rem;
     padding: 10px 20px;
     color: #00509E;
-    background-color: #F1F9GA;
+    /*background-color: #F1F9GA; */
     border-radius: 5px;
     text-decoration: none;
     transition: background-color 0.3s, box-shadow 0.3s;
