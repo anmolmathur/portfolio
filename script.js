@@ -107,3 +107,14 @@ document.querySelectorAll('.toggle-btn').forEach((button) => {
         }
     });
 });
+
+// Check if a target is linked via URL on load this is for projects page
+document.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const target = document.querySelector(hash);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
