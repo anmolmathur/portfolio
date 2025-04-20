@@ -396,8 +396,10 @@ header {
 
 /* Education Section Styling */
 #education {
-    padding: 60px 20px;
+    /*padding-bottom: 60px;
+    padding: 60px 20px; */
     background-color: #f9f9f9; /* Subtle neutral shade */
+    margin-bottom: 60px;
 }
 
 #education .section-header {
@@ -970,6 +972,6 @@ audio {
   }
   
   .flip-card-back p {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.6;
   }
