@@ -864,6 +864,7 @@ audio {
 #projects {
     padding: 60px 20px;
     background-color: #f9f9f9;
+    margin-top: 60px;
 }
   
 #projects .section-header {
