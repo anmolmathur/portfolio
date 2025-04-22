@@ -117,4 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
         target.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const flipCards = document.querySelectorAll('.flip-card');
+  
+    flipCards.forEach((card) => {
+      card.addEventListener('click', function () {
+        this.classList.toggle('touch-flip');
+      });
+    });
+});
