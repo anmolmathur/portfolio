@@ -93,6 +93,7 @@ function initSmoothScroll() {
     initSmoothScroll();
     autoScrollToHash();
     initSectionAnimation();
+    initWorkExperienceAnimation(); // 🧠 NEW — for work cards
     initToggleButtons();
     initFlipCards();
     handleSectionVisibility();
@@ -107,3 +108,20 @@ function initSmoothScroll() {
       navLinks.classList.toggle('show');
     });
   });
+
+  const weSection = document.querySelector('#work-experience .section-content');
+  console.log('Work Experience section style:', getComputedStyle(weSection));
+
+  function initWorkExperienceAnimation() {
+    const items = document.querySelectorAll('#work-experience .timeline-item');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const contents = entry.target.querySelectorAll('.content');
+          contents.forEach(el => el.classList.add('visible'));
+        }
+      });
+    }, { threshold: 0.2 });
+  
+    items.forEach(item => observer.observe(item));
+  }
