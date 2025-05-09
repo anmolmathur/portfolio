@@ -1067,3 +1067,11 @@ audio {
       text-align: center;
     }
   }
+
+.favicon {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-bottom: 0px;
+}
