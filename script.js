@@ -98,3 +98,8 @@ function initSmoothScroll() {
     handleSectionVisibility();
     window.addEventListener('resize', handleSectionVisibility);
   });
+
+  document.getElementById('hamburger').addEventListener('click', () => {
+    const nav = document.getElementById('navLinks');
+    nav.classList.toggle('show');
+  });
