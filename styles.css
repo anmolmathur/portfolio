@@ -981,3 +981,23 @@ audio {
 .flip-card.touch-flip .flip-card-inner {
     transform: rotateY(180deg);
 }
+
+@media screen and (max-width: 768px) {
+    .education-card {
+      width: 100%;
+      float: none;
+      clear: both;
+      margin: 10px 0;
+    }
+  
+    .education-card.left,
+    .education-card.right {
+      left: 0 !important;
+      right: 0 !important;
+    }
+  
+    .education-card .card-content {
+      padding: 15px;
+      font-size: 0.95rem;
+    }
+  }
