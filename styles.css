@@ -982,7 +982,21 @@ audio {
     transform: rotateY(180deg);
 }
 
-@media screen and (max-width: 768px) {
+/* Toggle visibility classes for mobile sections */
+.section-content.collapsed {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: scaleY(0.95);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .section-content {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Education Cards — responsive stacking */
+  @media screen and (max-width: 768px) {
     .education-card {
       width: 100%;
       float: none;
