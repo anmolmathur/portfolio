@@ -44,10 +44,17 @@ function initSmoothScroll() {
     document.querySelectorAll('.section-content').forEach((content) => {
       const section = content.closest('section');
       const button = section.querySelector('.toggle-btn');
+      const sectionId = section?.id || '';
+  
+      const shouldCollapse = ['education', 'projects', 'publications', 'contact'].includes(sectionId);
+  
       if (isMobile) {
-        if (!content.classList.contains('collapsed')) {
+        if (shouldCollapse) {
           content.classList.add('collapsed');
           if (button) button.textContent = 'Read More';
+        } else {
+          content.classList.remove('collapsed');
+          if (button) button.textContent = '';
         }
       } else {
         content.classList.remove('collapsed');
