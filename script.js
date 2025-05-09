@@ -1,115 +1,18 @@
-// Smooth Scrolling for Navigation
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+// Smooth Scrolling
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    });
-});
-
-// Scroll Animation for About Me Section
-document.addEventListener('DOMContentLoaded', () => {
-    const aboutCard = document.querySelector('.about-card');
-
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    aboutCard.classList.add('visible');
-                }
-            });
-        },
-        { threshold: 0.1 }
-    );
-
-    observer.observe(aboutCard);
-});
-
-// Scroll Animation for Work Experience Cards
-document.addEventListener('DOMContentLoaded', () => {
-    const workCards = document.querySelectorAll('.timeline-item .card');
-
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        },
-        { threshold: 0.1 }
-    );
-
-    workCards.forEach((card) => observer.observe(card));
-});
-
-// Scroll Animation for Work Experience Timeline
-document.addEventListener('DOMContentLoaded', () => {
-    const timelineItems = document.querySelectorAll('.content');
-
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        },
-        { threshold: 0.2 }
-    );
-
-    timelineItems.forEach((item) => observer.observe(item));
-});
-
-// Function to handle the visibility of sections based on screen size
-function handleSectionVisibility() {
-    const isMobile = window.innerWidth <= 512; // Define mobile breakpoint
-
-    document.querySelectorAll('.section-content').forEach((content) => {
-        if (isMobile) {
-            // Collapse sections on mobile by default
-            content.style.display = 'none';
-            const button = content.closest('section').querySelector('.toggle-btn');
-            if (button) button.textContent = 'Read More';
-        } else {
-            // Expand sections on desktop by default
-            content.style.display = 'block';
-            const button = content.closest('section').querySelector('.toggle-btn');
-            if (button) button.textContent = '';
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
         }
+      });
     });
-}
-
-// Run visibility handler on page load
-handleSectionVisibility();
-
-// Update visibility on window resize
-window.addEventListener('resize', handleSectionVisibility);
-
-// Toggle functionality for the button
-document.querySelectorAll('.toggle-btn').forEach((button) => {
-    button.addEventListener('click', function () {
-        const content = this.closest('section').querySelector('.section-content');
-
-        if (!content) return;
-
-        // Toggle visibility
-        const isCollapsed = content.style.display === 'none' || content.style.display === '';
-
-        if (isCollapsed) {
-            content.style.display = 'block';
-            this.textContent = 'Read Less';
-        } else {
-            content.style.display = 'none';
-            this.textContent = 'Read More';
-        }
-    });
-});
-
-// Check if a target is linked via URL on load this is for projects page
-document.addEventListener('DOMContentLoaded', () => {
+  }
+  
+  // Auto-scroll to URL hash on load
+  function autoScrollToHash() {
     const hash = window.location.hash;
     if (hash) {
       const target = document.querySelector(hash);
@@ -117,14 +20,74 @@ document.addEventListener('DOMContentLoaded', () => {
         target.scrollIntoView({ behavior: 'smooth' });
       }
     }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const flipCards = document.querySelectorAll('.flip-card');
+  }
   
-    flipCards.forEach((card) => {
-      card.addEventListener('click', function () {
-        this.classList.toggle('touch-flip');
+  // Intersection Observer for visible classes
+  function initSectionAnimation() {
+    const targets = document.querySelectorAll('.about-card, .timeline-item, .skill-card, .project-card, .education-card');
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    targets.forEach(target => observer.observe(target));
+  }
+  
+  // Toggle visibility of content sections on mobile
+  function handleSectionVisibility() {
+    const isMobile = window.innerWidth <= 768;
+    document.querySelectorAll('.section-content').forEach((content) => {
+      const section = content.closest('section');
+      const button = section.querySelector('.toggle-btn');
+      if (isMobile) {
+        if (!content.classList.contains('collapsed')) {
+          content.classList.add('collapsed');
+          if (button) button.textContent = 'Read More';
+        }
+      } else {
+        content.classList.remove('collapsed');
+        if (button) button.textContent = '';
+      }
+    });
+  }
+  
+  // Toggle Button Logic
+  function initToggleButtons() {
+    document.querySelectorAll('.toggle-btn').forEach((button) => {
+      const section = button.closest('section');
+      const content = section.querySelector('.section-content');
+      button.addEventListener('click', () => {
+        const isCollapsed = content.classList.contains('collapsed');
+        content.classList.toggle('collapsed');
+        button.textContent = isCollapsed ? 'Read Less' : 'Read More';
       });
     });
-});
+  }
+  
+  // Disable flip on mobile
+  function initFlipCards() {
+    const flipCards = document.querySelectorAll('.flip-card');
+    flipCards.forEach((card) => {
+      card.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+          this.classList.toggle('touch-flip');
+        }
+      });
+    });
+  }
+  
+  // Master Init
+  document.addEventListener('DOMContentLoaded', () => {
+    initSmoothScroll();
+    autoScrollToHash();
+    initSectionAnimation();
+    initToggleButtons();
+    initFlipCards();
+    handleSectionVisibility();
+    window.addEventListener('resize', handleSectionVisibility);
+  });
