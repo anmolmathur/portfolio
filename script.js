@@ -99,10 +99,6 @@ function initSmoothScroll() {
     window.addEventListener('resize', handleSectionVisibility);
   });
 
-  document.getElementById('hamburger').addEventListener('click', () => {
-    document.querySelector('.navbar ul').classList.toggle('show');
-  });
-
   document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
