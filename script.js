@@ -109,8 +109,6 @@ function initSmoothScroll() {
     });
   });
 
-  const weSection = document.querySelector('#work-experience .section-content');
-  console.log('Work Experience section style:', getComputedStyle(weSection));
 
   function initWorkExperienceAnimation() {
     const items = document.querySelectorAll('#work-experience .timeline-item');
