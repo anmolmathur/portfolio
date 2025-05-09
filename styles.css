@@ -1004,7 +1004,7 @@ audio {
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    background: #222;
+    /*background: #222;*/
     color: #fff;
     position: sticky;
     top: 0;
