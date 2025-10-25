@@ -6,64 +6,26 @@
   <!-- Homepage -->
   <url>
     <loc>https://www.anmolmathur.com/</loc>
-    <lastmod>2025-05-01</lastmod>
+    <lastmod>2025-10-26</lastmod>
     <priority>1.0</priority>
     <changefreq>monthly</changefreq>
   </url>
 
-  <!-- Individual Sections -->
+  <!-- Articles -->
   <url>
-    <loc>https://www.anmolmathur.com/#about-me</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.anmolmathur.com/articles/edtech-problem-india.html</loc>
+    <lastmod>2025-10-25</lastmod>
+    <changefreq>yearly</changefreq>
   </url>
-
   <url>
-    <loc>https://www.anmolmathur.com/#work-experience</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.anmolmathur.com/articles/profitability-puzzle.html</loc>
+    <lastmod>2025-10-26</lastmod>
+    <changefreq>yearly</changefreq>
   </url>
-
   <url>
-    <loc>https://www.anmolmathur.com/#skills</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://www.anmolmathur.com/#technology-domains</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://www.anmolmathur.com/#industries</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://www.anmolmathur.com/#education</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://www.anmolmathur.com/#projects</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://www.anmolmathur.com/#publications</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://www.anmolmathur.com/#contact</loc>
-    <lastmod>2025-05-01</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.anmolmathur.com/articles/unfulfilled-promise-nep-2020.html</loc>
+    <lastmod>2025-10-26</lastmod>
+    <changefreq>yearly</changefreq>
   </url>
 
 </urlset>

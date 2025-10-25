@@ -24,7 +24,7 @@ function initSmoothScroll() {
   
   // Intersection Observer for visible classes
   function initSectionAnimation() {
-    const targets = document.querySelectorAll('.about-card, .timeline-item, .skill-card, .project-card, .education-card');
+    const targets = document.querySelectorAll('.about-card, .timeline-item, .skill-card, .project-card, .education-card, .article-card');
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -46,7 +46,7 @@ function initSmoothScroll() {
       const button = section.querySelector('.toggle-btn');
       const sectionId = section?.id || '';
   
-      const shouldCollapse = ['education', 'projects', 'publications', 'contact'].includes(sectionId);
+      const shouldCollapse = ['education', 'projects', 'publications', 'contact', 'articles'].includes(sectionId);
   
       if (isMobile) {
         if (shouldCollapse) {
@@ -87,7 +87,7 @@ function initSmoothScroll() {
       });
     });
   }
-  
+
   // Master Init
   document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
@@ -97,16 +97,15 @@ function initSmoothScroll() {
     initToggleButtons();
     initFlipCards();
     handleSectionVisibility();
-    window.addEventListener('resize', handleSectionVisibility);
-  });
 
-  document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
   
     hamburger.addEventListener('click', () => {
       navLinks.classList.toggle('show');
     });
+
+    window.addEventListener('resize', handleSectionVisibility);
   });
 
 
