@@ -7,18 +7,20 @@ copy welded into the markup, three article pages, `script.js`, `styles.css`. It 
 before an always-on server existed. Now there is a Hetzner box running Open WebUI, which
 changes what's possible.
 
-Five things are wanted, and they are more connected than they look:
+Seven things are wanted, and they are more connected than they look:
 
 1. **Move to a server-rendered Node app on Hetzner** — enables everything below.
 2. **Conversational 3D avatar** — Anmol's own Avaturn likeness, greeting and answering out
    loud, brain served by the Hetzner Open WebUI. Built to the `talking-avatar-guide` skill.
-3. **Replace the hero photo** with a new candid he supplied.
+3. **Replace the hero photo** — three images now supplied: two studio headshots and a candid.
 4. **Full Spanish version**, including the avatar speaking Spanish.
 5. **Front-end elements that read "technology leader" on arrival** — ⌘K palette, animated
    impact metrics, industry-filterable timeline, dark mode + scroll-spy + console easter egg.
 6. **WhatsApp button** connecting visitors straight to him.
+7. **PostHog** on his existing self-hosted instance, with dashboards showing how visitors use
+   the site — in service of reaching the right people more effectively.
 
-The connective tissue: **all six need the copy extracted out of `index.html` into a
+The connective tissue: **nearly all of them need the copy extracted out of `index.html` into a
 structured content model.** Spanish needs two locales of it, the avatar's retrieval brain
 needs it indexed, and ⌘K needs it searchable. Do that refactor once and the rest follows;
 skip it and each feature re-parses HTML separately. That is the spine of this plan.
@@ -28,18 +30,20 @@ employer or a date damages a personal reputation, and now it can do so in two la
 
 ---
 
-## Immediate action, independent of everything else
+## Already done (committed to `claude/portfolio-conversational-agent-r6ulfx`, commit `d835a27`)
 
-**Install the `talking-avatar-guide` skill** to
-`/home/user/portfolio/.claude/skills/talking-avatar-guide/` and commit it.
+- **`talking-avatar-guide` skill installed** at `.claude/skills/talking-avatar-guide/` — all
+  684 lines. It now loads automatically in every future Claude session on this repo. To get it
+  account-wide (like `moodle-skill` already is), upload the same folder via **claude.ai →
+  Settings → Capabilities → Skills**; I can't write into the synced set from here, as
+  `/root/.claude/skills/synced/` is a read-down mirror.
+- **Avatar model preserved** at `assets/guide/models/anmol.glb` with its gate verdict recorded
+  in a sibling README — committed because this container is ephemeral and the file would
+  otherwise need re-uploading.
+- **This plan preserved** at `.claude/plans/portfolio-rebuild-plan.md` (now stale — see the
+  note at the end).
 
-This session runs in an **ephemeral container** — anything written to `~/.claude/` is gone
-next session. Committing to the repo is the only install that persists; it then loads
-automatically in every future Claude session on this repo. To get it account-wide (like
-`moodle-skill` and `bg-content-creator-agent` already are), upload the same folder via
-**claude.ai → Settings → Capabilities → Skills**, or drop it in `~/.claude/skills/` on a
-local machine. I can't write into the synced set from here — `/root/.claude/skills/synced/`
-is a read-down mirror.
+No changes to the live site.
 
 ---
 
@@ -54,6 +58,10 @@ is a read-down mirror.
 | Brain | Hetzner Open WebUI (agent tier) behind local BM25 over the site's own content |
 | Spanish | Full site at `/es/` + avatar answers and speaks Spanish |
 | UI elements | All four bundles |
+| Analytics | **Existing self-hosted PostHog on Hetzner**, extended to this domain, first-party proxied |
+| GA | Kept alongside PostHog — GA answers acquisition, PostHog answers behaviour |
+| Privacy | Cookieless/anonymous until consent; banner opts into full analytics + replay |
+| Question log | Avatar questions captured with a PII scrubber; misses flagged as content gaps |
 | Scope | Everything: avatar + tour + mic + recruiter funnels |
 
 ---
@@ -92,33 +100,49 @@ no action.
 
 ---
 
-## The new photo — my honest recommendation
+## Photography — three images, three jobs
 
-The candid (fedora, glasses, quilted jacket, warm smile, sunlit European street) is a
-genuinely good photograph: it has personality and warmth that the current black-suit headshot
-doesn't, and it's far more memorable. But it is a **travel candid**, and as the sole hero of a
-CTO portfolio it risks reading "travel blog" to a recruiter landing cold — hat and outdoor
-bokeh do a lot of work against "technology leader", which is the exact impression this whole
-piece of work is meant to strengthen.
+Three photos are now in play, and each is right for a different moment. The two new studio
+headshots (cream backdrop, sharp, well-lit) settle the concern I had about the travel candid
+carrying the whole first impression on its own.
 
-**Recommendation — use it, but place it where its warmth pays:**
+| Image | Placement | Why |
+|---|---|---|
+| **Blazer** — black jacket, teal pocket square, composed closed-lip smile | `og:image` / social cards, **and** the hero's static fallback | The authoritative frame. Social cards get seen out of context by people who don't know him, and the hero fallback is what a cold recruiter sees on a no-WebGL device. Both want gravitas. |
+| **Striped shirt** — open collar, warm open smile | About Me | Approachable and human, next to prose that's currently a wall of text. |
+| **Travel candid** — fedora, sunlit street | Footer / a small "beyond work" note, or omitted | Real personality, but it undercuts the leadership read if it lands first. Optional. |
 
-- **Hero = the live 3D avatar.** It's what makes the site unforgettable, and it's what you
-  asked for. The avatar breathes, blinks and greets on arrival.
-- **The candid becomes the hero's static fallback** — the poster frame shown to no-WebGL
-  devices, `prefers-reduced-motion` users, and crawlers. Everyone sees a real face; only
-  capable browsers upgrade to the avatar.
-- **The candid also anchors About Me**, where a human moment belongs and where the current
-  page is a wall of prose.
-- **Keep a professional shot for `og:image`.** LinkedIn share cards are seen out of context by
-  people who don't know you; the black-suit frame is the right one there.
+**Hero remains the live 3D avatar**, with the blazer shot as its poster frame for no-WebGL
+devices, `prefers-reduced-motion` users and crawlers. Everyone sees a real face; capable
+browsers upgrade to the avatar.
 
-You may simply want the candid swapped in as the plain hero — say so and I'll do that instead.
+Two practical notes on the new headshots:
 
-**Blocker:** I can see the photo in our conversation, but **it is not on the container's
-filesystem** (`/root/.claude/uploads/` holds only the skill zip and the GLB). I cannot
-reconstruct an image from viewing it. Please re-attach it so it lands as a file — ideally the
-original, not a re-compressed copy, since I'll be generating responsive AVIF/WebP variants.
+- **Cream backdrop needs handling in dark mode** — a bright beige rectangle glows against a
+  dark page. Plan: background-removed **cutout** for on-page use (hero fallback, About), which
+  also matches the avatar's cutout treatment and gives the two a shared visual language; keep
+  the original framed version for `og:image`, where social cards need a solid background.
+- Generate responsive AVIF/WebP at 1x/2x with explicit `width`/`height` to avoid layout shift.
+
+### Delivery problem — this is now the one thing blocking the visual work
+
+The images reach me rendered in the conversation but **never land on the container's
+filesystem**. I've now swept the entire disk three times: `/root/.claude/uploads/` contains
+only `6a45ff1d-talkingavatarguideskill.zip` and `a11cf005-Anmol_Model.glb`. Those two arrived
+as **file attachments** and wrote to disk correctly; the photos appear to be arriving **pasted
+inline**, which renders for me but writes nothing. I cannot reconstruct an image file from
+viewing it, so re-sending the same way will not help.
+
+Any of these works:
+
+1. **Attach via the file picker / paperclip**, the same route the `.glb` took — that one
+   worked.
+2. **Commit them yourself** to `images/` on branch `claude/portfolio-conversational-agent-r6ulfx`
+   via the GitHub web UI (drag-and-drop into the folder). I'll `git pull` and pick them up.
+3. Put them anywhere I can fetch over HTTPS and send the URL.
+
+Suggested names: `anmol_blazer.jpg`, `anmol_shirt.jpg`. Originals preferred over
+re-compressed copies, since everything downstream is generated from them.
 
 ---
 
@@ -130,6 +154,7 @@ Cloudflare (CDN, TLS, WAF, Turnstile, rate limiting at the edge)
      Hetzner box
         ├─ Caddy ──── /assets/*         static, immutable, long cache
         │             /guide/clips/*    TTS clip cache — static files, app bypassed
+        │             /ingest/*      →  PostHog (first-party proxy, beats ad-blockers)
         │             everything else → Fastify
         │
         ├─ site (Fastify + Nunjucks)  ONE process
@@ -138,7 +163,8 @@ Cloudflare (CDN, TLS, WAF, Turnstile, rate limiting at the edge)
         │    ├─ GET  /sitemap.xml  /robots.txt         generated from the content model
         │    └─ POST /guide/ask  /guide/tts  GET /guide/stream/:hash
         │
-        └─ open-webui (existing)  ← agent tier, knowledge collection per locale
+        ├─ open-webui (existing)  ← agent tier, knowledge collection per locale
+        └─ posthog   (existing)   ← analytics, reached only via the /ingest proxy
 ```
 
 One deploy unit. The avatar API lives in the same process as the site, so there is no CORS
@@ -265,7 +291,81 @@ Built to the skill; full detail in `talking-avatar-guide` once installed. Phase 
     **Never gate on screen width** (pitfall 44 — that hid the avatar from every portrait
     phone). Save-Data blocks the idle prefetch, not the feature.
 
-## Workstream F — Deploy
+## Workstream F — PostHog analytics + dashboards
+
+PostHog is **already self-hosted and running on the Hetzner box**, so the ops cost is sunk and
+the earlier Cloud-vs-self-host debate is moot. This workstream extends that instance to this
+domain. GA (`G-12VK07Q8CB`) stays: GA answers *how did they find me*, PostHog answers *what did
+they do once here*.
+
+### First-party ingest (do this, not the default snippet)
+
+Proxy PostHog through the site's own domain in Caddy — `anmolmathur.com/ingest/*` → the local
+PostHog instance — and point `posthog-js` at `/ingest` via `api_host`. Since the site and
+PostHog will sit on the same box this is a local hop. Three reasons this is the right default:
+
+- Ad-blockers and Safari ITP eat third-party analytics domains; first-party ingest survives.
+- No cross-origin cookie or CORS handling.
+- PostHog's public hostname never has to be exposed if it isn't already.
+
+### Consent gate (cookieless until opted in)
+
+Initialise with `persistence: 'memory'`, `autocapture: false`, `disable_session_recording:
+true`, `opt_out_capturing_by_default: true` — no cookies, no replay, nothing persisted. A small
+locale-aware banner offers full analytics; on accept, switch persistence to `localStorage+cookie`,
+enable autocapture and replay, and `opt_in_capturing()`. The choice itself lives in
+localStorage (strictly-necessary, so it needs no consent). The same gate governs GA. This is
+what makes the Spanish page defensible for EU visitors.
+
+### Event taxonomy (the actual design work)
+
+| Event | Properties | What it answers |
+|---|---|---|
+| `resume_downloaded` | `variant` (bfsi/general), `source` (hero/footer/palette/avatar), `locale` | **Highest-intent signal on the site** |
+| `contact_clicked` | `channel` (whatsapp/email/phone/linkedin/github), `locale` | Which channel people actually reach for |
+| `avatar_question_asked` | `question_scrubbed`, `tier` (intent/bm25/agent), `answered`, `matched_section`, `latency_ms`, `locale` | **What visitors want to know about him** |
+| `avatar_answer_missed` | `question_scrubbed`, `locale` | **Content gaps — what the site should say but doesn't** |
+| `palette_search` | `query_scrubbed`, `result_count` | Same gap signal, typed rather than spoken |
+| `timeline_filtered` | `industry` | Which domains people care about — EdTech vs Banking vs Media |
+| `section_viewed` | `section`, `dwell_ms`, `locale` | What gets read vs skipped |
+| `article_read` | `slug`, `scroll_pct`, `locale` | Whether the writing lands |
+| `language_switched` | `from`, `to` | Whether Spanish earns its keep |
+| `avatar_opened`, `avatar_voice_used`, `avatar_reel_*`, `theme_toggled` | — | Feature adoption |
+
+**PII scrubber, one choke point**: a `before_send` hook strips emails, phone numbers and long
+digit runs from every free-text property before it leaves the browser. Free text is the one
+place a visitor can accidentally send personal data, so it gets sanitised centrally rather than
+per-call-site. Disclosed in the privacy note.
+
+### Dashboards
+
+Provision via the PostHog API from a script in `deploy/scripts/posthog-dashboards.mjs` so they
+are code, reproducible, and survive a rebuild — not hand-clicked.
+
+1. **Reach** — visitors, sources, countries, EN vs ES split, new vs returning.
+2. **Intent** — resume downloads by variant and source; contact clicks by channel; funnel
+   `landed → engaged → resume-or-contact`.
+3. **What they want to know** — avatar question feed, top topics, miss rate over time, ⌘K
+   queries. This is the content-gap board and the one likely to change what he writes.
+4. **Content performance** — section dwell, article scroll depth, timeline filter usage.
+
+**One honest caveat.** The stated goal is "improve my reachability and traffic for the right
+set of people." PostHog measures what happens *on* the site; it cannot tell him how to be
+found. Reachability is an acquisition problem, answered by Google Search Console (queries,
+impressions, position), UTM discipline on anything he shares, and LinkedIn referral tracking.
+Dashboard 1 shows which channels arrive and which convert — pair it with Search Console rather
+than expecting PostHog to cover both halves.
+
+### Self-hosted specifics to confirm on the box
+
+Whether PostHog is reachable from the browser at all (bound to localhost vs a hostname), the
+project API key, ClickHouse disk headroom and retention policy (replay is by far the heaviest
+table — the consent gate helps by keeping volume low), and the instance version. PostHog's own
+guidance puts hobby Docker Compose deployments at roughly **100k events/month** before they
+recommend Cloud; a personal portfolio sits far under that, so this is a note for later, not a
+concern now.
+
+## Workstream G — Deploy
 
 `docker-compose.yml`: caddy + site + existing open-webui. `Caddyfile` with automatic TLS and
 immutable headers for `/assets/*` and `/guide/clips/*`. Deploy-time voice warm-up over every
@@ -296,6 +396,10 @@ Keep the GitHub Pages deployment intact as an instant rollback until the new sit
 - **Playwright** on Chromium (already installed): both locales × {⌘K, filters, dark mode
   incl. no-flash on reload, metrics with and without reduced-motion, WhatsApp href, avatar
   greet → question → spoken answer → reel → bail}.
+- **Analytics**: assert **zero cookies and zero network calls to `/ingest`** before consent —
+  this is the compliance claim, so it gets a test, not a manual check. Then accept consent and
+  assert events land in PostHog. Unit-test the PII scrubber against emails, international phone
+  formats and long digit runs.
 - **Lighthouse** before/after — the migration must not cost performance or a11y.
 
 ## Risks
@@ -312,17 +416,29 @@ Keep the GitHub Pages deployment intact as an instant rollback until the new sit
   is the next lever.
 - **Reputational hallucination, now doubled.** Two languages, same guards; the grounding probe
   runs in both.
-- **Scope.** This is six substantial workstreams. A→B→C/D are independently shippable before
-  the avatar lands; I'd ship in that order rather than big-bang.
+- **Scope.** This is seven substantial workstreams. A→B→C/D/F are independently shippable
+  before the avatar lands; I'd ship in that order rather than big-bang. PostHog in particular
+  is worth landing **early** — instrumenting before the redesign gives a baseline to compare
+  against, and shipping it last means never knowing whether any of this changed behaviour.
+- **PostHog on a shared box.** ClickHouse is memory- and disk-hungry and will now sit next to
+  Open WebUI and the site on one machine. Watch RAM and disk headroom; session replay is the
+  table that grows fastest, which the consent gate usefully throttles.
 
 ## What I need
 
-1. **The photo as an actual file** — re-attach; I can see it but can't read it from disk.
+1. **The two headshots as actual files** — see the delivery section above; pasting them inline
+   doesn't reach the filesystem. This is the only hard blocker on the visual work.
 2. **Hetzner access**: host/SSH, Open WebUI base URL + API key, model id, knowledge collection
    id (or permission to create), whether Docker/Caddy are already installed, and a staging
    hostname.
-3. **OpenAI key** with speech-model access — verify with `GET /v1/models`; a project-scoped key
+3. **PostHog instance details**: project API key, how it's currently exposed (localhost only or
+   a hostname), and its version.
+4. **OpenAI key** with speech-model access — verify with `GET /v1/models`; a project-scoped key
    with a restricted allowlist 403s on TTS.
-4. **Confirm the hero recommendation** (avatar hero + candid as fallback and in About) or tell
-   me to just swap the photo.
 5. **Your review of the `PERSON_MAP` facts and the Spanish copy** before either goes live.
+
+## Note on the committed copy of this plan
+
+`.claude/plans/portfolio-rebuild-plan.md` in the repo is the version committed earlier and is
+now **stale** — it predates the photography decision and Workstream G. Re-sync it from this
+file as the first step of execution.
