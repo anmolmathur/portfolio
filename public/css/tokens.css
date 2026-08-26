@@ -1,0 +1,172 @@
+/*
+ * Design tokens.
+ *
+ * The original stylesheet had 141 hard-coded colour literals and zero custom
+ * properties, which made a dark theme impossible without touching every rule.
+ * Every colour now resolves through a token; the dark palette redefines only
+ * the tokens, never the rules.
+ *
+ * Three theme states, deliberately:
+ *   :root                                  -> light (also the no-JS default)
+ *   @media (prefers-color-scheme: dark)    -> system preference, unless the
+ *                                             visitor explicitly chose light
+ *   :root[data-theme="dark"|"light"]       -> explicit choice always wins
+ */
+
+:root {
+  /* Brand — carried over from the original palette */
+  --brand-900: #002347;
+  --brand-800: #003366;
+  --brand-700: #00509e;
+  --brand-600: #0056b3;
+  --brand-500: #0078d7;
+  --brand-300: #66a3d2;
+  --accent:    #ff5733;
+
+  /* Surfaces */
+  --bg:            #ffffff;
+  --bg-alt:        #f2f4f8;
+  --bg-subtle:     #f9f9f9;
+  --surface:       #ffffff;
+  --surface-alt:   #f4faff;
+  --surface-tint:  #e9f5ff;
+
+  /* Text */
+  --text:          #333333;
+  --text-muted:    #555555;
+  --text-subtle:   #666666;
+  --text-invert:   #ffffff;
+
+  /* Lines & shadows */
+  --border:        #dddddd;
+  --border-strong: #c7d0da;
+  --shadow-sm:     0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-md:     0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg:     0 10px 30px rgba(0, 0, 0, 0.15);
+  --overlay:       rgba(10, 18, 30, 0.55);
+
+  /* Semantic roles */
+  --header-bg:     var(--brand-800);
+  --header-text:   var(--text-invert);
+  --link:          var(--brand-700);
+  --link-hover:    var(--brand-500);
+  --focus-ring:    var(--brand-500);
+  --chip-bg:       var(--surface-tint);
+  --chip-text:     var(--brand-800);
+  --chip-active-bg:   var(--brand-700);
+  --chip-active-text: var(--text-invert);
+
+
+  /* Timeline card shades — pastel in light, deep-tinted in dark */
+  --shade-1: #f0f4ff; --shade-2: #eaf8e6; --shade-3: #fff4e6;
+  --shade-4: #ffe6ea; --shade-5: #e6f9ff; --shade-6: #f6e6ff;
+  --shade-7: #eef2f7;
+
+  /* Section backgrounds that were one-off literals */
+  --hero-bg:         #e0f7fa;
+  --publications-bg: #ebe2ed;
+
+  /* Project flip-card backs — saturated, always paired with white text,
+     so they hold up unchanged in both themes. */
+  --proj-hungama:  #003f5c; --proj-timespro: #2f4b7c; --proj-digitas: #665191;
+  --proj-xfinite:  #a05195; --proj-hsbc:     #d45087; --proj-ogaan:    #f95d6a;
+
+  /* Heading/accent TEXT colours. The brand navies are backgrounds-first; used
+     as text on a dark surface they fall to ~1.3:1. These flip with the theme. */
+  --heading:      #003366;
+  --accent-text:  #00509e;
+
+  --radius:    10px;
+  --radius-lg: 16px;
+  --maxw:      1200px;
+  --speed:     200ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:            #0f1620;
+    --bg-alt:        #131c28;
+    --bg-subtle:     #16202d;
+    --surface:       #18222f;
+    --surface-alt:   #1c2836;
+    --surface-tint:  #1e2d3f;
+
+    --text:          #e6ecf3;
+    --text-muted:    #b3c0cf;
+    --text-subtle:   #93a2b4;
+    --text-invert:   #0f1620;
+
+    --border:        #2a3646;
+    --border-strong: #3a4959;
+    --shadow-sm:     0 2px 6px rgba(0, 0, 0, 0.5);
+    --shadow-md:     0 4px 14px rgba(0, 0, 0, 0.55);
+    --shadow-lg:     0 12px 34px rgba(0, 0, 0, 0.6);
+    --overlay:       rgba(0, 0, 0, 0.7);
+
+    --brand-300:     #7fb3e0;
+    --header-bg:     #0c131c;
+    --header-text:   #e6ecf3;
+    --link:          #6fb4ef;
+    --link-hover:    #9ccdf7;
+    --focus-ring:    #6fb4ef;
+    --chip-bg:       #1e2d3f;
+    --chip-text:     #b9d4ee;
+    --chip-active-bg:   #2f6fb5;
+    --chip-active-text: #ffffff;
+    --heading:     #cfe0f2;
+    --accent-text: #7cbcf5;
+
+    --shade-1: #182231; --shade-2: #17242a; --shade-3: #1d232e;
+    --shade-4: #211f2c; --shade-5: #16232e; --shade-6: #1c1f2e;
+    --shade-7: #1a222c;
+
+    --hero-bg:         #10202a;
+    --publications-bg: #1d1a24;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg:            #0f1620;
+  --bg-alt:        #131c28;
+  --bg-subtle:     #16202d;
+  --surface:       #18222f;
+  --surface-alt:   #1c2836;
+  --surface-tint:  #1e2d3f;
+
+  --text:          #e6ecf3;
+  --text-muted:    #b3c0cf;
+  --text-subtle:   #93a2b4;
+  --text-invert:   #0f1620;
+
+  --border:        #2a3646;
+  --border-strong: #3a4959;
+  --shadow-sm:     0 2px 6px rgba(0, 0, 0, 0.5);
+  --shadow-md:     0 4px 14px rgba(0, 0, 0, 0.55);
+  --shadow-lg:     0 12px 34px rgba(0, 0, 0, 0.6);
+  --overlay:       rgba(0, 0, 0, 0.7);
+
+  --brand-300:     #7fb3e0;
+  --header-bg:     #0c131c;
+  --header-text:   #e6ecf3;
+  --link:          #6fb4ef;
+  --link-hover:    #9ccdf7;
+  --focus-ring:    #6fb4ef;
+  --chip-bg:       #1e2d3f;
+  --chip-text:     #b9d4ee;
+  --chip-active-bg:   #2f6fb5;
+  --chip-active-text: #ffffff;
+  --heading:     #cfe0f2;
+  --accent-text: #7cbcf5;
+
+  --shade-1: #182231; --shade-2: #17242a; --shade-3: #1d232e;
+  --shade-4: #211f2c; --shade-5: #16232e; --shade-6: #1c1f2e;
+  --shade-7: #1a222c;
+
+  --hero-bg:         #10202a;
+  --publications-bg: #1d1a24;
+}
+
+html { color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
+:root[data-theme="dark"]  { color-scheme: dark; }
+:root[data-theme="light"] { color-scheme: light; }

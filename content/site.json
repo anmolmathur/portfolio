@@ -1,0 +1,44 @@
+{
+  "domain": "anmolmathur.com",
+  "canonicalOrigin": "https://www.anmolmathur.com",
+  "defaultLocale": "en",
+  "locales": ["en", "es"],
+  "person": {
+    "name": "Anmol Mathur",
+    "alternateName": "Anmol Chandra Mathur",
+    "jobTitle": "Chief Technology Officer",
+    "email": "contact@anmolmathur.com",
+    "phone": "+91-9867191999",
+    "phoneE164": "919867191999",
+    "nationality": "Indian",
+    "locality": "Mumbai",
+    "sameAs": [
+      "https://www.linkedin.com/in/anmolmathur",
+      "https://github.com/anmolmathur"
+    ]
+  },
+  "social": [
+    { "id": "linkedin", "url": "https://linkedin.com/in/anmolmathur", "icon": "fab fa-linkedin", "label": "LinkedIn" },
+    { "id": "github", "url": "https://github.com/anmolmathur", "icon": "fab fa-github", "label": "GitHub" }
+  ],
+  "resumes": {
+    "general": { "path": "/docs/Anmol_Mathur_Resume.pdf", "id": "general" },
+    "bfsi": { "path": "/docs/Anmol Mathur - Resume BFSI.pdf", "id": "bfsi" }
+  },
+  "images": {
+    "hero": "anmolmathur_blacksuit.JPG",
+    "og": "anmolmathur_blacksuit.JPG",
+    "about": "anmolmathur_whiteshirt.JPG"
+  },
+  "audio": {
+    "intro": "/audio/AnmolMathur.wav"
+  },
+  "analytics": {
+    "ga": "G-12VK07Q8CB",
+    "posthogProxyPath": "/ingest"
+  },
+  "_notes": {
+    "images": "hero/og/about are PLACEHOLDERS pointing at the existing photos. Replace with anmol_blazer.jpg (hero fallback + og) and anmol_shirt.jpg (about) once those files are in the repo.",
+    "audio": "AnmolMathur.wav is 44MB and served with a wrong audio/mpeg MIME type. Transcode to Opus/MP3 (~1-2MB) and update this path."
+  }
+}

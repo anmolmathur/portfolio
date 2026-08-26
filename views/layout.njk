@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" data-page="{{ page }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{#
+  Theme must be resolved BEFORE first paint, or the page flashes the wrong
+  palette on every load for anyone whose choice differs from the system default.
+  This is the one script that has to be inline and render-blocking.
+#}
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+  } catch (e) { /* private mode — fall through to prefers-color-scheme */ }
+})();
+</script>
+
+<title>{% block title %}{{ copy.meta.title }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ copy.meta.description }}{% endblock %}">
+<meta name="keywords" content="{% block keywords %}{{ copy.meta.keywords }}{% endblock %}">
+<meta name="author" content="{{ site.person.name }}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ canonical }}">
+
+{% for alt in alternates %}
+<link rel="alternate" hreflang="{{ alt.locale }}" href="{{ alt.href }}">
+{% endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ site.canonicalOrigin }}/">
+
+<meta property="og:title" content="{% block ogTitle %}{{ copy.meta.ogTitle }}{% endblock %}">
+<meta property="og:description" content="{% block ogDescription %}{{ copy.meta.ogDescription }}{% endblock %}">
+<meta property="og:type" content="{% block ogType %}website{% endblock %}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="{{ site.canonicalOrigin }}/images/{% block ogImage %}{{ site.images.og }}{% endblock %}">
+<meta property="og:site_name" content="Anmol Mathur Portfolio">
+<meta property="og:locale" content="{{ 'en_IN' if locale == 'en' else 'es_ES' }}">
+{% for alt in alternates %}{% if alt.locale != locale %}
+<meta property="og:locale:alternate" content="{{ 'en_IN' if alt.locale == 'en' else 'es_ES' }}">
+{% endif %}{% endfor %}
+<meta property="profile:first_name" content="Anmol">
+<meta property="profile:last_name" content="Mathur">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ copy.meta.twitterTitle }}">
+<meta name="twitter:description" content="{{ copy.meta.twitterDescription }}">
+<meta name="twitter:image" content="{{ site.canonicalOrigin }}/images/{{ site.images.og }}">
+<meta name="twitter:creator" content="@anmol_m">
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Parkinsans&display=swap">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+{% block head %}{% endblock %}
+
+<script type="application/ld+json">{{ jsonLd | safe }}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">{{ copy.ui.skipToContent }}</a>
+
+{% include "partials/header.njk" %}
+
+<main id="main">
+  {% block content %}{% endblock %}
+</main>
+
+{% include "partials/footer.njk" %}
+{% include "partials/actions.njk" %}
+{% include "partials/palette.njk" %}
+
+<script>
+  window.__SITE__ = {
+    locale: {{ locale | dump | safe }},
+    home: {{ home | dump | safe }},
+    otherLocaleUrl: {{ otherLocaleUrl | dump | safe }},
+    whatsappHref: {{ whatsappHref | dump | safe }},
+    resumes: {{ site.resumes | dump | safe }},
+    email: {{ site.person.email | dump | safe }},
+    strings: {{ copy.ui | dump | safe }},
+    searchIndex: {{ searchIndex | dump | safe }}
+  };
+</script>
+<script src="/js/theme.js" defer></script>
+<script src="/js/nav.js" defer></script>
+<script src="/js/metrics.js" defer></script>
+<script src="/js/timeline-filter.js" defer></script>
+<script src="/js/palette.js" defer></script>
+<script src="/js/console-greeting.js" defer></script>
+</body>
+</html>

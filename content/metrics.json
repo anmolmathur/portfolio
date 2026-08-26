@@ -1,0 +1,11 @@
+{
+  "_source": "Every figure below traces to copy already on the site. Do not add a metric without a source.",
+  "items": [
+    { "id": "years",        "value": 24,      "suffix": "+",  "source": "Career start Dec 2001 (Oracle FS / Polaris) to present." },
+    { "id": "technologists","value": 150,     "suffix": "+",  "source": "About Me: 'leading up to 150+ technologists'; Digitas achievement: 'Team of 150+ Technologists'." },
+    { "id": "savings",      "value": 1.5,     "prefix": "₹", "suffix": " Cr", "decimals": 1, "source": "Hungama project: annual tech spend ₹3 Cr → ₹1.5 Cr." },
+    { "id": "students",     "value": 600000,  "suffix": "+", "format": "compact", "source": "TeamLease EdTech role: 'serving 60+ universities and 600,000+ students'." },
+    { "id": "universities", "value": 60,      "suffix": "+",  "source": "TeamLease EdTech role: '60+ universities'." },
+    { "id": "industries",   "value": 8,       "suffix": "",   "source": "Industries section lists 8 entries." }
+  ]
+}

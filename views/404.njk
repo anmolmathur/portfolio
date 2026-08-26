@@ -1,0 +1,12 @@
+{% extends "layout.njk" %}
+{% block title %}404 — {{ site.person.name }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="notfound">
+  <div class="container">
+    <h1>404</h1>
+    <p>{{ "That page doesn't exist." if locale == 'en' else "Esa página no existe." }}</p>
+    <p><a class="btn" href="{{ home }}">{{ "Back to home" if locale == 'en' else "Volver al inicio" }}</a></p>
+  </div>
+</section>
+{% endblock %}

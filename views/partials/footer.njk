@@ -1,0 +1,15 @@
+<footer class="site-footer">
+  <div class="footer-container">
+    <p>{{ copy.footer.copyright | replace("{year}", year) }}</p>
+    <p><strong>{{ copy.contact.labels.email }}:</strong>
+       <a href="mailto:{{ site.person.email }}" data-contact="email">{{ site.person.email }}</a></p>
+    <p><strong>{{ copy.contact.labels.phone }}:</strong>
+       <a href="tel:{{ site.person.phone | replace('-', '') }}" data-contact="phone">{{ site.person.phone }}</a></p>
+  </div>
+  <div class="footer-resume">
+    <a href="{{ site.resumes.general.path }}" class="footer-download-btn" download
+       data-resume="general" title="{{ copy.ui.downloadResume }}">
+      <i class="fas fa-file-download" aria-hidden="true"></i> {{ copy.ui.downloadResume }}
+    </a>
+  </div>
+</footer>

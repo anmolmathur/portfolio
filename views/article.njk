@@ -1,0 +1,27 @@
+{% extends "layout.njk" %}
+{% block title %}{{ article.pageTitle or article.title }}{% endblock %}
+{% block description %}{{ article.description }}{% endblock %}
+{% block keywords %}{{ article.keywords }}{% endblock %}
+{% block ogTitle %}{{ article.ogTitle or article.title }}{% endblock %}
+{% block ogDescription %}{{ article.ogDescription or article.description }}{% endblock %}
+{% block ogType %}article{% endblock %}
+{% block ogImage %}{{ article.image }}{% endblock %}
+
+{% block content %}
+<section class="article-full">
+  <div class="article-container">
+    <h1>{{ article.title }}</h1>
+    <p class="article-meta">{{ article.byline }}</p>
+    {% if article.image %}
+    <img src="/images/{{ article.image }}" alt="{{ article.imageAlt }}" class="article-img"
+         loading="lazy" decoding="async">
+    {% endif %}
+    <div class="article-content" data-article="{{ article.slug }}">
+      {{ article.body | safe }}
+    </div>
+    <p class="article-back">
+      <a href="{{ home if home != '/' else '' }}/#articles">&larr; {{ copy.articles.heading }}</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

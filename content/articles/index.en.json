@@ -1,0 +1,38 @@
+{
+  "edtech-problem-india": {
+    "slug": "edtech-problem-india",
+    "title": "Is EdTech solving the right problem in India?",
+    "byline": "By Anmol Mathur | Published on October 25, 2025",
+    "description": "Is EdTech solving the right problem in India? A look at the digital divide, affordability, and the case for Degree Apprenticeships.",
+    "keywords": "EdTech India, Digital Divide, Degree Apprenticeship, Anmol Mathur, Skills Gap, Employability, Future of Work",
+    "ogTitle": "Is EdTech solving the right problem in India? | Anmol Mathur",
+    "ogDescription": "A look at the digital divide, affordability, and the case for Degree Apprenticeships.",
+    "pageTitle": "Is EdTech solving the right problem in India? | Anmol Mathur",
+    "image": "EdTech_SolvingProblem.png",
+    "imageAlt": "EdTech Solving Problem"
+  },
+  "profitability-puzzle": {
+    "slug": "profitability-puzzle",
+    "title": "The Profitability Puzzle: Why the B2B2C Model is EdTech’s Sustainable Future",
+    "byline": "By Anmol Mathur | Published on October 26, 2025",
+    "description": "The Indian EdTech 'funding winter' wasn't a season; it was a climate change. This post addresses the profitability puzzle in EdTech and positions TeamLease EdTech's B2B2C model as the sustainable alternative.",
+    "keywords": "EdTech, Business Model, Profitability, Startups, Future Of Learning, TeamLease, PuttingIndiaToWork, Anmol Mathur",
+    "ogTitle": "The Profitability Puzzle in EdTech | Anmol Mathur",
+    "ogDescription": "This post addresses the 'EdTech winter' and positions TeamLease EdTech's B2B2C model as the sustainable alternative.",
+    "pageTitle": "The Profitability Puzzle in EdTech | Anmol Mathur",
+    "image": "profitability_puzzle.png",
+    "imageAlt": "Profitability Puzzle"
+  },
+  "unfulfilled-promise-nep-2020": {
+    "slug": "unfulfilled-promise-nep-2020",
+    "title": "The Unfulfilled Promise of NEP 2020: Bridging Academia and Industry",
+    "byline": "By Anmol Mathur | Published on October 26, 2025",
+    "description": "This post connects TeamLease EdTech's core offering directly to the government's visionary education policy, positioning us as the key implementer.",
+    "keywords": "NEP2020, HigherEducation, SkillsIndia, Apprenticeship, TeamLeaseEdTech, EducationPolicy, FutureOfWork, Anmol Mathur",
+    "ogTitle": "The Unfulfilled Promise of NEP 2020 | Anmol Mathur",
+    "ogDescription": "This post connects TeamLease EdTech's core offering directly to the government's visionary education policy, positioning us as the key implementer.",
+    "pageTitle": "The Unfulfilled Promise of NEP 2020 | Anmol Mathur",
+    "image": "bridging_academia.png",
+    "imageAlt": "NEP 2020 Promise"
+  }
+}

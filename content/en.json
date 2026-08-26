@@ -1,0 +1,574 @@
+{
+  "locale": "en",
+  "meta": {
+    "title": "Anmol Mathur | Technology Leader & CTO | Mumbai, India",
+    "description": "Portfolio of Anmol Mathur — CTO at TeamLease EdTech, driving AI-Native Platform strategy, Technology Vision 2030, and enterprise-scale digital transformation across India's higher education sector.",
+    "keywords": "Anmol Mathur, CTO, Chief Technology Officer, TeamLease EdTech, Technology Leader, Digital Transformation, AI Strategy, EdTech, Higher Education, Cloud Computing, Mumbai, FinTech, SaaS, Innovation, Kubernetes, Leadership Roles, Vision 2030, Microservices, University Management System",
+    "ogTitle": "Anmol Mathur | Senior Technology Executive, CTO, Strategist, Technology Leader",
+    "ogDescription": "Explore a comprehensive technology portfolio built by Anmol Mathur, including 24+ years of multi-industry digital innovation experience.",
+    "twitterTitle": "Anmol Mathur | CTO | Investor in Technology Strategy",
+    "twitterDescription": "CTO | Thought Leader | 150+ tech team led | Cloud-native, AI-driven experiences"
+  },
+  "ui": {
+    "skipToContent": "Skip to content",
+    "readMore": "Read More",
+    "readLess": "Read Less",
+    "downloadResume": "Download Resume",
+    "readPublication": "Read Publication",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "themeToggle": "Switch theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "languageName": "English",
+    "switchLanguage": "Ver en español",
+    "commandPalette": {
+      "open": "Search",
+      "hint": "Press {key} to search",
+      "placeholder": "Search sections, projects, articles…",
+      "empty": "Nothing matches that. Try a different word.",
+      "groupSections": "Sections",
+      "groupActions": "Actions",
+      "actionResume": "Download résumé",
+      "actionResumeBfsi": "Download résumé (banking & finance)",
+      "actionWhatsapp": "Message on WhatsApp",
+      "actionEmail": "Send an email",
+      "actionLanguage": "Ver en español",
+      "actionTheme": "Toggle dark mode",
+      "close": "Close"
+    },
+    "timelineFilter": {
+      "label": "Filter by industry",
+      "all": "All",
+      "clear": "Clear filter",
+      "resultCount": "{n} of {total} roles"
+    },
+    "whatsapp": {
+      "label": "WhatsApp",
+      "aria": "Message Anmol on WhatsApp",
+      "prefill": "Hi Anmol, I found your portfolio at anmolmathur.com and would like to connect."
+    },
+    "consent": {
+      "title": "A note on analytics",
+      "body": "This site uses privacy-friendly analytics to understand which content is useful. Nothing is stored until you agree.",
+      "accept": "Allow analytics",
+      "decline": "No thanks",
+      "learnMore": "How this works"
+    }
+  },
+  "nav": [
+    {
+      "id": "home",
+      "label": "Home"
+    },
+    {
+      "id": "work-experience",
+      "label": "Work Experience"
+    },
+    {
+      "id": "skills",
+      "label": "Skills"
+    },
+    {
+      "id": "industries",
+      "label": "Industry"
+    },
+    {
+      "id": "education",
+      "label": "Education"
+    },
+    {
+      "id": "publications",
+      "label": "Publications"
+    },
+    {
+      "id": "projects",
+      "label": "Projects"
+    },
+    {
+      "id": "articles",
+      "label": "Articles"
+    },
+    {
+      "id": "contact",
+      "label": "Contact"
+    }
+  ],
+  "hero": {
+    "name": "Anmol Mathur",
+    "tagline": "Technology Leader | CTO | Innovator",
+    "intro": "Welcome to my portfolio. Explore my journey and achievements in the technology domain.",
+    "portraitAlt": "Anmol Mathur"
+  },
+  "metrics": {
+    "heading": "By the numbers",
+    "labels": {
+      "years": "Years in technology",
+      "technologists": "Technologists led",
+      "savings": "Annual tech spend saved",
+      "students": "Students served",
+      "universities": "University partners",
+      "industries": "Industries"
+    }
+  },
+  "about": {
+    "heading": "About Me",
+    "paragraphs": [
+      "12+ years out of the 25 years of executive-level experience in identifying, qualifying, and implementing enabling technologies and enterprise systems that facilitate business processes and strategic objectives.",
+      "Experienced work environments from Corporates to Start-ups and led Technology applications from concept to implementation.",
+      "Deep exposure to working in both Onsite and Offshore models in IT product and services companies. Thrive on working in a dynamic, fast-changing, and output-oriented environment.",
+      "Experience in setting up and mobilizing Technology Teams and leading up to 150+ technologists.",
+      "Worked with Local and International Technology and Resource Partners to assist in the Technology and Product Roadmap execution.",
+      "Leading Technology Vertical with an astute eye on Cost Control and Revenue Growth."
+    ],
+    "audioLabel": "Listen to my professional introduction:",
+    "audioFallback": "Your browser does not support the audio element."
+  },
+  "workExperience": {
+    "heading": "Work Experience",
+    "subheading": "Explore my professional journey and key roles.",
+    "roles": [
+      {
+        "id": "teamlease-edtech",
+        "company": "TeamLease EdTech",
+        "logo": "tle.png",
+        "title": "Chief Technology Officer (CTO)",
+        "dates": "Sep 2025 – Present",
+        "location": "Mumbai",
+        "industries": [
+          "edtech"
+        ],
+        "summary": [
+          "Spearheading technology transformation as CTO for India's leading Work-Linked Degree platform, serving 60+ universities and 600,000+ students. Reporting directly to the Founder & CEO with full ownership of technology strategy, architecture, and execution."
+        ],
+        "achievements": [
+          "Implemented and institutionalized <strong>Vibe Coding and AI Automation (N8N)</strong> across the organisation, accelerating delivery velocity and enabling non-technical teams to automate workflows.",
+          "Implemented a <strong>Data Warehouse solution</strong> for the Business Intelligence system, resolving critical data integrity and reporting gaps impacting 60+ university clients.",
+          "Leading <strong>UMS 2.0 Platform Modernization</strong> — migrating the core University Management System from a legacy .NET monolith to microservices (React + .NET Core) using the Strangler Fig pattern, de-risking the platform for IPO readiness.",
+          "Launched <strong>AI-driven student engagement</strong> — strategic partnership with Nurix AI for Voice AI–powered lead conversion and a proprietary AI Mock Interview Platform, establishing TeamLease EdTech as an AI-native EdTech leader."
+        ]
+      },
+      {
+        "id": "hungama",
+        "company": "Hungama Digital Media Entertainment",
+        "logo": "hungama.png",
+        "title": "Head Technology & VP Engineering",
+        "dates": "Jun 2023 – Sep 2025",
+        "location": "Mumbai",
+        "industries": [
+          "media"
+        ],
+        "summary": [
+          "Leader of Technology Department for Hungama Digital with Brands like (Hungama Gold, BollywoodHungama etc.).",
+          "Manage Technology Development and Operations to ensure Technology drives Hungama's Media Business in terms of provide Music and Video Services via OTT Platforms, Media Companies, etc.",
+          "Digitally transformed the Technology Stack into Kubernetes using CNCF Technologies and Technology best practices and achieved a month Saving by >50%",
+          "Driving organizational AI strategy by implementing Trypromptly no-code platform and GPU infrastructure, democratizing AI capabilities for all departments."
+        ],
+        "achievements": [
+          "Managing a 66+ member Technology Team to improve and maintain the Software Architecture and deliver technology and services to external stakeholders.",
+          "Reduce the Cost of Technology Opex by >50% of 3Cr (May 23) to 1.3 Cr(Dec 24)",
+          "Improve Technology Governance and implementation, focusing on Innovation and Reliability while ensuring SLAs of more than 98% uptime for all our services.",
+          "Successfully did Cloud Audits and Migration of Services in a multi-cloud environment while managing Local and international partners"
+        ]
+      },
+      {
+        "id": "timespro",
+        "company": "Times Professional Learning (TimesPro)",
+        "logo": "timespro.png",
+        "title": "Head Technology & VP Engineering",
+        "dates": "Sep 2021 - Mar 2023",
+        "location": "Mumbai",
+        "industries": [
+          "edtech"
+        ],
+        "summary": [
+          "Lead the Team of Technology Development, Product Development and IT Operations for Times Professional Learning (TimesPro) to streamline the business processes via technology initiatives and make them future proof to service their Customers/Learners.",
+          "Conceptualized the Learning Management and Sales Management Products and mobilized the development Team in an Agile Based Development Cycle.",
+          "Consolidated all the Technology Vendor/ SAAS Products used and initiated the digital transformation journey for the organisation."
+        ],
+        "achievements": [
+          "Setup and Lead the Technology Team of 40+ in 1 year, create the Software Architecture and initiated the Software Development department to build and support the Web and Mobile Applications",
+          "Digitally transformed the organization with custom product solutions."
+        ]
+      },
+      {
+        "id": "xfinite",
+        "company": "Xfinite Technologies (Mzaalo)",
+        "logo": "xfinite.png",
+        "title": "Technology Director",
+        "dates": "Jan 2020 - Aug 2021",
+        "location": "Mumbai",
+        "industries": [
+          "media"
+        ],
+        "summary": [
+          "Technology Head, Product Head, and Ad Operations Head for Mzaalo, an OTT and blockchain platform.",
+          "Setup and Lead the Team of 20+ in 1 year with Technology and Product Delivery in a Tech StartUp Environment."
+        ],
+        "achievements": [
+          "Worked with the Founder and COO to build their Product and Technology Architecture and Roadmap",
+          "Built the product from 0 users to 10K users.",
+          "Set up the digital ad revenue business by liaising with publishers and partners."
+        ]
+      },
+      {
+        "id": "digitas",
+        "company": "Digitas India",
+        "logo": "digitas.png",
+        "title": "Technology Director & Head Outsourcing",
+        "dates": "Dec 2016 - Jan 2020",
+        "location": "London & Mumbai",
+        "industries": [
+          "media",
+          "sports"
+        ],
+        "summary": [
+          "Technology Head for India Division for Digitas-UK for one of the biggest sporting Client - Formula1.",
+          "Setup and Lead a Team of 35+ for India including Architects / Developers / Project Management which including the Process Definition and Technology Implementation.",
+          "Outsourced Technology Resources and Teams to International Organisations"
+        ],
+        "achievements": [
+          "Lead and Outsourced Technology work across Digitas Clients with setting up and managing a Team of 150+ Technologists.",
+          "Handled Formula 1 UK Client with Digitas UK and provided Architecture Solutions and executed in a cost effective manner with Agile Methodologies."
+        ]
+      },
+      {
+        "id": "ogaan",
+        "company": "Ogaan Media (Elle & SquareInch)",
+        "logo": "ogaanmedia.png",
+        "title": "Chief Technology Officer (CTO)",
+        "dates": "Jan 2016 - Dec 2016",
+        "location": "Mumbai",
+        "industries": [
+          "media",
+          "ecommerce"
+        ],
+        "summary": [
+          "Strategic Design, Development and Implementation of ELLE, ELLE DÉCOR, Squareinch, IndiaDesignID websites.",
+          "Revenue stream using online advertising and managing complete IT portfolio.",
+          "Concept, Product Development, Implementation and execution of Ecommerce IT Startup (Squareinch).",
+          "Lead the selection of Strategic Partners, Onboarding of Business Partners, Team Management, Client Management of marketplace Ecommerce model"
+        ],
+        "achievements": [
+          "Part of a startup from inception till commercialisation and performed mutliple roles.",
+          "Engaged in investments and financial dealings of an indian startup."
+        ]
+      },
+      {
+        "id": "hsbc",
+        "company": "Hong Kong & Shanghai Bank",
+        "logo": "HSBC.png",
+        "title": "VP IT Development",
+        "dates": "Aug 2008 - Jan 2016",
+        "location": "Hong Kong & Mumbai",
+        "industries": [
+          "banking"
+        ],
+        "summary": [
+          "Managing the receivables business softwares for the corporate banking business of HSBC",
+          "IT applications owner from management of cost, implementation and support.",
+          "Application owner of corporate banking, retail banking applications; Vendor Management, Product and Platform Selection, Requirements and Testing Management, Product Rollouts and Production Support."
+        ],
+        "achievements": [
+          "Ensured multiple vendor and product management for global rollouts.",
+          "Supported product development and testing for retail and cash management banking applications."
+        ]
+      },
+      {
+        "id": "oracle-polaris",
+        "company": "Oracle Financial Services / Polaris Software",
+        "logo": "ofs.png",
+        "title": "Business Analyst & Project Manager",
+        "dates": "Dec 2001 - Aug 2008",
+        "location": "New York, Mumbai & Chennai",
+        "industries": [
+          "banking"
+        ],
+        "summary": [
+          "Managed Global Cash Management Software (GCMS) with a team of 12 – 25 from requirements, SDLC, change management, design, development, implementation and support.",
+          "CMMI Level 5& SQA Standard Compliance and Client Management",
+          "Technical code developer, application designer and Tester.",
+          "Worked on Projects like GCMS, Sapphire, GPOS, CitiDirect"
+        ],
+        "achievements": [
+          "Complied with CMMI Level 5 standards and SQA protocols.",
+          "Developed and oversaw technical development and deployment for projects like GCMS and Sapphire."
+        ]
+      }
+    ]
+  },
+  "skills": {
+    "heading": "Skills",
+    "subheading": "Explore my core competencies and professional expertise.",
+    "items": [
+      "AI Strategy & Implementation",
+      "Generative AI / LLM Integration",
+      "Consulting and Solutioning",
+      "Innovation & Tech Selection",
+      "IT Cost and Infra Management",
+      "Vendor Management",
+      "Client Servicing",
+      "System Architecture/Infrastructure Design",
+      "Full Project Life Cycle Management",
+      "Financial/Operational Management",
+      "Agile Methodologies",
+      "Process & Product Roadmap",
+      "Program/Project Management",
+      "Leadership & Team Building",
+      "Microservice Architecture",
+      "Data Analytics"
+    ]
+  },
+  "technologyDomains": {
+    "heading": "Technology Domains & Tools",
+    "subheading": "Explore the wide range of technologies and tools I have worked with.",
+    "items": [
+      {
+        "title": "AI",
+        "body": "Open WebUI, Agentic AI, AutoGen Studio, Hugging Face, Trypromptly, ChatGPT, Llama 3.3, Gemini, Co-Pilot, Grok, Anthropic, OpenAI API, Claude API, LangChain, Ollama, Qdrant, N8N"
+      },
+      {
+        "title": "SAAS Tools",
+        "body": "Salesforce, Moodle, Strapi, Brightcove, Vimeo, WordPress, Contentful"
+      },
+      {
+        "title": "Cloud & DevOps",
+        "body": "AWS, GCP, Azure, WebSphere, APIGEE, Webservices, API, AEM, Docker, Kubernetes, Terraform"
+      },
+      {
+        "title": "Tech Stack",
+        "body": "Java, PHP, Python, Ruby on Rails, Node.js, React.js, Vue.js, Databases"
+      },
+      {
+        "title": "Ecommerce Tools",
+        "body": "Spree Commerce, Magento, Wordpress, Automation"
+      },
+      {
+        "title": "Database and Analytics",
+        "body": "SQL and NoSQL DB, Big Data, Big Query, Snowflake, Tableau, Power BI, Data Analytics"
+      }
+    ]
+  },
+  "industries": {
+    "heading": "Industries",
+    "subheading": "Discover the diverse industries I have contributed to over the years.",
+    "items": [
+      {
+        "id": "edtech",
+        "title": "Education",
+        "body": "EdTech"
+      },
+      {
+        "id": "media",
+        "title": "Media",
+        "body": "Print, OTT, UGC"
+      },
+      {
+        "id": "ecommerce",
+        "title": "Ecommerce",
+        "body": ""
+      },
+      {
+        "id": "sports",
+        "title": "Sports",
+        "body": ""
+      },
+      {
+        "id": "banking",
+        "title": "Retail Banking",
+        "body": ""
+      },
+      {
+        "id": "fintech",
+        "title": "Fintech Channels",
+        "body": "ATMs, POS"
+      },
+      {
+        "id": "trade-finance",
+        "title": "Trade Finance",
+        "body": ""
+      },
+      {
+        "id": "cash-management",
+        "title": "Global Cash Management",
+        "body": ""
+      }
+    ]
+  },
+  "publications": {
+    "heading": "Publications",
+    "subheading": "My professional publications",
+    "items": [
+      {
+        "title": "Impact of Technologies and Cloud Computing Applications in Higher Education",
+        "author": "Author : Anmol Mathur",
+        "journal": "Higher Education Digest, 2022",
+        "logo": "Higher_Education_Logo.png",
+        "logoAlt": "Higher Education Logo",
+        "url": "https://www.highereducationdigest.com/impact-of-technologies-and-cloud-computing-applications-in-higher-education/"
+      },
+      {
+        "title": "CyberSecurity: How India is faring?",
+        "author": "Author : Anmol Mathur",
+        "journal": "Times of India, 2022",
+        "logo": "Times_Of_India_Logo.png",
+        "logoAlt": "TOI Logo",
+        "url": "https://timesofindia.indiatimes.com/education/news/cybersecurity-how-is-india-faring/articleshow/90092422.cms"
+      }
+    ]
+  },
+  "education": {
+    "heading": "Education",
+    "subheading": "Explore my academic background and achievements.",
+    "labels": {
+      "institute": "Institute",
+      "university": "University",
+      "date": "Date",
+      "specialization": "Specialization"
+    },
+    "items": [
+      {
+        "title": "Certification Course for Leadership",
+        "institute": "Michigan State University",
+        "university": "Michigan State University",
+        "date": "2020 - 2021",
+        "specialization": "Effective Leadership and Management"
+      },
+      {
+        "title": "Master's of Business Administration",
+        "institute": "NMIMS",
+        "university": "University of Mumbai",
+        "date": "2004 - 2008",
+        "specialization": "Post Graduate Course - Marketing"
+      },
+      {
+        "title": "Bachelor of Engineering (B.E)",
+        "institute": "V.E.S.I.T",
+        "university": "University of Mumbai",
+        "date": "1997 - 2001",
+        "specialization": "Graduate Course - Electronics"
+      },
+      {
+        "title": "Higher Secondary Course (HSC)",
+        "institute": "Bhavans College",
+        "university": "University of Mumbai",
+        "date": "1995 - 1997",
+        "specialization": "Science"
+      }
+    ]
+  },
+  "projects": {
+    "heading": "Projects",
+    "subheading": "Explore few of my key projects where i had a significant contribution",
+    "impactLabel": "Impact",
+    "items": [
+      {
+        "id": "hungama-cost",
+        "org": "Hungama",
+        "logo": "hungama.png",
+        "logoAlt": "Hungama Logo",
+        "theme": "hungama",
+        "title": "Tech Cost Optimization & Cloud Transformation",
+        "impact": "Impact: ₹1.5 Cr in annual savings (50% reduction)",
+        "period": "June 2023 – Dec 2024",
+        "body": "At Hungama Digital, I led a strategic technology cost optimization initiative that reduced annual tech spend from ₹3 Cr to ₹1.5 Cr. I began by auditing cloud usage, team structure, and third-party contracts, followed by restructuring engineering pods for agility. We migrated to optimized cloud-native stacks (Kubernetes, multi-cloud), deployed FinOps practices, and implemented AI-powered real-time dashboards. Results included auto-scaling, SLA coverage above 98%, and enhanced collaboration across Tech, Product, and Finance—realigning KPIs, reducing tech debt, and embedding cost accountability in the engineering culture."
+      },
+      {
+        "id": "timespro-lms",
+        "org": "TimesPro",
+        "logo": "timespro.png",
+        "logoAlt": "TimesPro Logo",
+        "theme": "timespro",
+        "title": "Unified Learning LMS & Sales Enablement Platform (Salesforce)",
+        "impact": "Impact: 10,000+ users on LMS, doubled lead conversion",
+        "period": "Sep 2021 – Mar 2023",
+        "body": "I conceptualized and led the buildout of a full-stack Learning Management System (LMS) and integrated with Sales Enablement platform (Salesforce). Built on scalable microservices architecture hosted on AWS and integrated with Moodle, Salesforce, and custom APIs, the platform empowered the sales and academic teams with real-time analytics and lead lifecycle insight. It improved course delivery reliability and doubled conversion of B2C learners via personalized workflows. Setup the Product and Development Teams to research the customer behaviour and deliver a self serving delivery education platform"
+      },
+      {
+        "id": "formula1",
+        "org": "Formula 1",
+        "logo": "digitas.png",
+        "logoAlt": "Digitas Logo",
+        "theme": "digitas",
+        "title": "Formula 1 – Technology Outsourcing & Scaled Program Delivery",
+        "impact": "Impact: Built and managed 35+ member delivery team across Digitas India & UK",
+        "period": "May 2018 – Jan 2020",
+        "body": "I spearheaded the outsourced technology delivery program for Formula 1 (F1), establishing and leading a 35+ member India-based team comprising architects, developers, QA specialists, and project managers. Acting as the key technology interface between the UK client and the India delivery center, I defined the delivery architecture, governance processes, and mobile-first engineering practices to support complex F1 digital platforms. The program included onshore–offsite collaboration, agile methodology adoption, and rigorous focus on quality assurance, helping achieve seamless integration between globally distributed teams and ensuring timely, high-quality releases across web and mobile channels."
+      },
+      {
+        "id": "mzaalo",
+        "org": "Xfinite / Mzaalo",
+        "logo": "xfinite.png",
+        "logoAlt": "Xfinite Logo",
+        "theme": "xfinite",
+        "title": "Xfinite/Mzaalo OTT Platform",
+        "impact": "Impact: 10K MAU; integrated crypto rewards & adtech stack",
+        "period": "Jan 2020 – Aug 2021",
+        "body": "As Head of Engineering, I drove the architecture and launch of Mzaalo, a blockchain-powered OTT platform that gamified content consumption. The platform embedded wallet integration for micro-rewarding users with tokens and included real-time audience engagement engines. I set up a 20+ member cross-functional team including mobile engineers and external resource partners. Additionally, I established an internal ad operations layer with dynamic inventory management to support monetization."
+      },
+      {
+        "id": "hsbc-receivables",
+        "org": "HSBC",
+        "logo": "HSBC.png",
+        "logoAlt": "HSBC Logo",
+        "theme": "hsbc",
+        "title": "Intellect NNC - Receivables Portal",
+        "impact": "Impact: Enabled real-time receivables tracking and automated reconciliation for corporate clients across Asia.",
+        "period": "Jan 2008 – Nov 2010",
+        "body": "At HSBC, I led the implementation of the Intellect NNC platform from Polaris, delivering an enterprise-grade receivables management portal across Asia. I worked closely with product teams, operations, and vendor partners to integrate the portal with core banking systems and payment rails. The solution digitized invoice reconciliation, enhanced cash flow visibility, and enabled virtual account management for corporate customers in high-volume markets like India and Hong Kong."
+      },
+      {
+        "id": "squareinch",
+        "org": "Ogaan Media / SquareInch",
+        "logo": "ogaanmedia.png",
+        "logoAlt": "Ogaan Media Logo",
+        "theme": "ogaan",
+        "title": "SquareInch – Luxury Marketplace",
+        "impact": "Impact: Digitized offline designer retail stores and onboarded 100+ brands to create India's first luxury ecommerce marketplace.",
+        "period": "Jan 2016 – Dec 2016",
+        "body": "As CTO at SquareInch, I built and launched India's first luxury ecommerce marketplace by digitizing legacy fashion retail stores into a unified online platform. I developed the end-to-end tech stack using Ruby on Rails and AWS, integrated brand catalog management, and enabled SEO-driven traffic growth. The platform successfully onboarded 100+ partner stores and powered substantial online visibility for premium Indian design labels."
+      }
+    ]
+  },
+  "articles": {
+    "heading": "Articles",
+    "items": [
+      {
+        "slug": "edtech-problem-india",
+        "legacyPath": "articles/edtech-problem-india.html",
+        "image": "EdTech_SolvingProblem.png",
+        "imageAlt": "EdTech Solving Problem",
+        "title": "Is EdTech solving the right problem in India?",
+        "excerpt": "We're flooded with news about AI-driven learning and virtual reality classrooms. While innovation is exciting, it often overlooks a stark reality: the challenges of the digital divide and affordability..."
+      },
+      {
+        "slug": "profitability-puzzle",
+        "legacyPath": "articles/profitability-puzzle.html",
+        "image": "profitability_puzzle.png",
+        "imageAlt": "Profitability Puzzle",
+        "title": "The Profitability Puzzle",
+        "excerpt": "This post addresses the \"EdTech winter\" and positions TeamLease EdTech's B2B2C model as the sustainable alternative."
+      },
+      {
+        "slug": "unfulfilled-promise-nep-2020",
+        "legacyPath": "articles/unfulfilled-promise-nep-2020.html",
+        "image": "bridging_academia.png",
+        "imageAlt": "NEP 2020 Promise",
+        "title": "The Unfulfilled Promise of NEP 2020",
+        "excerpt": "This post connects TeamLease EdTech's core offering directly to the government's visionary education policy, positioning us as the key implementer."
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Contact Me",
+    "subheading": "Feel free to reach out to discuss opportunities or just to connect!",
+    "labels": {
+      "website": "Website",
+      "email": "Email",
+      "phone": "Phone"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Anmol Mathur | Built with love and creativity"
+  }
+}

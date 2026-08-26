@@ -1,0 +1,256 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+
+<section id="home" class="hero">
+  <div class="hero-content">
+    {#
+      Hero portrait doubles as the avatar's poster frame: the 3D guide replaces
+      this node when WebGL is available and motion isn't reduced. Everyone else
+      — crawlers included — sees a real face.
+    #}
+    <div class="hero-portrait" id="heroPortrait" data-avatar-slot>
+      <img src="/images/{{ site.images.hero }}" alt="{{ copy.hero.portraitAlt }}"
+           class="hero-img" width="320" height="320" fetchpriority="high" decoding="async">
+    </div>
+    <h1>{{ copy.hero.name }}</h1>
+    <h2>{{ copy.hero.tagline }}</h2>
+    <p>{{ copy.hero.intro }}</p>
+  </div>
+  <div class="hero-buttons">
+    <a href="{{ site.resumes.general.path }}" class="btn resume-download-btn" download
+       data-resume="general" data-source="hero" title="{{ copy.ui.downloadResume }}">
+      <i class="fas fa-file-download" aria-hidden="true"></i> {{ copy.ui.downloadResume }}
+    </a>
+  </div>
+</section>
+
+<section id="impact" class="impact" aria-label="{{ copy.metrics.heading }}">
+  <div class="container">
+    <ul class="metric-grid">
+      {% for m in metrics %}
+      <li class="metric" data-metric="{{ m.id }}"
+          data-value="{{ m.value }}"
+          data-decimals="{{ m.decimals or 0 }}"
+          data-format="{{ m.format or 'plain' }}">
+        <span class="metric-value">
+          <span class="metric-prefix">{{ m.prefix }}</span><span
+            class="metric-number" data-metric-number>0</span><span
+            class="metric-suffix">{{ m.suffix }}</span>
+        </span>
+        <span class="metric-label">{{ copy.metrics.labels[m.id] }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section id="about-me" class="about-me">
+  <div class="container">
+    <div class="about-card">
+      <h2>{{ copy.about.heading }}</h2>
+      {% for p in copy.about.paragraphs %}<p>{{ p }}</p>{% endfor %}
+      <div class="audio-player">
+        <p>{{ copy.about.audioLabel }}</p>
+        <audio controls preload="none" src="{{ site.audio.intro }}">
+          {{ copy.about.audioFallback }}
+        </audio>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work-experience" class="work-experience">
+  <div class="section-header">
+    <h2>{{ copy.workExperience.heading }}</h2>
+    <p>{{ copy.workExperience.subheading }}</p>
+  </div>
+
+  <div class="container">
+    <div class="timeline-filter" id="timelineFilter"
+         role="group" aria-label="{{ copy.ui.timelineFilter.label }}">
+      <button type="button" class="chip is-active" data-industry="all" aria-pressed="true">
+        {{ copy.ui.timelineFilter.all }}
+      </button>
+      {% for ind in copy.industries.items %}
+        {% if ind.id in industriesInUse %}
+        <button type="button" class="chip" data-industry="{{ ind.id }}" aria-pressed="false">
+          {{ ind.title }}
+        </button>
+        {% endif %}
+      {% endfor %}
+      <span class="filter-count" id="filterCount" aria-live="polite"></span>
+    </div>
+
+    <div class="section-content timeline" id="timeline">
+      {% for role in copy.workExperience.roles %}
+      <div class="timeline-item {{ 'odd' if loop.index0 % 2 == 0 else 'even' }} card-shade-{{ loop.index }}"
+           data-role="{{ role.id }}" data-industries="{{ role.industries | join(' ') }}">
+        <div class="content company-details">
+          <p><span class="timeline-date">{{ role.dates }}</span></p>
+          <img src="/logos/{{ role.logo }}" alt="{{ role.company }} logo" loading="lazy" decoding="async">
+          <h4>{{ role.company }}</h4>
+          <p><span class="timeline-location">{{ role.location }}</span></p>
+        </div>
+        <div class="content job-details">
+          <h3>{{ role.title }}</h3>
+          {% for p in role.summary %}<p>{{ p }}</p>{% endfor %}
+          {% if role.achievements.length %}
+          <p><strong>{{ "Achievements" if locale == 'en' else "Logros" }}:</strong></p>
+          <ul>
+            {# Author-written emphasis markup, not user input — safe by construction. #}
+            {% for a in role.achievements %}<li>{{ a | safe }}</li>{% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-header">
+    <h2>{{ copy.skills.heading }}</h2>
+    <p>{{ copy.skills.subheading }}</p>
+  </div>
+  <div class="skills-grid">
+    {% for s in copy.skills.items %}
+    <div class="skill-card"><h3>{{ s }}</h3></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="technology-domains">
+  <div class="section-header">
+    <h2>{{ copy.technologyDomains.heading }}</h2>
+    <p>{{ copy.technologyDomains.subheading }}</p>
+  </div>
+  <div class="domains-grid">
+    {% for d in copy.technologyDomains.items %}
+    <div class="domain-card"><h3>{{ d.title }}</h3><p>{{ d.body }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="industries">
+  <div class="section-header">
+    <h2>{{ copy.industries.heading }}</h2>
+    <p>{{ copy.industries.subheading }}</p>
+  </div>
+  <div class="industries-grid">
+    {% for i in copy.industries.items %}
+    <div class="industry-card">
+      <h3>{{ i.title }}</h3>
+      {% if i.body %}<p>{{ i.body }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="publications">
+  <div class="section-header">
+    <h2>{{ copy.publications.heading }}</h2>
+    <p>{{ copy.publications.subheading }}</p>
+  </div>
+  <div class="section-content publications-grid">
+    {% for p in copy.publications.items %}
+    <div class="publication-card">
+      <h3>{{ p.title }}</h3>
+      <p class="publication-authors">{{ p.author }}</p>
+      <p class="publication-journal">
+        <img src="/logos/{{ p.logo }}" alt="{{ p.logoAlt }}" loading="lazy" decoding="async"> {{ p.journal }}
+      </p>
+      <a href="{{ p.url }}" target="_blank" rel="noopener noreferrer" class="publication-link">
+        <i class="fas fa-external-link-alt" aria-hidden="true"></i> {{ copy.ui.readPublication }}
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-header">
+    <h2>{{ copy.education.heading }}</h2>
+    <p>{{ copy.education.subheading }}</p>
+  </div>
+  <div class="section-content education-timeline">
+    {% for e in copy.education.items %}
+    <div class="education-card {{ 'left' if loop.index0 % 2 == 0 else 'right' }}">
+      <div class="card-content">
+        <h3>{{ e.title }}</h3>
+        <p><strong>{{ copy.education.labels.institute }}:</strong> {{ e.institute }}</p>
+        <p><strong>{{ copy.education.labels.university }}:</strong> {{ e.university }}</p>
+        <p><strong>{{ copy.education.labels.date }}:</strong> {{ e.date }}</p>
+        <p><strong>{{ copy.education.labels.specialization }}:</strong> {{ e.specialization }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-header">
+    <h2>{{ copy.projects.heading }}</h2>
+    <p>{{ copy.projects.subheading }}</p>
+  </div>
+  <div class="section-content projects-grid">
+    {% for p in copy.projects.items %}
+    <div class="flip-card" tabindex="0" data-project="{{ p.id }}">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="/logos/{{ p.logo }}" alt="{{ p.logoAlt }}" class="company-logo" loading="lazy" decoding="async">
+          <h3>{{ p.title }}</h3>
+          <p class="project-impact">{{ p.impact }}</p>
+          <p class="time-slot">{{ p.period }}</p>
+        </div>
+        <div class="flip-card-back {{ p.theme }}">
+          <h4>{{ p.org }}</h4>
+          <p>{{ p.body }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="articles">
+  <div class="section-header">
+    <h2>{{ copy.articles.heading }}</h2>
+  </div>
+  <div class="section-content articles-container">
+    {% for a in copy.articles.items %}
+    <div class="article-card">
+      <img src="/images/{{ a.image }}" alt="{{ a.imageAlt }}" loading="lazy" decoding="async">
+      <h3>{{ a.title }}</h3>
+      <p>{{ a.excerpt }}</p>
+      <a href="{{ articleHref(a.slug) }}" class="read-more-btn">{{ copy.ui.readMore }}</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-header">
+    <h2>{{ copy.contact.heading }}</h2>
+    <p>{{ copy.contact.subheading }}</p>
+  </div>
+  <div class="section-content contact-container">
+    <div class="contact-details" id="contact-details">
+      <p><strong>{{ copy.contact.labels.website }}:</strong>
+        <a href="{{ site.canonicalOrigin }}" target="_blank" rel="noopener noreferrer">www.{{ site.domain }}</a></p>
+      <p><strong>{{ copy.contact.labels.email }}:</strong>
+        <a href="mailto:{{ site.person.email }}" data-contact="email">{{ site.person.email }}</a></p>
+      <p><strong>{{ copy.contact.labels.phone }}:</strong>
+        <a href="tel:{{ site.person.phone | replace('-', '') }}" data-contact="phone">{{ site.person.phone }}</a></p>
+      <div class="social-icons">
+        {% for s in site.social %}
+        <a href="{{ s.url }}" target="_blank" rel="noopener noreferrer" class="icon"
+           data-contact="{{ s.id }}" aria-label="{{ s.label }}"><i class="{{ s.icon }}" aria-hidden="true"></i></a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

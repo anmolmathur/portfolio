@@ -1,0 +1,18 @@
+<div class="palette" id="palette" hidden aria-hidden="true">
+  <div class="palette-backdrop" data-palette-close></div>
+  <div class="palette-dialog" role="dialog" aria-modal="true" aria-label="{{ copy.ui.commandPalette.open }}">
+    <div class="palette-field">
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input type="text" id="paletteInput" class="palette-input"
+             placeholder="{{ copy.ui.commandPalette.placeholder }}"
+             autocomplete="off" autocorrect="off" spellcheck="false"
+             role="combobox" aria-expanded="true" aria-controls="paletteResults"
+             aria-autocomplete="list">
+      <button type="button" class="palette-esc" data-palette-close
+              aria-label="{{ copy.ui.commandPalette.close }}">esc</button>
+    </div>
+    <ul class="palette-results" id="paletteResults" role="listbox"
+        aria-label="{{ copy.ui.commandPalette.open }}"></ul>
+    <p class="palette-empty" id="paletteEmpty" hidden>{{ copy.ui.commandPalette.empty }}</p>
+  </div>
+</div>

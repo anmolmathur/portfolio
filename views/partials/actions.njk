@@ -1,0 +1,16 @@
+{#
+  ONE floating stack, not two competing circles. WhatsApp sits above the slot
+  reserved for the avatar launcher so the two never fight for the same corner.
+#}
+<div class="action-stack" id="actionStack">
+  <a class="action-btn action-whatsapp"
+     href="{{ whatsappHref }}"
+     target="_blank" rel="noopener noreferrer"
+     data-contact="whatsapp"
+     aria-label="{{ copy.ui.whatsapp.aria }}">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    <span class="action-label">{{ copy.ui.whatsapp.label }}</span>
+  </a>
+  {# Avatar launcher mounts here — see assets/guide/ #}
+  <div id="guideLauncherSlot"></div>
+</div>

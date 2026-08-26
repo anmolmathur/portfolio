@@ -1,0 +1,52 @@
+<header class="site-header">
+  <nav class="navbar" aria-label="Primary">
+    <a class="nav-logo" href="{{ home }}" aria-label="{{ site.person.name }}">
+      <img src="/favicon.ico" alt="" class="favicon" width="32" height="32">
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      {% for item in copy.nav %}
+      <li><a href="{{ home if home != '/' else '' }}/#{{ item.id }}" data-nav="{{ item.id }}">{{ item.label }}</a></li>
+      {% endfor %}
+    </ul>
+
+    <div class="nav-tools">
+      <button type="button" class="icon-btn" id="paletteOpen"
+              aria-label="{{ copy.ui.commandPalette.open }}" title="{{ copy.ui.commandPalette.open }}">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="7"></circle><line x1="16.2" y1="16.2" x2="21" y2="21"></line>
+        </svg>
+        <kbd class="kbd-hint" aria-hidden="true">⌘K</kbd>
+      </button>
+
+      <button type="button" class="icon-btn" id="themeToggle"
+              aria-label="{{ copy.ui.themeToggle }}" title="{{ copy.ui.themeToggle }}" aria-pressed="false">
+        <svg class="ico ico-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"></path>
+        </svg>
+        <svg class="ico ico-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
+          <circle cx="12" cy="12" r="4.2"></circle>
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path>
+        </svg>
+      </button>
+
+      {% if otherLocaleUrl %}
+      <a class="icon-btn lang-btn" href="{{ otherLocaleUrl }}" hreflang="{{ otherLocale }}"
+         data-lang-switch="{{ otherLocale }}" title="{{ copy.ui.switchLanguage }}">
+        <span aria-hidden="true">{{ otherLocale | upper }}</span>
+        <span class="sr-only">{{ copy.ui.switchLanguage }}</span>
+      </a>
+      {% endif %}
+
+      <button type="button" class="hamburger icon-btn" id="hamburger"
+              aria-label="{{ copy.ui.openMenu }}" aria-expanded="false" aria-controls="navLinks">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <line x1="3.5" y1="6.5" x2="20.5" y2="6.5"></line>
+          <line x1="3.5" y1="12"  x2="20.5" y2="12"></line>
+          <line x1="3.5" y1="17.5" x2="20.5" y2="17.5"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <div class="scroll-progress" id="scrollProgress" role="presentation"></div>
+</header>
