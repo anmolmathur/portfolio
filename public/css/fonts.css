@@ -1,0 +1,19 @@
+/*
+ * Self-hosted webfont. Only linked when public/fonts/ actually contains files
+ * — see public/fonts/README.md for why third-party font hosting is a privacy
+ * problem for this site specifically.
+ */
+@font-face {
+  font-family: 'Parkinsans';
+  src: url('/fonts/parkinsans-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Parkinsans';
+  src: url('/fonts/parkinsans-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

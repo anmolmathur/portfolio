@@ -1,3 +1,4 @@
+{% from "partials/icons.njk" import icon %}
 {% extends "layout.njk" %}
 
 {% block content %}
@@ -20,7 +21,7 @@
   <div class="hero-buttons">
     <a href="{{ site.resumes.general.path }}" class="btn resume-download-btn" download
        data-resume="general" data-source="hero" title="{{ copy.ui.downloadResume }}">
-      <i class="fas fa-file-download" aria-hidden="true"></i> {{ copy.ui.downloadResume }}
+      {{ icon("download") }} {{ copy.ui.downloadResume }}
     </a>
   </div>
 </section>
@@ -162,7 +163,7 @@
         <img src="/logos/{{ p.logo }}" alt="{{ p.logoAlt }}" loading="lazy" decoding="async"> {{ p.journal }}
       </p>
       <a href="{{ p.url }}" target="_blank" rel="noopener noreferrer" class="publication-link">
-        <i class="fas fa-external-link-alt" aria-hidden="true"></i> {{ copy.ui.readPublication }}
+        {{ icon("external") }} {{ copy.ui.readPublication }}
       </a>
     </div>
     {% endfor %}
@@ -246,7 +247,7 @@
       <div class="social-icons">
         {% for s in site.social %}
         <a href="{{ s.url }}" target="_blank" rel="noopener noreferrer" class="icon"
-           data-contact="{{ s.id }}" aria-label="{{ s.label }}"><i class="{{ s.icon }}" aria-hidden="true"></i></a>
+           data-contact="{{ s.id }}" aria-label="{{ s.label }}">{{ icon(s.id) }}</a>
         {% endfor %}
       </div>
     </div>

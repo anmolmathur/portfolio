@@ -86,6 +86,36 @@ colours; text uses `--heading` / `--accent-text`, which flip with the theme.
   mounts into `#guideLauncherSlot` above the WhatsApp button.
 - **Metrics carry a `source`.** Do not add a number without one.
 
+## Configuration
+
+Non-secret hostnames and ids live in `server/lib/config.js` and
+`content/site.json`. **Secrets are read from the environment only** — see
+`.env.example`. `GET /healthz` reports which are wired without printing any value.
+
+Currently wired: Open WebUI at `ai.anmolmathur.com` (model
+`portfolio-website-helper`), PostHog at `posthog.anmolmathur.com`, GA
+`G-12VK07Q8CB`. The API keys are still needed.
+
+## Analytics and privacy
+
+PostHog is proxied first-party at `/ingest` so ad-blockers and Safari ITP don't
+eat it — a portfolio aimed at technologists has an unusually high share of
+visitors running blockers.
+
+Nothing is stored or sent before consent: PostHog runs memory-only with
+autocapture and session replay off until the visitor agrees. Verified by test —
+zero cookies, zero localStorage, zero capture requests pre-consent. The only
+thing kept without permission is the consent decision itself.
+
+Free-text properties pass through a PII scrubber at one choke point
+(`window.__scrub`), stripping emails, phone numbers and long digit runs before
+anything leaves the browser.
+
+**No third-party assets load before consent** except the Google Fonts stylesheet,
+which is a documented fallback — drop `.woff2` files into `public/fonts/` and it
+switches to self-hosted automatically. See `public/fonts/README.md` for why that
+matters legally.
+
 ## Known gaps
 
 - **Spanish is not written yet** — `/healthz` reports `locales: ["en"]`.

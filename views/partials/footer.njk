@@ -1,3 +1,4 @@
+{% from "partials/icons.njk" import icon %}
 <footer class="site-footer">
   <div class="footer-container">
     <p>{{ copy.footer.copyright | replace("{year}", year) }}</p>
@@ -9,7 +10,7 @@
   <div class="footer-resume">
     <a href="{{ site.resumes.general.path }}" class="footer-download-btn" download
        data-resume="general" title="{{ copy.ui.downloadResume }}">
-      <i class="fas fa-file-download" aria-hidden="true"></i> {{ copy.ui.downloadResume }}
+      {{ icon("download") }} {{ copy.ui.downloadResume }}
     </a>
   </div>
 </footer>

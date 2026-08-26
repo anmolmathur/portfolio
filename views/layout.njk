@@ -50,12 +50,17 @@
 <meta name="twitter:creator" content="@anmol_m">
 
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
+{% if hasLocalFonts %}
+<link rel="stylesheet" href="/css/fonts.css">
+{% else %}
+{# Fallback only. See public/fonts/README.md — this third-party request should
+   go away once the font files are self-hosted. #}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Parkinsans&display=swap">
+{% endif %}
 <link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="/css/site.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 {% block head %}{% endblock %}
 
@@ -73,6 +78,7 @@
 {% include "partials/footer.njk" %}
 {% include "partials/actions.njk" %}
 {% include "partials/palette.njk" %}
+{% include "partials/consent.njk" %}
 
 <script>
   window.__SITE__ = {
@@ -83,9 +89,11 @@
     resumes: {{ site.resumes | dump | safe }},
     email: {{ site.person.email | dump | safe }},
     strings: {{ copy.ui | dump | safe }},
+    analytics: {{ publicConfig.analytics | dump | safe }},
     searchIndex: {{ searchIndex | dump | safe }}
   };
 </script>
+<script src="/js/analytics.js" defer></script>
 <script src="/js/theme.js" defer></script>
 <script src="/js/nav.js" defer></script>
 <script src="/js/metrics.js" defer></script>

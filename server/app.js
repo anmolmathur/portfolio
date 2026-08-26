@@ -9,9 +9,18 @@ import nunjucks from 'nunjucks';
 import { site, metrics, locales, availableLocales, localeUrl, articleUrl, ARTICLE_SEGMENT } from './lib/content.js';
 import { clientIndex } from './lib/search-index.js';
 import { personJsonLd, articleJsonLd } from './lib/json-ld.js';
+import { config, publicConfig, describeConfig } from './lib/config.js';
+import { registerAnalyticsProxy } from './lib/analytics-proxy.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT = site.defaultLocale;
+
+// Prefer self-hosted fonts when present. Loading fonts.googleapis.com sends the
+// visitor's IP to Google before they have consented to anything — see
+// public/fonts/README.md. Drop the .woff2 files in and this flips automatically.
+const FONT_DIR = path.join(ROOT, 'public', 'fonts');
+const hasLocalFonts = fs.existsSync(FONT_DIR)
+  && fs.readdirSync(FONT_DIR).some((f) => f.endsWith('.woff2'));
 
 const app = Fastify({
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
@@ -67,6 +76,8 @@ function viewModel(locale, { pathname = '/', page = 'home' } = {}) {
     otherLocaleUrl: other[0] ? localeUrl(other[0], '/') : null,
     searchIndex: clientIndex(locale),
     jsonLd: personJsonLd(locale),
+    publicConfig: publicConfig(),
+    hasLocalFonts,
     industriesInUse: [...industriesInUse],
     url: (p) => localeUrl(locale, p),
     articleHref: (slug) => articleUrl(locale, slug),
@@ -94,6 +105,8 @@ const rendersFor = (locale) => {
     return reply.view('article', { ...model, article, jsonLd: articleJsonLd(locale, article) });
   });
 };
+
+registerAnalyticsProxy(app);
 
 for (const locale of availableLocales) rendersFor(locale);
 
@@ -141,12 +154,12 @@ app.get('/healthz', async () => ({
   ok: true,
   locales: availableLocales,
   indexed: clientIndex(DEFAULT).length,
+  config: describeConfig(),
 }));
 
 app.setNotFoundHandler(async (req, reply) =>
   reply.code(404).view('404', viewModel(DEFAULT, { page: '404' })),
 );
 
-const port = Number(process.env.PORT ?? 3000);
-const host = process.env.HOST ?? '0.0.0.0';
-await app.listen({ port, host });
+app.log.info(describeConfig(), 'configuration');
+await app.listen({ port: config.port, host: config.host });
