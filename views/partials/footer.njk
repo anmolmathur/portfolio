@@ -1,5 +1,11 @@
 {% from "partials/icons.njk" import icon %}
+{% from "partials/picture.njk" import picture %}
 <footer class="site-footer">
+  {% if img.candid %}
+  <figure class="footer-portrait">
+    {{ picture(img.candid, copy.hero.portraitAlt, 'candid-img') }}
+  </figure>
+  {% endif %}
   <div class="footer-container">
     <p>{{ copy.footer.copyright | replace("{year}", year) }}</p>
     <p><strong>{{ copy.contact.labels.email }}:</strong>

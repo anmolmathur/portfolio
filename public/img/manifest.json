@@ -1,0 +1,131 @@
+{
+  "hero": {
+    "sources": {
+      "avif": [
+        {
+          "w": 320,
+          "file": "/img/hero-320.avif",
+          "bytes": 4780
+        },
+        {
+          "w": 640,
+          "file": "/img/hero-640.avif",
+          "bytes": 11060
+        }
+      ],
+      "webp": [
+        {
+          "w": 320,
+          "file": "/img/hero-320.webp",
+          "bytes": 7034
+        },
+        {
+          "w": 640,
+          "file": "/img/hero-640.webp",
+          "bytes": 17198
+        }
+      ],
+      "jpg": [
+        {
+          "w": 320,
+          "file": "/img/hero-320.jpg",
+          "bytes": 9588
+        },
+        {
+          "w": 640,
+          "file": "/img/hero-640.jpg",
+          "bytes": 27002
+        }
+      ]
+    },
+    "width": 320,
+    "height": 320,
+    "fallback": "/img/hero-320.jpg"
+  },
+  "about": {
+    "sources": {
+      "avif": [
+        {
+          "w": 360,
+          "file": "/img/about-360.avif",
+          "bytes": 7040
+        },
+        {
+          "w": 720,
+          "file": "/img/about-720.avif",
+          "bytes": 16594
+        }
+      ],
+      "webp": [
+        {
+          "w": 360,
+          "file": "/img/about-360.webp",
+          "bytes": 12616
+        },
+        {
+          "w": 720,
+          "file": "/img/about-720.webp",
+          "bytes": 30708
+        }
+      ],
+      "jpg": [
+        {
+          "w": 360,
+          "file": "/img/about-360.jpg",
+          "bytes": 15597
+        },
+        {
+          "w": 720,
+          "file": "/img/about-720.jpg",
+          "bytes": 48566
+        }
+      ]
+    },
+    "width": 360,
+    "height": 360,
+    "fallback": "/img/about-360.jpg"
+  },
+  "candid": {
+    "sources": {
+      "avif": [
+        {
+          "w": 220,
+          "file": "/img/candid-220.avif",
+          "bytes": 5198
+        },
+        {
+          "w": 440,
+          "file": "/img/candid-440.avif",
+          "bytes": 11588
+        }
+      ],
+      "webp": [
+        {
+          "w": 220,
+          "file": "/img/candid-220.webp",
+          "bytes": 8010
+        },
+        {
+          "w": 440,
+          "file": "/img/candid-440.webp",
+          "bytes": 17106
+        }
+      ],
+      "jpg": [
+        {
+          "w": 220,
+          "file": "/img/candid-220.jpg",
+          "bytes": 10630
+        },
+        {
+          "w": 440,
+          "file": "/img/candid-440.jpg",
+          "bytes": 27128
+        }
+      ]
+    },
+    "width": 220,
+    "height": 270,
+    "fallback": "/img/candid-220.jpg"
+  }
+}

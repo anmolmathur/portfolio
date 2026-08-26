@@ -1,0 +1,20 @@
+{#
+  Responsive <picture>.
+
+  Sources are ordered most-efficient first; the browser takes the first format
+  it understands. width/height are always emitted so the box is reserved before
+  the image loads — otherwise every image on the page causes a layout shift,
+  which is both ugly and a Core Web Vitals penalty.
+#}
+{% macro picture(img, alt, cls='', loading='lazy', priority=false) %}
+{%- if img -%}
+<picture>
+  <source type="image/avif" srcset="{% for s in img.sources.avif %}{{ s.file }} {{ s.w }}w{% if not loop.last %}, {% endif %}{% endfor %}" sizes="{{ img.width }}px">
+  <source type="image/webp" srcset="{% for s in img.sources.webp %}{{ s.file }} {{ s.w }}w{% if not loop.last %}, {% endif %}{% endfor %}" sizes="{{ img.width }}px">
+  <img src="{{ img.fallback }}" alt="{{ alt }}" class="{{ cls }}"
+       width="{{ img.width }}" height="{{ img.height }}"
+       loading="{{ loading }}" decoding="async"
+       {% if priority %}fetchpriority="high"{% endif %}>
+</picture>
+{%- endif -%}
+{% endmacro %}

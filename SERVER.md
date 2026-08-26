@@ -116,11 +116,25 @@ which is a documented fallback — drop `.woff2` files into `public/fonts/` and 
 switches to self-hosted automatically. See `public/fonts/README.md` for why that
 matters legally.
 
+## Images
+
+Source photos live in `images/`. `tools/build-images.mjs` generates responsive
+AVIF/WebP/JPEG variants into `public/img/` plus a `manifest.json` the templates
+read, so every `<picture>` carries explicit width/height and reserves its box
+before loading.
+
+Re-run it after changing any source photo:
+
+```bash
+npm install --no-save sharp
+node tools/build-images.mjs
+```
+
+It is a build-time tool only — `sharp` is not a runtime dependency.
+
 ## Known gaps
 
 - **Spanish is not written yet** — `/healthz` reports `locales: ["en"]`.
-- **Photos are placeholders.** `content/site.json` still points at the existing
-  images; swap in the blazer and striped-shirt headshots when they land.
 - **The intro audio is a 44 MB WAV** served as `audio/mpeg`. Wrong MIME, ~40×
   larger than needed — transcode to Opus/MP3.
 - **PostHog, the consent gate and the avatar are not built yet.**

@@ -1,4 +1,5 @@
 {% from "partials/icons.njk" import icon %}
+{% from "partials/picture.njk" import picture %}
 {% extends "layout.njk" %}
 
 {% block content %}
@@ -11,8 +12,7 @@
       — crawlers included — sees a real face.
     #}
     <div class="hero-portrait" id="heroPortrait" data-avatar-slot>
-      <img src="/images/{{ site.images.hero }}" alt="{{ copy.hero.portraitAlt }}"
-           class="hero-img" width="320" height="320" fetchpriority="high" decoding="async">
+      {{ picture(img.hero, copy.hero.portraitAlt, 'hero-img', 'eager', true) }}
     </div>
     <h1>{{ copy.hero.name }}</h1>
     <h2>{{ copy.hero.tagline }}</h2>
@@ -50,6 +50,11 @@
   <div class="container">
     <div class="about-card">
       <h2>{{ copy.about.heading }}</h2>
+      {% if img.about %}
+      <figure class="about-portrait">
+        {{ picture(img.about, copy.hero.portraitAlt, 'about-img') }}
+      </figure>
+      {% endif %}
       {% for p in copy.about.paragraphs %}<p>{{ p }}</p>{% endfor %}
       <div class="audio-player">
         <p>{{ copy.about.audioLabel }}</p>

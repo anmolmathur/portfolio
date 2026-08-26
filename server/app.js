@@ -18,6 +18,13 @@ const DEFAULT = site.defaultLocale;
 // Prefer self-hosted fonts when present. Loading fonts.googleapis.com sends the
 // visitor's IP to Google before they have consented to anything — see
 // public/fonts/README.md. Drop the .woff2 files in and this flips automatically.
+const IMG_MANIFEST = (() => {
+  const f = path.join(ROOT, 'public', 'img', 'manifest.json');
+  // Falls back to an empty manifest so the site still boots before
+  // tools/build-images.mjs has been run.
+  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : {};
+})();
+
 const FONT_DIR = path.join(ROOT, 'public', 'fonts');
 const hasLocalFonts = fs.existsSync(FONT_DIR)
   && fs.readdirSync(FONT_DIR).some((f) => f.endsWith('.woff2'));
@@ -78,6 +85,7 @@ function viewModel(locale, { pathname = '/', page = 'home' } = {}) {
     jsonLd: personJsonLd(locale),
     publicConfig: publicConfig(),
     hasLocalFonts,
+    img: IMG_MANIFEST,
     industriesInUse: [...industriesInUse],
     url: (p) => localeUrl(locale, p),
     articleHref: (slug) => articleUrl(locale, slug),

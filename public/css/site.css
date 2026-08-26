@@ -1505,3 +1505,72 @@ body { overflow-wrap: break-word; }
 .social-icons .ico { width: 26px; height: 26px; }
 
 .audio-note { font-size: 0.82rem; color: var(--text-subtle); margin: -4px 0 8px; }
+
+/* --- Photography ---------------------------------------------------------
+   The studio backdrop is cream, which glows against the dark theme. Rather
+   than a hard crop, a soft ring plus a slight desaturation in dark mode settles
+   the photo into the page without touching the source image. */
+.hero-portrait picture,
+.about-portrait picture,
+.footer-portrait picture { display: block; }
+
+.hero-img {
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.about-portrait {
+  float: right;
+  margin: 0 0 16px 24px;
+  max-width: 180px;
+}
+.about-img {
+  width: 100%; height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+@media (max-width: 640px) {
+  .about-portrait { float: none; margin: 0 auto 18px; max-width: 150px; }
+}
+
+.footer-portrait { margin: 0 auto 14px; max-width: 96px; }
+.candid-img {
+  width: 100%; height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  opacity: 0.9;
+}
+
+:root[data-theme="dark"] .hero-img,
+:root[data-theme="dark"] .about-img,
+:root[data-theme="dark"] .candid-img {
+  filter: saturate(0.92) brightness(0.95);
+  box-shadow: 0 0 0 1px var(--border-strong), 0 8px 28px rgba(0, 0, 0, 0.5);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero-img,
+  :root:not([data-theme="light"]) .about-img,
+  :root:not([data-theme="light"]) .candid-img {
+    filter: saturate(0.92) brightness(0.95);
+    box-shadow: 0 0 0 1px var(--border-strong), 0 8px 28px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Inline SVG icons are display:block for crisp sizing in the header, which
+   stacks them above the label inside text buttons. These buttons need to lay
+   icon and label out on one line. */
+.resume-download-btn,
+.footer-download-btn,
+.publication-link,
+.action-btn,
+.read-more-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.resume-download-btn .ico,
+.footer-download-btn .ico,
+.publication-link .ico { width: 18px; height: 18px; flex: none; }
