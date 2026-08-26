@@ -39,15 +39,33 @@ export const config = {
     },
   },
 
-  /** Cloud TTS. Note: OpenAI's TTS models cannot clone a voice — see VOICE.md. */
+  /**
+   * Text to speech.
+   *
+   * Gemini TTS, per the site owner's choice. Two constraints drive the design:
+   *   - No cloning. Gemini offers prebuilt voices only, as does OpenAI.
+   *   - The free tier is ~15 requests/DAY, 3/minute. That is nowhere near
+   *     enough to synthesize live during a conversation.
+   *
+   * So Gemini is used OFFLINE to pre-render every fixed line into the
+   * content-addressed clip cache, which then serves them instantly at zero
+   * runtime cost. Live/novel answers fall through to the browser's own
+   * speechSynthesis, which is free, instant and needs no key. See VOICE.md.
+   */
   tts: {
-    provider: env.TTS_PROVIDER ?? 'none',
-    openaiKey: env.OPENAI_API_KEY ?? '',
-    voice: env.TTS_VOICE ?? 'coral',
-    model: env.TTS_MODEL ?? 'gpt-4o-mini-tts',
+    provider: env.TTS_PROVIDER ?? 'gemini',
+    geminiKey: env.GEMINI_API_KEY ?? '',
+    model: env.TTS_MODEL ?? 'gemini-2.5-flash-preview-tts',
+    voice: env.TTS_VOICE ?? 'Charon',
     speed: Number(env.TTS_SPEED ?? 1),
-    cloneBaseUrl: (env.TTS_CLONE_URL ?? '').replace(/\/+$/, ''),
     cacheDir: env.TTS_CACHE_DIR ?? 'public/guide/clips',
+    /** Offline pre-render only — never called on the request path. */
+    prerenderOnly: bool(env.TTS_PRERENDER_ONLY, true),
+    /** Free-tier ceilings, used to pace the pre-render script. */
+    freeTier: { requestsPerMinute: 3, requestsPerDay: 15 },
+    get enabled() {
+      return Boolean(this.geminiKey);
+    },
   },
 };
 
@@ -79,6 +97,11 @@ export function describeConfig() {
       ga: config.analytics.gaId,
       enabled: config.analytics.posthogEnabled,
     },
-    tts: { provider: config.tts.provider },
+    tts: {
+      provider: config.tts.provider,
+      model: config.tts.model,
+      key: config.tts.geminiKey ? 'set' : 'MISSING',
+      mode: config.tts.prerenderOnly ? 'pre-render only (free tier: 15 req/day)' : 'live',
+    },
   };
 }

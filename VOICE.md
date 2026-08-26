@@ -6,18 +6,57 @@
 set of preset voices only. The earlier plan had it as the primary voice tier, so
 wanting Anmol's own voice means changing that tier, not just configuring it.
 
-## Existing audio
+## Existing audio — NOT a cloning source
 
 `audio/AnmolMathur.wav` — 15 min 23 s, 24 kHz mono, 16-bit, 42 MB.
 
-That is far more than any cloning system needs. Signal analysis suggests it is a
-**real acoustic recording** rather than TTS output: the noise floor sits at a
-consistent −62 to −55 dBFS and only 0.1 % of frames are digitally silent, whereas
-neural TTS pauses are normally exact zeros. **This is suggestive, not proof —
-confirm before using it as a cloning reference.** If that file is itself
-AI-generated, cloning from it would clone the synthetic voice, not Anmol's.
+**Confirmed by the site owner: this is not his voice.** It is two synthetic
+hosts discussing his résumé in a conversational format (a NotebookLM-style audio
+overview). My acoustic analysis read the consistent −62 dBFS noise floor as
+evidence of a real microphone recording; that inference was wrong — modern
+generated audio of this kind includes room tone.
 
-## Options
+Two consequences:
+
+1. It cannot be used as a cloning reference. Cloning from it would reproduce a
+   synthetic host's voice.
+2. **The site currently labels it "Listen to my professional introduction",**
+   which implies it is Anmol speaking. It should be relabelled as an
+   AI-generated overview — e.g. "An AI-generated conversation about my
+   background". This is a small copy change with real credibility value on a
+   page whose whole argument is technical judgement.
+
+## Current decision: free tiers, Gemini TTS, no cloning yet
+
+Per the site owner: use free options now and revisit cloning later, with
+**Gemini TTS** rather than OpenAI.
+
+Two facts shape how that has to be built:
+
+- **Gemini TTS cannot clone a voice.** It offers ~30 prebuilt voices. Same
+  limitation as OpenAI. So the near-term avatar will not sound like Anmol, and
+  that is an accepted trade for now.
+- **The Gemini free tier is roughly 3 requests/minute and 15 requests/DAY** for
+  the preview TTS models. A single visitor conversation would exhaust a day's
+  quota. It is unusable for live synthesis.
+
+### The design that works within that
+
+1. **Pre-render offline.** Almost everything the avatar says is a bounded set:
+   greetings, tour narration, suggestion chips, funnel prompts, the honest-miss
+   line. A script generates those through Gemini into the content-addressed clip
+   cache, paced to the free-tier limits (or run in one cheap paid batch). At
+   runtime they are static files — instant, zero API calls, zero cost.
+2. **Live answers use the browser's `speechSynthesis`.** Free, instant, no key,
+   works offline. Robotic, but it only carries the novel LLM answers.
+3. **Later, swap tier 1's voice** for a clone without touching anything else —
+   the cache is keyed by `sha1(voiceId|text)`, so changing the voice simply
+   re-addresses every clip and the warm-up regenerates them.
+
+This is why `TTS_PRERENDER_ONLY=true` is the default: it makes it structurally
+impossible to burn the daily quota on a page load.
+
+## Options for cloning (when revisited)
 
 | Option | Licence | Languages | Cost | Runs on |
 |---|---|---|---|---|

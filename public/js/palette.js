@@ -52,20 +52,41 @@
     haystack: `${r.title} ${r.subtitle || ''} ${r.terms || ''} ${r.snippet || ''}`.toLowerCase(),
   }));
 
-  /* Subsequence match with a light positional score: earlier, tighter, and
-     title-leading matches rank first. Good enough for ~35 records and far
-     smaller than pulling in a fuzzy-search dependency. */
+  /* Scoring.
+     Word-boundary matching, NOT bare substring. A naive `indexOf` makes "ai"
+     match inside "em-ai-l" and lets a loose subsequence match almost anything,
+     which is the same trap the retrieval brain has to avoid. Ranking, best
+     first: exact title, title word prefix, keyword word prefix, then a
+     substring match only for queries long enough to be meaningful. */
+  const wordStarts = (haystack, q) => {
+    let i = haystack.indexOf(q);
+    while (i !== -1) {
+      if (i === 0 || /[^a-z0-9]/.test(haystack[i - 1])) return i;
+      i = haystack.indexOf(q, i + 1);
+    }
+    return -1;
+  };
+
   function score(rec, q) {
     const title = rec.title.toLowerCase();
+    const terms = (rec.terms || '').toLowerCase();
+
+    if (title === q) return 1200;
     if (title.startsWith(q)) return 1000 - title.length;
-    const inTitle = title.indexOf(q);
-    if (inTitle >= 0) return 800 - inTitle;
-    const inHay = rec.haystack.indexOf(q);
-    if (inHay >= 0) return 500 - Math.min(inHay, 400);
-    // fall back to subsequence over the title
-    let i = 0;
-    for (const ch of title) if (ch === q[i]) i += 1;
-    return i === q.length ? 200 - title.length : -1;
+
+    const tw = wordStarts(title, q);
+    if (tw >= 0) return 850 - tw;
+
+    const kw = wordStarts(terms, q);
+    if (kw >= 0) return 700 - Math.min(kw, 200);
+
+    // Mid-word matches are only trustworthy once the query is specific enough.
+    if (q.length >= 4) {
+      const body = `${title} ${terms} ${rec.snippet || ''}`.toLowerCase();
+      const i = body.indexOf(q);
+      if (i >= 0) return 400 - Math.min(i, 300);
+    }
+    return -1;
   }
 
   let matches = [];
@@ -74,7 +95,7 @@
   function render(query) {
     const q = query.trim().toLowerCase();
     const acts = q
-      ? actions.filter((a) => a.title.toLowerCase().includes(q))
+      ? actions.filter((a) => wordStarts(a.title.toLowerCase(), q) >= 0)
       : actions.slice(0, 3);
     const secs = q
       ? records.map((r) => ({ r, s: score(r, q) })).filter((x) => x.s >= 0)

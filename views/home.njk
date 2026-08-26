@@ -53,6 +53,7 @@
       {% for p in copy.about.paragraphs %}<p>{{ p }}</p>{% endfor %}
       <div class="audio-player">
         <p>{{ copy.about.audioLabel }}</p>
+        {% if copy.about.audioNote %}<p class="audio-note">{{ copy.about.audioNote }}</p>{% endif %}
         <audio controls preload="none" src="{{ site.audio.intro }}">
           {{ copy.about.audioFallback }}
         </audio>

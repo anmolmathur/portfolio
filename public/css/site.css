@@ -1503,3 +1503,5 @@ body { overflow-wrap: break-word; }
 
 .ico-lg { width: 24px; height: 24px; }
 .social-icons .ico { width: 26px; height: 26px; }
+
+.audio-note { font-size: 0.82rem; color: var(--text-subtle); margin: -4px 0 8px; }

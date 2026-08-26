@@ -121,8 +121,9 @@
       "Worked with Local and International Technology and Resource Partners to assist in the Technology and Product Roadmap execution.",
       "Leading Technology Vertical with an astute eye on Cost Control and Revenue Growth."
     ],
-    "audioLabel": "Listen to my professional introduction:",
-    "audioFallback": "Your browser does not support the audio element."
+    "audioLabel": "An AI-generated conversation about my background:",
+    "audioFallback": "Your browser does not support the audio element.",
+    "audioNote": "Two synthetic voices discussing my career — not a recording of me."
   },
   "workExperience": {
     "heading": "Work Experience",
@@ -146,6 +147,12 @@
           "Implemented a <strong>Data Warehouse solution</strong> for the Business Intelligence system, resolving critical data integrity and reporting gaps impacting 60+ university clients.",
           "Leading <strong>UMS 2.0 Platform Modernization</strong> — migrating the core University Management System from a legacy .NET monolith to microservices (React + .NET Core) using the Strangler Fig pattern, de-risking the platform for IPO readiness.",
           "Launched <strong>AI-driven student engagement</strong> — strategic partnership with Nurix AI for Voice AI–powered lead conversion and a proprietary AI Mock Interview Platform, establishing TeamLease EdTech as an AI-native EdTech leader."
+        ],
+        "aliases": [
+          "TeamLease",
+          "TLE",
+          "UMS",
+          "edtech"
         ]
       },
       {
@@ -169,6 +176,11 @@
           "Reduce the Cost of Technology Opex by >50% of 3Cr (May 23) to 1.3 Cr(Dec 24)",
           "Improve Technology Governance and implementation, focusing on Innovation and Reliability while ensuring SLAs of more than 98% uptime for all our services.",
           "Successfully did Cloud Audits and Migration of Services in a multi-cloud environment while managing Local and international partners"
+        ],
+        "aliases": [
+          "Hungama",
+          "OTT",
+          "Bollywood Hungama"
         ]
       },
       {
@@ -189,6 +201,11 @@
         "achievements": [
           "Setup and Lead the Technology Team of 40+ in 1 year, create the Software Architecture and initiated the Software Development department to build and support the Web and Mobile Applications",
           "Digitally transformed the organization with custom product solutions."
+        ],
+        "aliases": [
+          "TimesPro",
+          "Times",
+          "LMS"
         ]
       },
       {
@@ -209,6 +226,12 @@
           "Worked with the Founder and COO to build their Product and Technology Architecture and Roadmap",
           "Built the product from 0 users to 10K users.",
           "Set up the digital ad revenue business by liaising with publishers and partners."
+        ],
+        "aliases": [
+          "Mzaalo",
+          "Xfinite",
+          "OTT",
+          "blockchain"
         ]
       },
       {
@@ -230,6 +253,12 @@
         "achievements": [
           "Lead and Outsourced Technology work across Digitas Clients with setting up and managing a Team of 150+ Technologists.",
           "Handled Formula 1 UK Client with Digitas UK and provided Architecture Solutions and executed in a cost effective manner with Agile Methodologies."
+        ],
+        "aliases": [
+          "Digitas",
+          "Formula 1",
+          "F1",
+          "Publicis"
         ]
       },
       {
@@ -252,6 +281,12 @@
         "achievements": [
           "Part of a startup from inception till commercialisation and performed mutliple roles.",
           "Engaged in investments and financial dealings of an indian startup."
+        ],
+        "aliases": [
+          "Ogaan",
+          "Elle",
+          "SquareInch",
+          "ecommerce"
         ]
       },
       {
@@ -272,6 +307,11 @@
         "achievements": [
           "Ensured multiple vendor and product management for global rollouts.",
           "Supported product development and testing for retail and cash management banking applications."
+        ],
+        "aliases": [
+          "HSBC",
+          "Hong Kong Shanghai Bank",
+          "banking"
         ]
       },
       {
@@ -293,6 +333,13 @@
         "achievements": [
           "Complied with CMMI Level 5 standards and SQA protocols.",
           "Developed and oversaw technical development and deployment for projects like GCMS and Sapphire."
+        ],
+        "aliases": [
+          "Oracle",
+          "Polaris",
+          "OFSS",
+          "GCMS",
+          "banking"
         ]
       }
     ]
@@ -432,28 +479,50 @@
         "institute": "Michigan State University",
         "university": "Michigan State University",
         "date": "2020 - 2021",
-        "specialization": "Effective Leadership and Management"
+        "specialization": "Effective Leadership and Management",
+        "aliases": [
+          "leadership",
+          "Michigan",
+          "certification"
+        ]
       },
       {
         "title": "Master's of Business Administration",
         "institute": "NMIMS",
         "university": "University of Mumbai",
         "date": "2004 - 2008",
-        "specialization": "Post Graduate Course - Marketing"
+        "specialization": "Post Graduate Course - Marketing",
+        "aliases": [
+          "MBA",
+          "masters",
+          "postgraduate",
+          "NMIMS"
+        ]
       },
       {
         "title": "Bachelor of Engineering (B.E)",
         "institute": "V.E.S.I.T",
         "university": "University of Mumbai",
         "date": "1997 - 2001",
-        "specialization": "Graduate Course - Electronics"
+        "specialization": "Graduate Course - Electronics",
+        "aliases": [
+          "BE",
+          "B.E.",
+          "bachelor",
+          "engineering",
+          "VESIT"
+        ]
       },
       {
         "title": "Higher Secondary Course (HSC)",
         "institute": "Bhavans College",
         "university": "University of Mumbai",
         "date": "1995 - 1997",
-        "specialization": "Science"
+        "specialization": "Science",
+        "aliases": [
+          "HSC",
+          "school"
+        ]
       }
     ]
   },

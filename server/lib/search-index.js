@@ -33,7 +33,7 @@ export function buildIndex(locale) {
       title: `${role.title} — ${role.company}`,
       subtitle: `${role.dates} · ${role.location}`,
       body: join(role.summary, role.achievements),
-      keywords: [role.company, role.title, role.location, ...(role.industries ?? [])],
+      keywords: [role.company, role.title, role.location, ...(role.industries ?? []), ...(role.aliases ?? [])],
     });
   }
 
@@ -75,7 +75,7 @@ export function buildIndex(locale) {
       anchor: 'education', url: at('education'),
       title: e.title, subtitle: `${e.institute} · ${e.date}`,
       body: join(e.title, e.institute, e.university, e.specialization),
-      keywords: ['education', 'degree', 'qualification', e.institute, e.university],
+      keywords: ['education', 'degree', 'qualification', e.institute, e.university, ...(e.aliases ?? [])],
     });
   }
 
