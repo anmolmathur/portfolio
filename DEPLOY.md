@@ -168,6 +168,59 @@ Consider putting Cloudflare in front. A single box in one region is slower for
 distant visitors than GitHub's edge, and it becomes a single point of failure
 with you as the on-call.
 
+## Automated deploys (recommended over doing it by hand)
+
+`.github/workflows/deploy.yml` deploys from GitHub Actions. The SSH key lives in
+**GitHub Secrets** — encrypted, never in a chat transcript, rotatable in one
+place, and every run is logged. It is manual by default (Actions → Deploy to
+Hetzner → Run workflow); a push trigger is commented out in the file if you want
+it automatic later.
+
+### One-time setup
+
+**1. Create a deploy-only key** on your machine — a fresh key, not the one you
+log in with, so it can be revoked without affecting your own access:
+
+```bash
+ssh-keygen -t ed25519 -C "github-actions-deploy" -f ~/.ssh/anmolmathur_deploy -N ""
+ssh-copy-id -i ~/.ssh/anmolmathur_deploy.pub <you>@<hetzner-host>
+```
+
+**2. Restrict what that key can do.** On the box, edit
+`~/.ssh/authorized_keys` and prefix the new line:
+
+```
+restrict,pty,command="/home/<you>/deploy.sh" ssh-ed25519 AAAA... github-actions-deploy
+```
+
+with `~/deploy.sh` containing exactly the deploy steps. Then a leaked key can
+run the deploy and nothing else. Optional but worth the ten minutes — without
+it, that key is full shell access.
+
+**3. Capture the host key** so the workflow isn't trusting-on-first-use:
+
+```bash
+ssh-keyscan -H <hetzner-host>
+```
+
+**4. Add the secrets** in GitHub → Settings → Secrets and variables → Actions:
+
+| Secret | Value |
+|---|---|
+| `HETZNER_SSH_KEY` | contents of `~/.ssh/anmolmathur_deploy` (the **private** key) |
+| `HETZNER_HOST` | hostname or IP |
+| `HETZNER_USER` | the SSH user |
+| `HETZNER_APP_DIR` | e.g. `/home/<you>/anmolmathur-site` |
+| `HETZNER_KNOWN_HOSTS` | output of the `ssh-keyscan` above |
+| `HETZNER_PORT` | only if not 22 |
+
+**5. Prerequisites on the box:** the repo cloned at `HETZNER_APP_DIR` with
+`.env` filled in (steps 1–2 above), and the deploy user in the `docker` group.
+
+The workflow refuses to deploy if `.env` is missing, waits for the container's
+own healthcheck rather than assuming success, dumps logs and fails the job if it
+never turns healthy, and deletes the key from the runner even on failure.
+
 ## What is in the image
 
 Node 22 Alpine, production dependencies only, running as the unprivileged

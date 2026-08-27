@@ -1,0 +1,110 @@
+name: Deploy to Hetzner
+
+# Manual by default. Auto-deploying a live server on every commit is a way to
+# ship a broken page while you are asleep; a button press keeps it deliberate.
+# To deploy on push instead, uncomment the `push` trigger below.
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or tag to deploy
+        required: false
+        default: claude/portfolio-conversational-agent-r6ulfx
+  # push:
+  #   branches: [claude/portfolio-conversational-agent-r6ulfx]
+
+concurrency:
+  group: deploy-hetzner
+  cancel-in-progress: false      # never interrupt a deploy mid-flight
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production      # lets you require an approval in repo settings
+
+    steps:
+      - name: Authorise the host
+        env:
+          SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          SSH_HOST: ${{ secrets.HETZNER_HOST }}
+          SSH_PORT: ${{ secrets.HETZNER_PORT || '22' }}
+          KNOWN_HOSTS: ${{ secrets.HETZNER_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_KEY"  || { echo "::error::HETZNER_SSH_KEY is not set"; exit 1; }
+          test -n "$SSH_HOST" || { echo "::error::HETZNER_HOST is not set"; exit 1; }
+
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          # Pin the host key. Without this, the first connection would trust
+          # whatever answers — which is the whole attack this protects against.
+          if [ -n "${KNOWN_HOSTS:-}" ]; then
+            printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            echo "::warning::HETZNER_KNOWN_HOSTS not set — trusting on first use."
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy
+        env:
+          SSH_HOST: ${{ secrets.HETZNER_HOST }}
+          SSH_USER: ${{ secrets.HETZNER_USER }}
+          SSH_PORT: ${{ secrets.HETZNER_PORT || '22' }}
+          APP_DIR: ${{ secrets.HETZNER_APP_DIR || '~/anmolmathur-site' }}
+          REF: ${{ inputs.ref || 'claude/portfolio-conversational-agent-r6ulfx' }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" \
+              -o BatchMode=yes -o ConnectTimeout=20 \
+              "$SSH_USER@$SSH_HOST" bash -euo pipefail -s <<REMOTE
+            cd "$APP_DIR"
+
+            # .env holds the secrets and is deliberately NOT in git. Refuse to
+            # deploy without it rather than starting a half-configured site.
+            test -f .env || { echo "ERROR: .env missing in \$PWD"; exit 1; }
+
+            git fetch --prune origin
+            git checkout "$REF"
+            git reset --hard "origin/$REF"
+
+            docker compose build
+            docker compose up -d --remove-orphans
+
+            # Wait for the container's own healthcheck rather than assuming.
+            for i in \$(seq 1 30); do
+              status=\$(docker inspect -f '{{.State.Health.Status}}' anmolmathur-site 2>/dev/null || echo starting)
+              [ "\$status" = healthy ] && break
+              sleep 2
+            done
+            [ "\$status" = healthy ] || {
+              echo "ERROR: container not healthy (\$status)"
+              docker compose logs --tail=50 site
+              exit 1
+            }
+
+            docker image prune -f --filter "until=168h" >/dev/null || true
+            echo "deployed: \$(git rev-parse --short HEAD)"
+          REMOTE
+
+      - name: Verify it responds
+        env:
+          SSH_HOST: ${{ secrets.HETZNER_HOST }}
+          SSH_USER: ${{ secrets.HETZNER_USER }}
+          SSH_PORT: ${{ secrets.HETZNER_PORT || '22' }}
+        run: |
+          set -euo pipefail
+          echo "--- /healthz ---"
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" -o BatchMode=yes \
+            "$SSH_USER@$SSH_HOST" 'curl -fsS localhost:3000/healthz'
+          echo
+          echo "--- homepage status ---"
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" -o BatchMode=yes \
+            "$SSH_USER@$SSH_HOST" 'curl -o /dev/null -s -w "%{http_code}\n" localhost:3000/'
+
+      - name: Remove the key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
