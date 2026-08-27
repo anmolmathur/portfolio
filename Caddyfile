@@ -1,0 +1,31 @@
+# Only used with `docker compose --profile edge up -d`.
+# If you already run Caddy/nginx/Traefik on this box, copy the relevant blocks
+# into that config instead and leave this file unused.
+
+{
+	email {$ACME_EMAIL}
+}
+
+{$SITE_DOMAIN} {
+	encode zstd gzip
+
+	# Generated image variants and the TTS clip cache are content-addressed or
+	# versioned, so they can be cached hard.
+	@immutable path /img/* /guide/clips/* /fonts/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	@assets path /css/* /js/* /logos/* /images/*
+	header @assets Cache-Control "public, max-age=86400"
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "SAMEORIGIN"
+		-Server
+	}
+
+	reverse_proxy site:3000 {
+		header_up X-Real-IP {remote_host}
+	}
+}

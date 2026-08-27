@@ -1,0 +1,26 @@
+.git
+.github
+node_modules
+npm-debug.log*
+.env
+.env.*
+!.env.example
+.DS_Store
+.vscode
+.claude
+
+# Superseded by the server-rendered app; kept in the repo until cutover but not
+# needed inside the image.
+index.html
+maycalendar.html
+style.css
+styles.css
+script.js
+sitemap.xml
+robots.txt
+articles/
+latex/
+
+# Docs
+*.md
+!content/**/*.md

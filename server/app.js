@@ -169,5 +169,33 @@ app.setNotFoundHandler(async (req, reply) =>
   reply.code(404).view('404', viewModel(DEFAULT, { page: '404' })),
 );
 
+/**
+ * Graceful shutdown.
+ *
+ * Node's default SIGTERM handling exits immediately, dropping any request
+ * mid-flight. `docker stop` sends SIGTERM, so without this a deploy can cut off
+ * a visitor's page load. Fastify's close() drains in-flight requests first.
+ */
+let closing = false;
+for (const signal of ['SIGTERM', 'SIGINT']) {
+  process.on(signal, async () => {
+    if (closing) return;          // a second signal shouldn't race the first
+    closing = true;
+    app.log.info({ signal }, 'shutting down');
+    const force = setTimeout(() => {
+      app.log.error('close timed out — forcing exit');
+      process.exit(1);
+    }, 10_000);
+    force.unref();
+    try {
+      await app.close();
+      process.exit(0);
+    } catch (err) {
+      app.log.error({ err }, 'error during shutdown');
+      process.exit(1);
+    }
+  });
+}
+
 app.log.info(describeConfig(), 'configuration');
 await app.listen({ port: config.port, host: config.host });
