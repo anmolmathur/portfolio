@@ -203,20 +203,38 @@
   </div>
   <div class="section-content projects-grid">
     {% for p in copy.projects.items %}
-    <div class="flip-card" tabindex="0" data-project="{{ p.id }}">
-      <div class="flip-card-inner">
-        <div class="flip-card-front">
-          <img src="/logos/{{ p.logo }}" alt="{{ p.logoAlt }}" class="company-logo" loading="lazy" decoding="async">
-          <h3>{{ p.title }}</h3>
-          <p class="project-impact">{{ p.impact }}</p>
-          <p class="time-slot">{{ p.period }}</p>
-        </div>
-        <div class="flip-card-back {{ p.theme }}">
-          <h4>{{ p.org }}</h4>
-          <p>{{ p.body }}</p>
-        </div>
-      </div>
-    </div>
+    {#
+      Deliberately NOT a flip card. The previous version hid the entire case
+      study behind a hover with no affordance, so most visitors never saw it,
+      and touch users could not reach it at all. Everything is visible now;
+      the long text collapses behind a real <details> instead.
+    #}
+    <article class="project-card" data-project="{{ p.id }}">
+      <header class="project-head">
+        <span class="project-logo">
+          <img src="/logos/{{ p.logo }}" alt="{{ p.logoAlt }}" loading="lazy" decoding="async">
+        </span>
+        <span class="project-meta">
+          <span class="project-org">{{ p.org }}</span>
+          <span class="project-period">{{ p.period }}</span>
+        </span>
+      </header>
+
+      <h3 class="project-title">{{ p.title }}</h3>
+
+      <p class="project-metric">
+        {% if p.metric %}<span class="project-metric-value">{{ p.metric }}</span>{% endif %}
+        <span class="project-metric-label">{{ p.metricLabel }}</span>
+      </p>
+
+      <details class="project-case">
+        <summary>
+          <span class="summary-open">{{ copy.ui.projects.readCase }}</span>
+          <span class="summary-close">{{ copy.ui.projects.hideCase }}</span>
+        </summary>
+        <p>{{ p.body }}</p>
+      </details>
+    </article>
     {% endfor %}
   </div>
 </section>

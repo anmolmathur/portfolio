@@ -54,6 +54,10 @@
       "accept": "Allow analytics",
       "decline": "No thanks",
       "learnMore": "How this works"
+    },
+    "projects": {
+      "readCase": "Read the case",
+      "hideCase": "Hide"
     }
   },
   "nav": [
@@ -528,7 +532,7 @@
   },
   "projects": {
     "heading": "Projects",
-    "subheading": "Explore few of my key projects where i had a significant contribution",
+    "subheading": "A few projects where I had significant contribution.",
     "impactLabel": "Impact",
     "items": [
       {
@@ -540,7 +544,9 @@
         "title": "Tech Cost Optimization & Cloud Transformation",
         "impact": "Impact: ₹1.5 Cr in annual savings (50% reduction)",
         "period": "June 2023 – Dec 2024",
-        "body": "At Hungama Digital, I led a strategic technology cost optimization initiative that reduced annual tech spend from ₹3 Cr to ₹1.5 Cr. I began by auditing cloud usage, team structure, and third-party contracts, followed by restructuring engineering pods for agility. We migrated to optimized cloud-native stacks (Kubernetes, multi-cloud), deployed FinOps practices, and implemented AI-powered real-time dashboards. Results included auto-scaling, SLA coverage above 98%, and enhanced collaboration across Tech, Product, and Finance—realigning KPIs, reducing tech debt, and embedding cost accountability in the engineering culture."
+        "body": "At Hungama Digital, I led a strategic technology cost optimization initiative that reduced annual tech spend from ₹3 Cr to ₹1.5 Cr. I began by auditing cloud usage, team structure, and third-party contracts, followed by restructuring engineering pods for agility. We migrated to optimized cloud-native stacks (Kubernetes, multi-cloud), deployed FinOps practices, and implemented AI-powered real-time dashboards. Results included auto-scaling, SLA coverage above 98%, and enhanced collaboration across Tech, Product, and Finance—realigning KPIs, reducing tech debt, and embedding cost accountability in the engineering culture.",
+        "metric": "₹1.5 Cr",
+        "metricLabel": "annual savings — a 50% reduction"
       },
       {
         "id": "timespro-lms",
@@ -551,7 +557,9 @@
         "title": "Unified Learning LMS & Sales Enablement Platform (Salesforce)",
         "impact": "Impact: 10,000+ users on LMS, doubled lead conversion",
         "period": "Sep 2021 – Mar 2023",
-        "body": "I conceptualized and led the buildout of a full-stack Learning Management System (LMS) and integrated with Sales Enablement platform (Salesforce). Built on scalable microservices architecture hosted on AWS and integrated with Moodle, Salesforce, and custom APIs, the platform empowered the sales and academic teams with real-time analytics and lead lifecycle insight. It improved course delivery reliability and doubled conversion of B2C learners via personalized workflows. Setup the Product and Development Teams to research the customer behaviour and deliver a self serving delivery education platform"
+        "body": "I conceptualized and led the buildout of a full-stack Learning Management System (LMS) and integrated with Sales Enablement platform (Salesforce). Built on scalable microservices architecture hosted on AWS and integrated with Moodle, Salesforce, and custom APIs, the platform empowered the sales and academic teams with real-time analytics and lead lifecycle insight. It improved course delivery reliability and doubled conversion of B2C learners via personalized workflows. Setup the Product and Development Teams to research the customer behaviour and deliver a self serving delivery education platform",
+        "metric": "10,000+",
+        "metricLabel": "users on the LMS; lead conversion doubled"
       },
       {
         "id": "formula1",
@@ -562,7 +570,9 @@
         "title": "Formula 1 – Technology Outsourcing & Scaled Program Delivery",
         "impact": "Impact: Built and managed 35+ member delivery team across Digitas India & UK",
         "period": "May 2018 – Jan 2020",
-        "body": "I spearheaded the outsourced technology delivery program for Formula 1 (F1), establishing and leading a 35+ member India-based team comprising architects, developers, QA specialists, and project managers. Acting as the key technology interface between the UK client and the India delivery center, I defined the delivery architecture, governance processes, and mobile-first engineering practices to support complex F1 digital platforms. The program included onshore–offsite collaboration, agile methodology adoption, and rigorous focus on quality assurance, helping achieve seamless integration between globally distributed teams and ensuring timely, high-quality releases across web and mobile channels."
+        "body": "I spearheaded the outsourced technology delivery program for Formula 1 (F1), establishing and leading a 35+ member India-based team comprising architects, developers, QA specialists, and project managers. Acting as the key technology interface between the UK client and the India delivery center, I defined the delivery architecture, governance processes, and mobile-first engineering practices to support complex F1 digital platforms. The program included onshore–offsite collaboration, agile methodology adoption, and rigorous focus on quality assurance, helping achieve seamless integration between globally distributed teams and ensuring timely, high-quality releases across web and mobile channels.",
+        "metric": "35+",
+        "metricLabel": "member delivery team across Digitas India & UK"
       },
       {
         "id": "mzaalo",
@@ -573,7 +583,9 @@
         "title": "Xfinite/Mzaalo OTT Platform",
         "impact": "Impact: 10K MAU; integrated crypto rewards & adtech stack",
         "period": "Jan 2020 – Aug 2021",
-        "body": "As Head of Engineering, I drove the architecture and launch of Mzaalo, a blockchain-powered OTT platform that gamified content consumption. The platform embedded wallet integration for micro-rewarding users with tokens and included real-time audience engagement engines. I set up a 20+ member cross-functional team including mobile engineers and external resource partners. Additionally, I established an internal ad operations layer with dynamic inventory management to support monetization."
+        "body": "As Head of Engineering, I drove the architecture and launch of Mzaalo, a blockchain-powered OTT platform that gamified content consumption. The platform embedded wallet integration for micro-rewarding users with tokens and included real-time audience engagement engines. I set up a 20+ member cross-functional team including mobile engineers and external resource partners. Additionally, I established an internal ad operations layer with dynamic inventory management to support monetization.",
+        "metric": "10K",
+        "metricLabel": "monthly active users; crypto rewards + adtech stack"
       },
       {
         "id": "hsbc-receivables",
@@ -584,7 +596,8 @@
         "title": "Intellect NNC - Receivables Portal",
         "impact": "Impact: Enabled real-time receivables tracking and automated reconciliation for corporate clients across Asia.",
         "period": "Jan 2008 – Nov 2010",
-        "body": "At HSBC, I led the implementation of the Intellect NNC platform from Polaris, delivering an enterprise-grade receivables management portal across Asia. I worked closely with product teams, operations, and vendor partners to integrate the portal with core banking systems and payment rails. The solution digitized invoice reconciliation, enhanced cash flow visibility, and enabled virtual account management for corporate customers in high-volume markets like India and Hong Kong."
+        "body": "At HSBC, I led the implementation of the Intellect NNC platform from Polaris, delivering an enterprise-grade receivables management portal across Asia. I worked closely with product teams, operations, and vendor partners to integrate the portal with core banking systems and payment rails. The solution digitized invoice reconciliation, enhanced cash flow visibility, and enabled virtual account management for corporate customers in high-volume markets like India and Hong Kong.",
+        "metricLabel": "Real-time receivables tracking and automated reconciliation for corporate clients across Asia"
       },
       {
         "id": "squareinch",
@@ -595,7 +608,9 @@
         "title": "SquareInch – Luxury Marketplace",
         "impact": "Impact: Digitized offline designer retail stores and onboarded 100+ brands to create India's first luxury ecommerce marketplace.",
         "period": "Jan 2016 – Dec 2016",
-        "body": "As CTO at SquareInch, I built and launched India's first luxury ecommerce marketplace by digitizing legacy fashion retail stores into a unified online platform. I developed the end-to-end tech stack using Ruby on Rails and AWS, integrated brand catalog management, and enabled SEO-driven traffic growth. The platform successfully onboarded 100+ partner stores and powered substantial online visibility for premium Indian design labels."
+        "body": "As CTO at SquareInch, I built and launched India's first luxury ecommerce marketplace by digitizing legacy fashion retail stores into a unified online platform. I developed the end-to-end tech stack using Ruby on Rails and AWS, integrated brand catalog management, and enabled SEO-driven traffic growth. The platform successfully onboarded 100+ partner stores and powered substantial online visibility for premium Indian design labels.",
+        "metric": "100+",
+        "metricLabel": "brands onboarded — India's first luxury ecommerce marketplace"
       }
     ]
   },
