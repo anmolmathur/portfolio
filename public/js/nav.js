@@ -30,6 +30,20 @@
     history.pushState(null, '', url.hash);
   });
 
+  /* The header is sticky, so anchor navigation parked every section heading
+     underneath it. scroll-margin-top fixes that, but the header's height
+     changes with viewport and wrapping — so publish the real value and let CSS
+     use it. */
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const publishHeaderHeight = () =>
+      document.documentElement.style.setProperty(
+        '--header-h', `${Math.round(header.getBoundingClientRect().height)}px`);
+    publishHeaderHeight();
+    addEventListener('resize', publishHeaderHeight);
+    if ('ResizeObserver' in window) new ResizeObserver(publishHeaderHeight).observe(header);
+  }
+
   // Reveal-on-scroll, preserved from the original site.
   const revealTargets = document.querySelectorAll(
     '.about-card, .timeline-item, .skill-card, .project-card, .education-card, .article-card, .flip-card',

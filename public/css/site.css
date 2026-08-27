@@ -74,7 +74,6 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--bg-alt);
     padding: 50px 20px;
     text-align: center;
-    overflow: hidden;
 }
 
 .about-me .container {
@@ -99,7 +98,6 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--bg-alt);
     padding: 50px 20px;
     text-align: center;
-    overflow: hidden;
 }
 
 .about-me .container {
@@ -1595,23 +1593,44 @@ body { overflow-wrap: break-word; }
   display: flow-root;
 }
 
+
 /* ==========================================================================
-   Projects — rebuilt
-   Replaces the flip cards. Everything is visible; the case study collapses
-   behind a <details> rather than a hover, so it works on touch, is reachable
-   by keyboard, and is announced by screen readers.
+   Projects — flip cards, driven by a button
+
+   The flip is kept because it reads well, but it is triggered by an explicit
+   control rather than hover: hover gave no affordance, so most visitors never
+   saw the case studies, and touch devices could not reach them at all.
    ========================================================================== */
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 22px;
   max-width: var(--maxw);
   margin: 0 auto;
-  align-items: start;          /* cards size to their own content */
 }
 
 .project-card {
+  perspective: 1400px;
+  /* One height for the whole row so cards line up. Sized for the longest case
+     study; the back face scrolls if content ever outgrows it, so nothing can
+     be silently clipped the way the old fixed 320px face would have been. */
+  min-height: 430px;   /* floor before JS measures; JS then sets the real height */
+}
+
+.project-flip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.project-card.is-flipped .project-flip { transform: rotateY(180deg); }
+
+.flip-face {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1620,21 +1639,21 @@ body { overflow-wrap: break-word; }
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--speed), box-shadow var(--speed), border-color var(--speed);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
-.project-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--brand-300);
-}
+.flip-back { transform: rotateY(180deg); }
 
+.project-card:not(.is-flipped) .flip-front:hover { box-shadow: var(--shadow-md); }
+
+/* Front ------------------------------------------------------------------ */
 .project-head { display: flex; align-items: center; gap: 12px; }
 
-/* Source logos vary wildly in aspect and density, so they are normalised into
-   a fixed box rather than left to render at whatever size they happen to be. */
+/* Source logos vary wildly in aspect and density; normalise them into a fixed
+   box so the row does not look accidental. */
 .project-logo {
   flex: none;
-  width: 56px; height: 40px;
+  width: 58px; height: 42px;
   display: grid; place-items: center;
   background: #fff;
   border: 1px solid var(--border);
@@ -1647,72 +1666,156 @@ body { overflow-wrap: break-word; }
 .project-org { font-weight: 700; font-size: 0.95rem; color: var(--heading); }
 .project-period { font-size: 0.78rem; color: var(--text-subtle); }
 
-.project-title {
-  margin: 0;
-  font-size: 1.02rem;
-  line-height: 1.35;
-  color: var(--text);
-}
+.project-title { margin: 0; font-size: 1.02rem; line-height: 1.35; color: var(--text); }
 
 /* The headline figure is the reason this section exists — it leads. */
 .project-metric {
   margin: 0;
-  padding: 12px 14px;
+  padding: 14px 16px;
   background: var(--surface-tint);
   border-radius: var(--radius);
   border-left: 3px solid var(--accent-text);
 }
 .project-metric-value {
   display: block;
-  font-size: 1.7rem;
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: 1.75rem; font-weight: 700; line-height: 1.1;
   color: var(--accent-text);
   font-variant-numeric: tabular-nums;
 }
 .project-metric-label {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.86rem;
-  color: var(--text-muted);
+  display: block; margin-top: 3px;
+  font-size: 0.86rem; color: var(--text-muted);
 }
 
-.project-case { margin-top: auto; }
-.project-case summary {
-  cursor: pointer;
-  list-style: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: var(--link);
-  padding: 4px 0;
+/* Back ------------------------------------------------------------------- */
+.case-org { margin: 0; font-size: 1rem; color: var(--heading); }
+.case-body { flex: 1; overflow-y: auto; }   /* safety valve — never clip */
+.case-body p {
+  margin: 0;
+  font-size: 0.875rem; line-height: 1.62; color: var(--text-muted);
 }
-.project-case summary::-webkit-details-marker { display: none; }
-.project-case summary::after {
-  content: "";
-  width: 7px; height: 7px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg) translate(-1px, -1px);
+
+/* Toggle ----------------------------------------------------------------- */
+.project-toggle {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 44px;                 /* comfortable tap target */
+  padding: 8px 0;
+  background: none; border: 0; cursor: pointer;
+  font: inherit; font-size: 0.88rem; font-weight: 600;
+  color: var(--link);
+}
+.project-toggle:hover { color: var(--link-hover); }
+.toggle-ico {
+  width: 16px; height: 16px; fill: none;
+  stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--speed);
 }
-.project-case[open] summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
-.project-case summary:hover { color: var(--link-hover); }
-.project-case .summary-close { display: none; }
-.project-case[open] .summary-open { display: none; }
-.project-case[open] .summary-close { display: inline; }
-
-.project-case p {
-  margin: 8px 0 0;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
+.project-toggle:hover .toggle-ico { transform: translateX(3px); }
+.project-toggle-back:hover .toggle-ico-back { transform: translateX(-3px); }
 
 @media (max-width: 600px) {
   .projects-grid { grid-template-columns: 1fr; gap: 16px; }
-  .project-card { padding: 18px; }
-  .project-metric-value { font-size: 1.5rem; }
+  .flip-face { padding: 18px; }
+  .project-metric-value { font-size: 1.55rem; }
+}
+
+/* A flip is decorative motion. Reduced-motion users get an instant swap. */
+@media (prefers-reduced-motion: reduce) {
+  .project-flip { transition: none; }
+}
+
+/* --- Header responsiveness -----------------------------------------------
+   The nav collapsed to a hamburger only below 768px, but the full link row
+   plus the tool buttons need ~1160px. Everything from 769px to ~1150px
+   overflowed the viewport and the page scrolled sideways. The breakpoint now
+   matches what actually fits. */
+@media (max-width: 1100px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--brand-800);
+    padding: 16px 10px;
+    box-shadow: var(--shadow-lg);
+  }
+  .nav-links.show { display: flex; }
+  .nav-links li { margin: 4px 0; text-align: center; }
+  .hamburger { display: inline-flex !important; }
+}
+
+/* The hamburger picked up `display: inline-flex` from .icon-btn, which beat
+   the base `display: none` and left it visible on desktop. */
+@media (min-width: 1101px) {
+  .hamburger { display: none !important; }
+}
+
+.navbar { position: relative; }
+
+/* --- Tap targets ---------------------------------------------------------
+   Several links and icons were 16–26px tall on touch, well under a
+   comfortable target. Padding is added only for coarse pointers so the
+   desktop layout is unchanged. */
+@media (pointer: coarse) {
+  .publication-link,
+  .social-icons .icon,
+  .footer-container a,
+  .contact-details a,
+  .nav-links li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 6px;
+  }
+  .social-icons { gap: 14px; }
+  .social-icons .icon { min-width: 44px; justify-content: center; }
+}
+
+/* --- Sticky-header offset ------------------------------------------------
+   Anchor navigation parked every section heading underneath the sticky
+   header. --header-h is published by nav.js from the real element, so this
+   stays correct as the header wraps or changes height. */
+section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); }
+
+
+
+/* Fade the foot of a scrollable case study so the cut edge reads as "more
+   below" rather than as clipped text. */
+.case-body { position: relative; }
+.project-card.has-scroll .case-body {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 26px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 26px), transparent 100%);
+}
+.project-card.has-scroll .case-body:hover,
+.project-card.has-scroll .case-body:focus-within {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* Thin scrollbar, so the back face doesn't get a chunky OS bar through it. */
+.case-body { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+.case-body::-webkit-scrollbar { width: 6px; }
+.case-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* The front face's teaser absorbs all remaining height, so a card sized for
+   the longest case study never leaves the other five looking half-empty. It
+   clips into a fade rather than truncating at a fixed line count, which means
+   it adapts to any card height without a magic number. */
+.project-teaser {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-subtle);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+}
+@media (max-width: 600px) {
+  .project-teaser { font-size: 0.82rem; }
 }

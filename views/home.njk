@@ -204,36 +204,61 @@
   <div class="section-content projects-grid">
     {% for p in copy.projects.items %}
     {#
-      Deliberately NOT a flip card. The previous version hid the entire case
-      study behind a hover with no affordance, so most visitors never saw it,
-      and touch users could not reach it at all. Everything is visible now;
-      the long text collapses behind a real <details> instead.
+      Flip card, but driven by an explicit button rather than hover. Hover alone
+      gave no affordance and was unreachable on touch; the button keeps the
+      effect while making it discoverable and keyboard-operable. Both faces stay
+      in the DOM so the case study is still indexable.
     #}
     <article class="project-card" data-project="{{ p.id }}">
-      <header class="project-head">
-        <span class="project-logo">
-          <img src="/logos/{{ p.logo }}" alt="{{ p.logoAlt }}" loading="lazy" decoding="async">
-        </span>
-        <span class="project-meta">
-          <span class="project-org">{{ p.org }}</span>
-          <span class="project-period">{{ p.period }}</span>
-        </span>
-      </header>
+      <div class="project-flip">
 
-      <h3 class="project-title">{{ p.title }}</h3>
+        <div class="flip-face flip-front">
+          <header class="project-head">
+            <span class="project-logo">
+              <img src="/logos/{{ p.logo }}" alt="{{ p.logoAlt }}" loading="lazy" decoding="async">
+            </span>
+            <span class="project-meta">
+              <span class="project-org">{{ p.org }}</span>
+              <span class="project-period">{{ p.period }}</span>
+            </span>
+          </header>
 
-      <p class="project-metric">
-        {% if p.metric %}<span class="project-metric-value">{{ p.metric }}</span>{% endif %}
-        <span class="project-metric-label">{{ p.metricLabel }}</span>
-      </p>
+          <h3 class="project-title">{{ p.title }}</h3>
 
-      <details class="project-case">
-        <summary>
-          <span class="summary-open">{{ copy.ui.projects.readCase }}</span>
-          <span class="summary-close">{{ copy.ui.projects.hideCase }}</span>
-        </summary>
-        <p>{{ p.body }}</p>
-      </details>
+          <p class="project-metric">
+            {% if p.metric %}<span class="project-metric-value">{{ p.metric }}</span>{% endif %}
+            <span class="project-metric-label">{{ p.metricLabel }}</span>
+          </p>
+
+          {#
+            Fills whatever vertical room is left on the front face, so the card
+            never shows a dead zone regardless of how tall the tallest case
+            study makes the row. Aria-hidden because the same text is read in
+            full on the back face.
+          #}
+          <p class="project-teaser" aria-hidden="true">{{ p.body }}</p>
+
+          <button type="button" class="project-toggle" data-flip="open"
+                  aria-expanded="false" aria-controls="case-{{ p.id }}">
+            {{ copy.ui.projects.readCase }}
+            <svg viewBox="0 0 24 24" class="toggle-ico" aria-hidden="true" focusable="false">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="flip-face flip-back" id="case-{{ p.id }}">
+          <h4 class="case-org">{{ p.org }}</h4>
+          <div class="case-body"><p>{{ p.body }}</p></div>
+          <button type="button" class="project-toggle project-toggle-back" data-flip="close">
+            <svg viewBox="0 0 24 24" class="toggle-ico toggle-ico-back" aria-hidden="true" focusable="false">
+              <path d="M19 12H5M11 6l-6 6 6 6"/>
+            </svg>
+            {{ copy.ui.projects.hideCase }}
+          </button>
+        </div>
+
+      </div>
     </article>
     {% endfor %}
   </div>
