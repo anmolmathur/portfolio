@@ -6,7 +6,7 @@
   try {
     console.log('%cAnmol Mathur', title);
     console.log(
-      `%cCTO · 24+ years across EdTech, media, banking and ecommerce.
+      `%cCTO · 25+ years across EdTech, media, banking and ecommerce.
 
 If you're reading this, you're my kind of visitor.
   email     ${s.email || 'contact@anmolmathur.com'}

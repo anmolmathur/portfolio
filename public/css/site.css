@@ -1819,3 +1819,41 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 @media (max-width: 600px) {
   .project-teaser { font-size: 0.82rem; }
 }
+
+/* --- Per-project colour ---------------------------------------------------
+   The original flip cards gave each project its own colour on the reverse.
+   Restored, with one change: two of the six failed contrast for white body
+   text (#d45087 at 3.96:1, #f95d6a at 3.09:1) and were darkened along the same
+   hue in tokens.css.
+
+   Each card publishes its colour as --proj so the front and back can share it:
+   the front hints at it on the metric rule, the back commits to it fully. */
+.proj-hungama  { --proj: var(--proj-hungama); }
+.proj-timespro { --proj: var(--proj-timespro); }
+.proj-digitas  { --proj: var(--proj-digitas); }
+.proj-xfinite  { --proj: var(--proj-xfinite); }
+.proj-hsbc     { --proj: var(--proj-hsbc); }
+.proj-ogaan    { --proj: var(--proj-ogaan); }
+
+/* Front: a hint of the project's colour, so the flip feels connected rather
+   than like an unrelated second card. */
+/* Only the RULE takes the project colour, not the figure. These colours are
+   tuned for white text on a coloured field; used as text on the front's tinted
+   panel the darker ones (hungama's #003f5c) drop to ~1.3:1 in dark mode. The
+   figure keeps --accent-text, which flips with the theme. */
+.project-card .project-metric { border-left-color: var(--proj, var(--accent-text)); }
+.project-card .project-logo { border-color: color-mix(in srgb, var(--proj, var(--border)) 35%, transparent); }
+.project-card:not(.is-flipped) .flip-front:hover { border-color: var(--proj, var(--brand-300)); }
+
+/* Back: the full colour. */
+.flip-back {
+  background: var(--proj, var(--surface));
+  border-color: transparent;
+  color: #fff;
+}
+.flip-back .case-org { color: #fff; }
+.flip-back .case-body p { color: rgba(255, 255, 255, 0.92); }
+.flip-back .project-toggle { color: #fff; }
+.flip-back .project-toggle:hover { color: rgba(255, 255, 255, 0.82); }
+.flip-back .case-body { scrollbar-color: rgba(255,255,255,0.4) transparent; }
+.flip-back .case-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); }

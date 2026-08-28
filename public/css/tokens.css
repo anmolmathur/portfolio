@@ -69,7 +69,11 @@
   /* Project flip-card backs — saturated, always paired with white text,
      so they hold up unchanged in both themes. */
   --proj-hungama:  #003f5c; --proj-timespro: #2f4b7c; --proj-digitas: #665191;
-  --proj-xfinite:  #a05195; --proj-hsbc:     #d45087; --proj-ogaan:    #f95d6a;
+  --proj-xfinite:  #a05195;
+  /* The original #d45087 and #f95d6a give white body text only 3.96:1 and
+     3.09:1, below the 4.5:1 floor. Darkened along the same hue to 4.9:1 and
+     4.8:1 — the ramp still reads, the text is legible. */
+  --proj-hsbc:     #c04275; --proj-ogaan:    #cc3f4d;
 
   /* Heading/accent TEXT colours. The brand navies are backgrounds-first; used
      as text on a dark surface they fall to ~1.3:1. These flip with the theme. */
