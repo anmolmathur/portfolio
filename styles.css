@@ -970,11 +970,21 @@ audio {
     overflow: hidden;
     opacity: 0;
     transform: scaleY(0.95);
-    transition: all 0.3s ease-in-out;
   }
-  
+
+  /* Transition only interpolable properties. `all` included max-height,
+     whose collapsed->expanded value is `none` and cannot be interpolated;
+     that wedged the opacity transition at currentTime 0 and left Education
+     and Projects permanently at opacity 0. */
   .section-content {
-    transition: all 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+
+  /* The education cards are floated; without containment the timeline
+     collapses to the height of its non-floated content (38px) and the
+     cards overlap the Projects section below. */
+  .section-content.education-timeline {
+    display: flow-root;
   }
   
   /* Education Cards — responsive stacking */
