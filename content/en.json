@@ -78,7 +78,15 @@
         "Tell me about his time at HSBC",
         "What are his strongest skills?",
         "How do I get in touch?"
-      ]
+      ],
+      "speakOn": "Turn voice on",
+      "speakOff": "Turn voice off",
+      "voiceNote": "Voice uses your browser's built-in speech — nothing is sent anywhere.",
+      "about": {
+        "title": "About this assistant",
+        "body": "This assistant answers questions about Anmol Mathur using only what is written on this website. It searches the site's own content — his roles, skills, education, projects, publications and contact details — and answers from what it finds. If the site does not cover something, it says so rather than guessing, so it will not invent employers, dates, figures or technologies. It is an AI assistant, not Anmol himself. You can ask it about his current role, any past job, what he studied, a specific project, which industries he has worked in, or how to get in touch. Follow-up questions work, so you can ask about a role and then ask what came before it. There is a speaker button at the top of the panel that reads answers aloud using your browser's own built-in speech; it is off until you turn it on, and no audio is sent anywhere. Your questions are sent to this site's server to be answered and are not stored or used to identify you. The 3D figure is an animated likeness of Anmol, not a recording of him.",
+        "keywords": "assistant, chatbot, bot, ai, guide, avatar, help, how does this work, what can you do, who are you, are you real, are you anmol, voice, speak, sound, audio, privacy, do you store, is this ai, how do i use this"
+      }
     }
   },
   "nav": [
