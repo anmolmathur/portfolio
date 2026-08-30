@@ -18,11 +18,39 @@ const STOP = new Set(`a an and are as at be been by for from has have he her his
 is it its of on or that the this to was were what when where which who will with you your
 about tell me please can could would should do does did there their they them`.split(/\s+/));
 
+/**
+ * Light suffix stripping. Per references/brain.md: "import"/"importing" must
+ * meet, and ~30 lines is enough — no stemmer library.
+ *
+ * Measured here before adding it: "leading engineering teams" returned the
+ * Formula 1 project while "led engineering team" returned Cloud Transformation.
+ * The same question phrased two ways gave two different answers, which reads as
+ * the guide being unreliable rather than as a retrieval subtlety.
+ *
+ * Deliberately conservative — over-stemming collides unrelated words, and a
+ * wrong confident match is worse than a miss.
+ */
+function stem(t) {
+  if (t.length <= 4) return t;
+  for (const [suffix, min] of [['ingly', 7], ['edly', 6], ['ing', 6], ['ers', 5],
+    ['ies', 5], ['ed', 5], ['es', 5], ['er', 5], ['ly', 5], ['s', 4]]) {
+    if (t.length >= min && t.endsWith(suffix)) {
+      let base = t.slice(0, -suffix.length);
+      if (suffix === 'ies') base += 'y';                       // strategies -> strategy
+      // "led"/"lead" and doubled consonants ("shipping" -> "ship") are not
+      // worth chasing; they are rare in this vocabulary and the fixes misfire.
+      return base;
+    }
+  }
+  return t;
+}
+
 const tokenize = (s) => String(s ?? '')
   .toLowerCase()
   .replace(/[^\p{L}\p{N}\s+#.-]/gu, ' ')
   .split(/\s+/)
-  .filter((t) => t.length > 1 && !STOP.has(t));
+  .filter((t) => t.length > 1 && !STOP.has(t))
+  .map(stem);
 
 /**
  * Fields are weighted rather than concatenated. A query matching a role's
@@ -80,7 +108,11 @@ function build(locale) {
         length += w;
       }
     }
-    return { record: r, tf, length };
+    // The topic set: what this record is ABOUT, as opposed to what it happens
+    // to mention. The gate below requires a query to intersect this, not just
+    // the body. See `topicGate` for why.
+    const topic = new Set([...fields.title, ...fields.subtitle, ...fields.keywords]);
+    return { record: r, tf, length, topic };
   });
 
   const avgLength = docs.reduce((a, d) => a + d.length, 0) / (docs.length || 1);
@@ -95,12 +127,77 @@ function build(locale) {
     idf.set(t, Math.log(1 + (docs.length - n + 0.5) / (n + 0.5)));
   }
 
-  return { docs, avgLength, idf };
+  // Every term the site knows. The unknown-entity guard asks against this.
+  const vocabulary = new Set(idf.keys());
+  return { docs, avgLength, idf, vocabulary };
 }
 
 function indexFor(locale) {
   if (!built.has(locale)) built.set(locale, build(locale));
   return built.get(locale);
+}
+
+/**
+ * Topic gate — a record may only answer when at least one query term appears in
+ * its title, subtitle or keywords, not merely somewhere in its prose.
+ *
+ * Straight from references/brain.md, and the failures it describes reproduced
+ * here exactly before this was added:
+ *
+ *   "tell me about the leadership team at Meta"  -> the Skills section and a
+ *                                                   Michigan State leadership
+ *                                                   certificate
+ *   "what about quantum computing"               -> a cloud-computing publication
+ *   "tell me about his time in Berlin"           -> the NEP 2020 article
+ *
+ * In each case a common prose word ("leadership", "computing", "time") carried
+ * a record the visitor was not asking about. A score gate alone cannot catch
+ * these — the junk scores were 5.9 and 6.0, well above any sane threshold,
+ * because the word genuinely is frequent in that record.
+ *
+ * The current-role bonus is exempt: "what does he do now" is legitimately about
+ * a record whose title shares no words with the question.
+ */
+function passesTopicGate(doc, terms) {
+  return terms.some((t) => doc.topic.has(t));
+}
+
+/**
+ * Unknown-entity guard, in the spirit of references/brain.md §Tier 4 rule 3.
+ *
+ * The topic gate alone still let two questions through, because the word they
+ * shared with a record was genuinely in that record's title:
+ *
+ *   "tell me about the leadership team at Meta" -> a leadership certificate
+ *   "how many years at Google"                  -> whatever mentions years
+ *
+ * The visitor is asking about Meta or Google. The site has never heard of
+ * either, so the honest answer is that it does not cover them — answering about
+ * a Michigan State certificate because both contain "leadership" is precisely
+ * the confident-wrong-answer the skill says is worse than no guide.
+ *
+ * Capitalised words in the original question are treated as named entities. If
+ * one is absent from the entire index vocabulary, the question is about
+ * something the site does not cover, whatever else happens to match.
+ *
+ * Lower-cased unknown topics ("quantum computing") deliberately are NOT caught
+ * here — capitalisation is the only signal available without an NER model, and
+ * guessing wrong would suppress real answers. Those are caught one layer up
+ * instead: the model sees the excerpt, finds no answer in it, and says so.
+ */
+const SENTENCE_START = /^(what|who|where|when|why|how|is|are|was|were|does|did|do|can|could|tell|give|show)$/i;
+
+function namesUnknownEntity(rawQuery, vocabulary) {
+  const words = String(rawQuery ?? '').trim().split(/\s+/);
+  return words.some((w, i) => {
+    const bare = w.replace(/[^\p{L}\p{N}]/gu, '');
+    if (bare.length < 3) return false;
+    // A capital merely because it opens the sentence carries no signal.
+    if (i === 0 || SENTENCE_START.test(bare)) return false;
+    if (!/^\p{Lu}/u.test(bare)) return false;
+    const t = stem(bare.toLowerCase());
+    return !vocabulary.has(t) && !vocabulary.has(bare.toLowerCase());
+  });
 }
 
 /**
@@ -110,8 +207,12 @@ export function search(locale, query, { limit = 5, minScore = 0.35 } = {}) {
   const terms = tokenize(query);
   if (!terms.length) return [];
 
-  const { docs, avgLength, idf } = indexFor(locale);
+  const { docs, avgLength, idf, vocabulary } = indexFor(locale);
   const asksAboutNow = NOW_WORDS.test(query);
+
+  // Asking about an entity the site has never mentioned: answer nothing,
+  // regardless of what else in the question happens to match.
+  if (namesUnknownEntity(query, vocabulary)) return [];
 
   const scored = docs.map((d) => {
     let score = 0;
@@ -121,10 +222,13 @@ export function search(locale, query, { limit = 5, minScore = 0.35 } = {}) {
       const norm = 1 - B + B * (d.length / (avgLength || 1));
       score += (idf.get(t) ?? 0) * ((f * (K1 + 1)) / (f + K1 * norm));
     }
+    const onTopic = passesTopicGate(d, terms);
     // Applied only when the question is about the present, so it cannot
-    // distort ordinary queries like "hsbc" or "mba".
-    if (asksAboutNow && isOngoing(d.record)) score += CURRENT_BONUS;
-    return { record: d.record, score };
+    // distort ordinary queries like "hsbc" or "mba". This is also the one
+    // legitimate way to answer without sharing vocabulary with the question,
+    // so it bypasses the topic gate.
+    if (asksAboutNow && isOngoing(d.record)) return { record: d.record, score: score + CURRENT_BONUS };
+    return { record: d.record, score: onTopic ? score : 0 };
   });
 
   // minScore exists so an unrelated question ("what's the weather?") returns
