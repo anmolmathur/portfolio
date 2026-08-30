@@ -99,6 +99,11 @@ export function createAnimator(avatar, opts = {}) {
   let fidgetAt = null;
   let active = null;           // { name, start, spec }
   let poolIndex = 0;
+  /* 'working' is the idle state before the guide is opened -- typing at the
+     laptop. 'attentive' is the presenting rest pose used once someone is
+     actually talking to it. The stage swaps the BASE pose to match; this only
+     needs to know which additive layers apply. */
+  var mode = 'attentive';
 
   function play(name) {
     const spec = GESTURES[name];
@@ -129,6 +134,28 @@ export function createAnimator(avatar, opts = {}) {
     if (!p) return;
     p.rotation.x += x; p.rotation.y += y; p.rotation.z += z;
   };
+
+  /* Typing. Fingers tap on independent phases so the hands do not move as one
+     block, and the wrists dip very slightly with the beat. Amplitudes are
+     small on purpose: at this framing the motion should be noticed as life,
+     not read as a performance of typing. */
+  function typingLayer(t) {
+    const FINGERS = ['Index', 'Middle', 'Ring', 'Little'];
+    for (const side of ['left', 'right']) {
+      const mirror = side === 'left' ? -1 : 1;
+      FINGERS.forEach((finger, i) => {
+        // Prime-ish multipliers keep the taps from falling into lockstep.
+        const phase = t * (7.3 + i * 1.7) + (side === 'left' ? 1.9 : 0) + i * 0.8;
+        const tap = Math.max(0, Math.sin(phase)) * 0.16;
+        add(`${side}${finger}Proximal`, 0, 0, mirror * tap);
+        add(`${side}${finger}Intermediate`, 0, 0, mirror * tap * 0.8);
+      });
+      add(`${side}Hand`, Math.sin(t * 3.1 + (side === 'left' ? 0.7 : 0)) * 0.02, 0, 0);
+    }
+    // An occasional glance up from the screen, so it is not head-down forever.
+    const glance = Math.sin(t * 0.11);
+    if (glance > 0.93) add('head', -0.16, 0, 0);
+  }
 
   function idleLayer(t) {
     // Breath — chest and shoulders on a slow sine.
@@ -196,8 +223,14 @@ export function createAnimator(avatar, opts = {}) {
     if (blinkAt === null) blinkAt = t + 2 + Math.random() * 2;
     if (fidgetAt === null) fidgetAt = t + 14;
     idleLayer(t);
-    fidgetLayer(t);
-    gestureLayer(t);
+    if (mode === 'working') {
+      // No fidgets or answer gestures while working: a figure at a keyboard
+      // that suddenly waves is not working, it is glitching.
+      typingLayer(t);
+    } else {
+      fidgetLayer(t);
+      gestureLayer(t);
+    }
   }
 
   // The resting expression is a persona knob, not a constant: a face at 0 is
@@ -206,6 +239,8 @@ export function createAnimator(avatar, opts = {}) {
 
   return {
     update,
+    setMode: function (m) { mode = (m === 'working') ? 'working' : 'attentive'; active = null; },
+    getMode: function () { return mode; },
     play,
     playFromPool,
     persona,

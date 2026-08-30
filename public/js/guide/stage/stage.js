@@ -6,9 +6,10 @@
  */
 import * as THREE from 'three';
 import { loadGlbAvatar, UnusableModelError } from './glbAvatar.js';
-import { applyRestPose } from './restPose.js';
+import { applyRestPose, applyWorkingPose } from './restPose.js';
 import { createAnimator } from './animator.js';
 import { createVisemeDriver } from './visemeDriver.js';
+import { createLaptop } from './laptop.js';
 
 export { UnusableModelError };
 
@@ -70,7 +71,17 @@ export async function createStage(host, opts = {}) {
     hips.getWorldPosition(hipPos);
 
     const top = headPos.y + (opts.frameTopOffset ?? 0.18);
-    const bottom = hipPos.y - (opts.frameBottomOffset ?? 0.02);
+    let bottom = hipPos.y - (opts.frameBottomOffset ?? 0.02);
+
+    /* In the working idle the laptop is the lowest thing that matters, and it
+       hangs below the hips. Framing on the hips alone clipped it against the
+       bottom edge, so the prop the pose is built around was half out of shot.
+       Measured from its bounding box rather than guessed, so a change to the
+       laptop's size cannot silently crop it. */
+    if (mode === 'working' && laptop.group.visible) {
+      const box = new THREE.Box3().setFromObject(laptop.group);
+      if (Number.isFinite(box.min.y)) bottom = Math.min(bottom, box.min.y - 0.03);
+    }
     const centerY = (top + bottom) / 2;
     const span = Math.max(0.35, top - bottom);
 
@@ -82,10 +93,19 @@ export async function createStage(host, opts = {}) {
     camera.updateProjectionMatrix();
     return { top, bottom, centerY, span, dist };
   }
-  const framing = frame();
+  let framing = { };
 
   const animator = createAnimator(avatar, { persona: opts.persona });
   const visemes = createVisemeDriver(avatar);
+
+  /* The laptop exists only in the working idle. It is added once and shown or
+     hidden with the mode, rather than built and disposed on every switch. */
+  const laptop = createLaptop();
+  scene.add(laptop.group);
+  laptop.group.visible = false;
+
+  let mode = opts.mode === 'working' ? 'working' : 'attentive';
+  animator.setMode(mode);
 
   /* The frame pipeline, in the order references/animation.md requires:
    *
@@ -106,12 +126,36 @@ export async function createStage(host, opts = {}) {
     const dt = lastTime === null ? 1 / 60 : Math.max(0, Math.min(0.1, time - lastTime));
     lastTime = time;
 
-    applyRestPose(avatar.proxies);
+    if (mode === 'working') applyWorkingPose(avatar.proxies);
+    else applyRestPose(avatar.proxies);
     animator.update(time);
     visemes.update(dt);
     avatar.update();              // proxy -> real bone conjugation
     renderer.render(scene, camera);
   }
+
+  /* Placing the laptop needs the hands where the WORKING pose puts them, so
+     pose once, push it through the rig, then measure. Measuring from the rest
+     pose would sit it under clasped hands and float it in mid-air. */
+  function placeLaptop() {
+    applyWorkingPose(avatar.proxies);
+    avatar.update();
+    laptop.placeUnder(avatar.bones.leftHand, avatar.bones.rightHand);
+  }
+  placeLaptop();
+  framing = frame();
+
+  function setMode(next) {
+    const m = next === 'working' ? 'working' : 'attentive';
+    if (m === mode) return;
+    mode = m;
+    animator.setMode(m);
+    laptop.group.visible = (m === 'working');
+    if (m === 'working') placeLaptop();
+    Object.assign(framing, frame());   // the visible extent changed with the mode
+    renderFrame();
+  }
+  laptop.group.visible = (mode === 'working');
 
   // First paint immediately, so the avatar is visible even if the animation
   // loop never runs (reduced motion, background tab, automated browsers).
@@ -145,6 +189,7 @@ export async function createStage(host, opts = {}) {
   function dispose() {
     disposed = true;
     stop();
+    laptop.dispose();
     if (avatar) avatar.dispose();
     scene.traverse((o) => {
       if (o.geometry) o.geometry.dispose();
@@ -156,6 +201,7 @@ export async function createStage(host, opts = {}) {
   const api = {
     scene, camera, renderer, avatar, framing,
     renderFrame, start, stop, resize, dispose,
+    setMode, getMode: () => mode, laptop,
     setExpression: (n, w) => avatar.expressionManager.setValue(n, w),
     play: animator.play,
     playFromPool: animator.playFromPool,
