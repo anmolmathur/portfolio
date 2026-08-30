@@ -51,7 +51,7 @@
 
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 {% if hasLocalFonts %}
-<link rel="stylesheet" href="/css/fonts.css">
+<link rel="stylesheet" href="{{ assetUrl("/css/fonts.css") }}">
 {% else %}
 {# Fallback only. See public/fonts/README.md — this third-party request should
    go away once the font files are self-hosted. #}
@@ -59,8 +59,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Parkinsans&display=swap">
 {% endif %}
-<link rel="stylesheet" href="/css/tokens.css">
-<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="{{ assetUrl("/css/tokens.css") }}">
+<link rel="stylesheet" href="{{ assetUrl("/css/site.css") }}">
 
 {% block head %}{% endblock %}
 
@@ -93,14 +93,14 @@
     searchIndex: {{ searchIndex | dump | safe }}
   };
 </script>
-<script src="/js/analytics.js" defer></script>
-<script src="/js/theme.js" defer></script>
-<script src="/js/nav.js" defer></script>
-<script src="/js/metrics.js" defer></script>
-<script src="/js/timeline-filter.js" defer></script>
-<script src="/js/projects.js" defer></script>
-<script src="/js/palette.js" defer></script>
-<script src="/js/console-greeting.js" defer></script>
+<script src="{{ assetUrl("/js/analytics.js") }}" defer></script>
+<script src="{{ assetUrl("/js/theme.js") }}" defer></script>
+<script src="{{ assetUrl("/js/nav.js") }}" defer></script>
+<script src="{{ assetUrl("/js/metrics.js") }}" defer></script>
+<script src="{{ assetUrl("/js/timeline-filter.js") }}" defer></script>
+<script src="{{ assetUrl("/js/projects.js") }}" defer></script>
+<script src="{{ assetUrl("/js/palette.js") }}" defer></script>
+<script src="{{ assetUrl("/js/console-greeting.js") }}" defer></script>
 {% include "partials/guide.njk" %}
 </body>
 </html>
