@@ -1859,146 +1859,114 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 .flip-back .case-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); }
 
 /* ==========================================================================
-   Guide — launcher button and panel (phase 1: text guide, no stage yet)
+   Guide — the cutout
 
-   THE TRAP, from references/architecture.md: a `display` rule on the panel
-   OUTRANKS the user agent's `[hidden] { display: none }`, because an author
-   rule beats a UA rule regardless of the attribute. The panel is toggled with
-   `root.hidden`, so every display rule below is written against
-   `:not([hidden])` — without that guard the shut panel renders anyway, which
-   is exactly the bug the reference says shipped.
+   Not a panel. references/rendering.md: the avatar is a CUTOUT floating over
+   the page, no card and no window chrome, because that reads as a presence
+   rather than a widget. The root therefore has NO background and NO border,
+   and passes pointer events straight through; only the pieces that must be
+   clickable turn them back on.
+
+   THE [hidden] TRAP still applies to anything toggled with the attribute:
+   an author `display` rule outranks the UA's `[hidden] { display: none }`.
+   State here is driven by data-state instead, which sidesteps it, but the
+   chips still use [hidden] and so carry their own guard.
    ========================================================================== */
 
-.action-guide {
-  background: var(--brand-700);
-}
-
-.guide-panel:not([hidden]) {
-  display: flex;
-}
-
-.guide-panel {
+.guide-root {
   position: fixed;
-  right: 20px;
-  /* Clears the floating action stack. The launcher measures the stack and sets
-     --guide-stack-clearance; the fallback covers the case where that never
-     runs. A fixed value overlapped the launcher and would drift whenever the
-     stack gains a button or drops its labels on mobile. */
-  bottom: calc(var(--guide-stack-clearance, 112px) + 12px);
+  /* Left is the default because the floating action stack lives bottom-RIGHT;
+     there is nothing to clear on that side, so the figure can stand on the
+     page edge. */
+  bottom: 16px;
   z-index: 1200;
-  width: min(380px, calc(100vw - 32px));
-  max-height: min(620px, calc(100vh - 140px));
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--surface);
-  color: var(--heading);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-}
-
-.guide-head {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  background: var(--brand-800);
-  color: #fff;
+  gap: 8px;
+  /* The page stays clickable through the avatar and the empty space around it. */
+  pointer-events: none;
+}
+.guide-root[data-side="left"]  { left: 16px; align-items: flex-start; }
+/* On the right the figure would sit on top of the WhatsApp and Ask buttons,
+   so it is lifted clear of the whole stack -- measured, not guessed, because
+   the stack changes height when it gains a button or drops its labels. */
+.guide-root[data-side="right"] {
+  right: 16px;
+  align-items: flex-end;
+  bottom: calc(var(--guide-stack-clearance, 112px) + 10px);
 }
 
-.guide-heading { display: flex; flex-direction: column; gap: 2px; }
-.guide-heading strong { font-size: 1rem; }
-.guide-sub { font-size: 0.78rem; opacity: 0.85; }
+/* --- the figure ---------------------------------------------------------- */
 
-.guide-head-btns { display: flex; align-items: center; gap: 2px; }
-
-.guide-voice {
-  background: none;
+.guide-figure {
+  position: relative;
+  width: 190px;
+  height: 210px;
+  padding: 0;
   border: 0;
-  color: inherit;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: var(--radius);
-  line-height: 0;
-  opacity: 0.75;
-}
-.guide-voice[aria-pressed="true"] { opacity: 1; }
-.guide-voice:hover { background: rgba(255, 255, 255, 0.15); opacity: 1; }
-.guide-voice[hidden] { display: none; }
-
-.guide-close {
   background: none;
-  border: 0;
-  color: inherit;
   cursor: pointer;
-  padding: 4px;
-  border-radius: var(--radius);
-  line-height: 0;
+  pointer-events: auto;
+  /* Nothing renders until a canvas or image is inside, so a failed model or a
+     missing still leaves no empty box sitting on the page. */
+  visibility: hidden;
+  transition: width var(--speed), height var(--speed);
 }
-.guide-close:hover { background: rgba(255, 255, 255, 0.15); }
+.guide-root.has-figure .guide-figure { visibility: visible; }
+.guide-figure:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; border-radius: 12px; }
+.guide-figure canvas { display: block; width: 100%; height: 100%; }
+.guide-still { display: block; width: 100%; height: 100%; object-fit: contain; object-position: bottom; }
 
-/* The avatar stage. Collapsed until the canvas actually attaches, so a
-   visitor on a device without WebGL, or one where the model fails to load,
-   sees a clean text guide rather than an empty gap. `.is-live` is added by
-   panel.js only after createStage() resolves. */
-.guide-stage { display: none; }
-.guide-stage.is-live {
-  display: block;
-  /* Fixed height, and the log below is given a floor: with the stage sized
-     from the canvas's intrinsic ratio instead, it grew to 328px and squeezed
-     the transcript to 50px, clipping the greeting mid-sentence. The figure is
-     decoration; the answers are the product. */
-  height: 168px;
-  flex: 0 0 auto;
-  /* The cutout reads as a presence, not a widget: no card, no border, just the
-     figure over the panel's own surface. */
-  background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--surface) 100%);
-  border-bottom: 1px solid var(--border);
+/* Open: the figure grows, which reads as standing up from the desk. */
+.guide-root[data-state="open"] .guide-figure { width: 250px; height: 280px; }
+
+/* --- the dialog: bubble, chips, input ------------------------------------ */
+
+.guide-dialog {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  width: min(360px, calc(100vw - 32px));
+  pointer-events: auto;
 }
+.guide-root[data-state="open"] .guide-dialog { display: flex; }
 
 .guide-log {
-  flex: 1 1 auto;
-  /* Never let the stage or chips starve the transcript. */
-  min-height: 132px;
-  overflow-y: auto;
-  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  max-height: 40vh;
+  overflow-y: auto;
+  /* Scroll gutter only; the bubbles carry their own surface. */
+  padding-right: 2px;
 }
 
-.guide-msg { max-width: 88%; }
-.guide-msg p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
+.guide-msg { max-width: 92%; }
+.guide-msg p { margin: 0; font-size: 0.88rem; line-height: 1.5; }
 
+.guide-msg-guide {
+  align-self: flex-start;
+  background: var(--surface);
+  color: var(--heading);
+  padding: 9px 13px;
+  border-radius: 16px 16px 16px 5px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
 .guide-msg-visitor {
   align-self: flex-end;
   background: var(--brand-700);
   color: #fff;
-  padding: 8px 12px;
-  border-radius: 14px 14px 4px 14px;
+  padding: 9px 13px;
+  border-radius: 16px 16px 5px 16px;
+  box-shadow: var(--shadow-sm);
 }
-
-.guide-msg-guide {
-  align-self: flex-start;
-  background: var(--bg-subtle);
-  color: var(--heading);
-  padding: 8px 12px;
-  border-radius: 14px 14px 14px 4px;
-}
-
 .guide-thinking p { opacity: 0.7; font-style: italic; }
 
-.guide-sources {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  margin-top: 6px;
-}
-.guide-sources-label { font-size: 0.7rem; opacity: 0.65; }
+.guide-sources { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
 .guide-source {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 999px;
   background: var(--chip-bg);
@@ -2008,73 +1976,108 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 }
 .guide-source:hover { background: var(--chip-active-bg); color: var(--chip-active-text); }
 
-.guide-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 0 16px 10px;
-}
-.guide-chips[hidden] { display: none; }
+.guide-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.guide-chips[hidden] { display: none; }   /* guard: see the [hidden] note above */
 
 .guide-chip {
-  font-size: 0.75rem;
-  padding: 6px 10px;
+  font-size: 0.76rem;
+  padding: 7px 12px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--chip-bg);
-  color: var(--chip-text);
+  background: var(--surface);
+  color: var(--heading);
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
 }
 .guide-chip:hover { background: var(--chip-active-bg); color: var(--chip-active-text); }
 
-.guide-form {
+/* The input is a floating pill, not a form docked to a panel edge. */
+.guide-bar {
   display: flex;
-  gap: 8px;
-  padding: 10px 16px;
-  border-top: 1px solid var(--border);
+  align-items: center;
+  gap: 6px;
+  padding: 5px 5px 5px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: var(--shadow-lg);
 }
-
 .guide-input {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 9px 12px;
+  border: 0;
+  background: none;
   font: inherit;
   font-size: 0.88rem;
   color: var(--heading);
-  background: var(--bg);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
+  padding: 7px 0;
 }
-.guide-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.guide-input:focus { outline: none; }
+.guide-bar:focus-within { border-color: var(--brand-500); }
 
 .guide-send {
   flex: 0 0 auto;
-  width: 38px;
+  width: 34px; height: 34px;
   border: 0;
   border-radius: 50%;
   background: var(--brand-700);
   color: #fff;
   cursor: pointer;
   line-height: 0;
+  display: grid;
+  place-items: center;
 }
 .guide-send:hover { filter: brightness(1.08); }
 
-.guide-note {
-  margin: 0;
-  padding: 0 16px 12px;
-  font-size: 0.68rem;
-  opacity: 0.6;
-}
+/* --- controls, stacked beside the head ----------------------------------- */
 
-@media (max-width: 768px) {
-  .guide-panel {
-    right: 12px;
-    left: 12px;
-    width: auto;
-    max-height: min(70vh, calc(100vh - 120px));
-  }
+.guide-controls {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: auto;
+  /* Beside the figure rather than above it, so they sit at head height like
+     the reference implementation's stack. */
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 4px;
+}
+.guide-root[data-state="open"] .guide-controls { display: flex; }
+.guide-root[data-side="left"]  .guide-controls { left: 200px; }
+.guide-root[data-side="right"] .guide-controls { right: 200px; }
+
+.guide-ctl {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--heading);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-md);
+}
+.guide-ctl:hover { background: var(--chip-active-bg); color: var(--chip-active-text); }
+.guide-ctl[hidden] { display: none; }
+.guide-ctl-voice[aria-pressed="true"] { background: var(--brand-700); color: #fff; border-color: var(--brand-700); }
+
+.action-guide { background: var(--brand-700); }
+
+/* --- small screens -------------------------------------------------------
+   The figure is a still image here (see panel.js), and the dialog takes the
+   full width rather than sitting beside a large avatar. */
+@media (max-width: 700px) {
+  .guide-root { left: 10px; right: 10px; bottom: 10px; }
+  .guide-root[data-side="right"] { bottom: calc(var(--guide-stack-clearance, 96px) + 8px); }
+  .guide-root[data-side="right"] { align-items: flex-start; }
+  .guide-figure { width: 96px; height: 116px; }
+  .guide-root[data-state="open"] .guide-figure { width: 110px; height: 130px; }
+  .guide-dialog { width: 100%; }
+  .guide-root[data-side="left"] .guide-controls,
+  .guide-root[data-side="right"] .guide-controls { left: auto; right: 0; }
+  .guide-log { max-height: 34vh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .guide-panel { transition: none; }
+  .guide-figure { transition: none; }
 }

@@ -18,11 +18,15 @@ export function createLaptop(opts = {}) {
   const group = new THREE.Group();
   group.name = 'guide-laptop';
 
+  /* Aluminium, not black plastic. A near-black slab read as an anonymous box;
+     brushed silver with high metalness catches the key light along its edges,
+     which is what makes it legible as a MacBook at 200px rather than a dark
+     rectangle in someone's hands. */
   const body = new THREE.MeshStandardMaterial({
-    color: 0x1b1f27, roughness: 0.42, metalness: 0.55,
+    color: 0xb9bdc4, roughness: 0.34, metalness: 0.86,
   });
   const screenBack = new THREE.MeshStandardMaterial({
-    color: 0x161a21, roughness: 0.38, metalness: 0.6,
+    color: 0xc2c6cd, roughness: 0.3, metalness: 0.9,
   });
   // Emissive so the screen carries its own light. Without this the lid is just
   // a dark slab and the whole thing reads as a closed box.
@@ -39,7 +43,8 @@ export function createLaptop(opts = {}) {
   // an edge, so it does not read as one flat slab.
   const plate = new THREE.Mesh(
     new THREE.BoxGeometry(width * 0.86, 0.002, depth * 0.72),
-    new THREE.MeshStandardMaterial({ color: 0x272c36, roughness: 0.7, metalness: 0.2 }),
+    // Darker keyboard well against the silver deck, so the base has an edge.
+    new THREE.MeshStandardMaterial({ color: 0x3a3f47, roughness: 0.72, metalness: 0.25 }),
   );
   plate.position.set(0, 0.013, depth * 0.06);
   group.add(plate);

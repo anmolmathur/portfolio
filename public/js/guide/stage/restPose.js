@@ -68,9 +68,9 @@ export const WORKING = {
   handX: -0.28,      // wrists broken down onto the keyboard
   fingerCurl: 0.42,  // a hand on keys is not a hand at rest
   thumbCurl: 0.2,
-  headX: 0.34,       // looking down at the screen
-  neckX: 0.18,
-  spineX: 0.06,      // a slight desk hunch
+  headX: 0.40,       // looking down into the screen
+  neckX: 0.22,
+  spineX: 0.11,      // leaning in — absorbed, not merely glancing down
 };
 
 /**

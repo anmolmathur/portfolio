@@ -31,6 +31,9 @@
     locale: injected.locale || 'en',
     // Versioned entry for the stage module graph; see server/lib/stage-modules.js
     stageEntry: injected.stageEntry || '/js/guide/stage/stage.js',
+    modelUrl: injected.modelUrl || '/assets/guide/models/anmol.glb',
+    // Rendered from the same GLB, so the phone sees the same character.
+    stillUrl: injected.stillUrl || '/assets/guide/models/anmol-idle.png',
     copy: injected.copy || {},
 
     // The panel is built on first open, not on page load. The three.js stage
@@ -62,6 +65,7 @@
     storageKeys: {
       greeted: 'guide-greeted',
       voice: 'guide-voice',
+      side: 'guide-side',
     },
 
     store: store,

@@ -107,6 +107,18 @@ export async function createStage(host, opts = {}) {
   let mode = opts.mode === 'working' ? 'working' : 'attentive';
   animator.setMode(mode);
 
+  /* Body turn.
+   *
+   * Working, he sits at three-quarters to the viewer -- someone absorbed in a
+   * screen is not squared up to the room, and a dead-on frontal figure at a
+   * keyboard reads as posing for a photograph rather than working. Opening the
+   * guide turns him to face you, which is the whole point of the state change.
+   *
+   * Eased rather than snapped: the turn IS the acknowledgement. */
+  const TURN = { working: opts.workingTurn ?? -0.34, attentive: 0 };
+  let turn = TURN[mode];
+  let turnTarget = turn;
+
   /* The frame pipeline, in the order references/animation.md requires:
    *
    *   applyRestPose -> idle -> gesture -> viseme -> look-at -> adapter.update
@@ -126,6 +138,11 @@ export async function createStage(host, opts = {}) {
     const dt = lastTime === null ? 1 / 60 : Math.max(0, Math.min(0.1, time - lastTime));
     lastTime = time;
 
+    // Ease the body turn toward its target for the current mode.
+    turn += (turnTarget - turn) * Math.min(1, dt * 4.5);
+    avatar.scene.rotation.y = (opts.faceRotation ?? 0) + turn;
+    laptop.group.rotation.y = turn;
+
     if (mode === 'working') applyWorkingPose(avatar.proxies);
     else applyRestPose(avatar.proxies);
     animator.update(time);
@@ -138,9 +155,14 @@ export async function createStage(host, opts = {}) {
      pose once, push it through the rig, then measure. Measuring from the rest
      pose would sit it under clasped hands and float it in mid-air. */
   function placeLaptop() {
+    // Pose first, then measure: measuring from the rest pose would sit the
+    // laptop under clasped hands and leave it floating.
+    const keepTurn = avatar.scene.rotation.y;
+    avatar.scene.rotation.y = opts.faceRotation ?? 0;   // measure unturned
     applyWorkingPose(avatar.proxies);
     avatar.update();
     laptop.placeUnder(avatar.bones.leftHand, avatar.bones.rightHand);
+    avatar.scene.rotation.y = keepTurn;
   }
   placeLaptop();
   framing = frame();
@@ -149,6 +171,7 @@ export async function createStage(host, opts = {}) {
     const m = next === 'working' ? 'working' : 'attentive';
     if (m === mode) return;
     mode = m;
+    turnTarget = TURN[m];
     animator.setMode(m);
     laptop.group.visible = (m === 'working');
     if (m === 'working') placeLaptop();

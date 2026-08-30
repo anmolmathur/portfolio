@@ -1,8 +1,19 @@
-/* Guide — panel. The UI shell: header, transcript, suggestion chips, input.
+/* Guide — the cutout.
  *
- * Built on first open, not at page load. Phase 2's three.js stage mounts into
- * `.guide-stage` below via a separate dynamic import, so the 3D weight stays
- * behind the same gate.
+ * references/rendering.md §Stage: "The avatar is a CUTOUT floating over the
+ * page — no Paper/card/window chrome. Users consistently prefer this; it reads
+ * as a presence, not a widget." The first version of this file was exactly the
+ * widget that warns against: a bordered panel with a header bar and the avatar
+ * squeezed into a strip along the top.
+ *
+ * So the root is a transparent fixed container with pointer-events NONE, and
+ * only the pieces that must be clickable turn them back on. The page stays
+ * usable through the avatar, which is what makes it read as standing ON the
+ * page rather than sitting in a box on top of it.
+ *
+ * Two states. IDLE is the avatar working at its laptop, small, docked to one
+ * edge. OPEN raises it, switches the pose to attentive, and reveals the
+ * transcript, chips and input pill stacked beneath.
  */
 (function () {
   'use strict';
@@ -16,65 +27,32 @@
     return n;
   };
 
+  var svg = function (paths, size) {
+    return '<svg viewBox="0 0 24 24" width="' + (size || 18) + '" height="' + (size || 18)
+      + '" aria-hidden="true">' + paths + '</svg>';
+  };
+
   function createPanel(opts) {
     var engine = G.createEngine();
-    var root = el('div', 'guide-panel');
-    root.hidden = true;
-    root.setAttribute('role', 'dialog');
-    root.setAttribute('aria-modal', 'false');
-    root.setAttribute('aria-label', G.copy('title', 'Assistant'));
-
-    // ---- header -----------------------------------------------------------
-    var head = el('div', 'guide-head');
-    var heading = el('div', 'guide-heading');
-    heading.appendChild(el('strong', null, G.copy('title', 'Ask about Anmol')));
-    heading.appendChild(el('span', 'guide-sub', G.copy('subtitle', '')));
-    /* Voice is OFF by default.
-     *
-     * The reference's B2C guide greets visitors out loud, but speechSynthesis
-     * utterances are exempt from autoplay policy, so that would mean a
-     * portfolio that starts talking at a recruiter who only clicked a chat
-     * button. Opt-in is the right default here; the toggle remembers itself. */
     var speaker = G.createSpeaker();
+
     var voiceOn = G.config.store.get(G.config.storageKeys.voice) === '1';
     speaker.setEnabled(voiceOn);
 
-    var voiceBtn = el('button', 'guide-voice');
-    voiceBtn.type = 'button';
-    function paintVoiceBtn() {
-      voiceBtn.setAttribute('aria-pressed', voiceOn ? 'true' : 'false');
-      voiceBtn.setAttribute('aria-label',
-        voiceOn ? G.copy('speakOff', 'Turn voice off') : G.copy('speakOn', 'Turn voice on'));
-      voiceBtn.title = voiceBtn.getAttribute('aria-label');
-      voiceBtn.innerHTML = voiceOn
-        ? '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
-        : '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-    }
-    paintVoiceBtn();
-    voiceBtn.addEventListener('click', function () {
-      voiceOn = !voiceOn;
-      speaker.setEnabled(voiceOn);
-      G.config.store.set(G.config.storageKeys.voice, voiceOn ? '1' : '0');
-      if (!voiceOn && stageApi) stageApi.stopSpeaking();
-      paintVoiceBtn();
-    });
-    if (!speaker.supported) voiceBtn.hidden = true;
+    // ---- root ------------------------------------------------------------
+    var root = el('div', 'guide-root');
+    root.dataset.state = 'idle';
+    root.dataset.side = G.config.store.get(G.config.storageKeys.side) || 'left';
 
-    var close = el('button', 'guide-close');
-    close.type = 'button';
-    close.setAttribute('aria-label', G.copy('close', 'Close'));
-    close.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
-      + '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-    head.appendChild(heading);
-    var headBtns = el('div', 'guide-head-btns');
-    headBtns.appendChild(voiceBtn);
-    headBtns.appendChild(close);
-    head.appendChild(headBtns);
+    // The figure: 3D canvas on desktop, a still image on small screens.
+    var figure = el('button', 'guide-figure');
+    figure.type = 'button';
+    figure.setAttribute('aria-label', G.copy('aria', 'Open the assistant'));
+    figure.setAttribute('aria-expanded', 'false');
 
-    // Reserved for the avatar. Empty in phase 1 — the panel is a working text
-    // guide without it, which is the point of shipping the phases separately.
-    var stage = el('div', 'guide-stage');
-    stage.setAttribute('aria-hidden', 'true');
+    var dialog = el('div', 'guide-dialog');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-label', G.copy('title', 'Assistant'));
 
     var log = el('div', 'guide-log');
     log.setAttribute('role', 'log');
@@ -82,32 +60,60 @@
 
     var chips = el('div', 'guide-chips');
 
-    // ---- input ------------------------------------------------------------
-    var form = el('form', 'guide-form');
+    var form = el('form', 'guide-bar');
     var input = el('input', 'guide-input');
     input.type = 'text';
     input.autocomplete = 'off';
-    input.placeholder = G.copy('placeholder', 'Ask a question…');
-    input.setAttribute('aria-label', G.copy('placeholder', 'Ask a question'));
+    input.placeholder = G.copy('placeholder', 'Ask me anything...');
+    input.setAttribute('aria-label', G.copy('placeholder', 'Ask me anything'));
     input.maxLength = G.config.limits.question;
     var send = el('button', 'guide-send');
     send.type = 'submit';
     send.setAttribute('aria-label', G.copy('send', 'Send'));
-    send.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
-      + '<path d="M4 12l16-8-6 8 6 8z" fill="currentColor"/></svg>';
+    send.innerHTML = svg('<path d="M4 12l16-8-6 8 6 8z" fill="currentColor"/>');
     form.appendChild(input);
     form.appendChild(send);
 
-    var note = el('p', 'guide-note', G.copy('disclosure', ''));
+    dialog.appendChild(log);
+    dialog.appendChild(chips);
+    dialog.appendChild(form);
 
-    root.appendChild(head);
-    root.appendChild(stage);
-    root.appendChild(log);
-    root.appendChild(chips);
-    root.appendChild(form);
-    root.appendChild(note);
+    // ---- controls, stacked beside the head -------------------------------
+    var controls = el('div', 'guide-controls');
 
-    // ---- transcript -------------------------------------------------------
+    var closeBtn = el('button', 'guide-ctl guide-ctl-close');
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', G.copy('close', 'Close'));
+    closeBtn.innerHTML = svg('<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>');
+
+    var sideBtn = el('button', 'guide-ctl guide-ctl-side');
+    sideBtn.type = 'button';
+    sideBtn.setAttribute('aria-label', G.copy('switchSide', 'Move to the other side'));
+    sideBtn.innerHTML = svg('<path d="M9 7L4 12l5 5M15 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>');
+
+    var voiceBtn = el('button', 'guide-ctl guide-ctl-voice');
+    voiceBtn.type = 'button';
+    function paintVoice() {
+      voiceBtn.setAttribute('aria-pressed', voiceOn ? 'true' : 'false');
+      var label = voiceOn ? G.copy('speakOff', 'Turn voice off') : G.copy('speakOn', 'Turn voice on');
+      voiceBtn.setAttribute('aria-label', label);
+      voiceBtn.title = label;
+      voiceBtn.innerHTML = voiceOn
+        ? svg('<path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>')
+        : svg('<path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>');
+    }
+    paintVoice();
+    if (!speaker.supported) voiceBtn.hidden = true;
+
+    controls.appendChild(closeBtn);
+    controls.appendChild(sideBtn);
+    controls.appendChild(voiceBtn);
+
+    root.appendChild(controls);
+    root.appendChild(figure);
+    root.appendChild(dialog);
+
+    // ---- transcript ------------------------------------------------------
     function bubble(kind, text) {
       var b = el('div', 'guide-msg guide-msg-' + kind);
       b.appendChild(el('p', null, text));
@@ -119,21 +125,79 @@
     function addSources(after, sources) {
       if (!sources || !sources.length) return;
       var wrap = el('div', 'guide-sources');
-      wrap.appendChild(el('span', 'guide-sources-label', G.copy('sourceLabel', 'On this page')));
       sources.slice(0, 3).forEach(function (s) {
         if (!s.url) return;
         var a = el('a', 'guide-source', s.title);
         a.href = s.url;
-        /* Answers cite where on the page the claim came from, so a visitor can
-           check it. Grounding the visitor can verify is worth more than
-           grounding they have to take on trust. */
         a.addEventListener('click', function () { close_(); });
         wrap.appendChild(a);
       });
-      if (wrap.children.length > 1) after.appendChild(wrap);
+      if (wrap.children.length) after.appendChild(wrap);
     }
 
+    // ---- figure ----------------------------------------------------------
+    var stageApi = null;
+    var stageTried = false;
+    var still = null;
+
+    function useStill() {
+      if (still) return;
+      still = el('img', 'guide-still');
+      still.src = G.config.stillUrl;
+      still.alt = '';
+      still.setAttribute('aria-hidden', 'true');
+      still.addEventListener('error', function () { root.classList.remove('has-figure'); });
+      figure.appendChild(still);
+      root.classList.add('has-figure');
+    }
+
+    function ensureFigure() {
+      if (stageTried) return;
+      if (!G.config.enableStage || !window.WebGLRenderingContext) { useStill(); return; }
+      var w = window.innerWidth;
+      if (w === 0) return;                        // unlaid-out page; retry on open
+      /* Small screens get the still image rather than ~15MB of three.js and
+         model. The presence is worth having on a phone; the download is not. */
+      if (w <= 700) { useStill(); return; }
+
+      stageTried = true;
+      import(G.config.stageEntry)
+        .then(function (mod) {
+          return mod.createStage(figure, { modelUrl: G.config.modelUrl, mode: 'working' });
+        })
+        .then(function (s) {
+          stageApi = s;
+          root.classList.add('has-figure', 'has-stage');
+          var reduce = window.matchMedia
+            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!reduce) s.start();
+        })
+        .catch(function (err) {
+          // Never leave an empty hole where the avatar should be.
+          useStill();
+          if (window.console && console.warn) console.warn('[guide] 3D unavailable:', err && err.message);
+        });
+    }
+
+    // ---- ask -> deliver --------------------------------------------------
     var busy = false;
+    var beatTimer = null;
+
+    function deliver(text, gesture) {
+      if (stageApi) { if (gesture) stageApi.play(gesture); else stageApi.playFromPool(); }
+      if (!speaker.isEnabled() || !text) return;
+      if (beatTimer) clearInterval(beatTimer);
+      // Talk beats: the hands must not die halfway through a long answer.
+      beatTimer = setInterval(function () { if (stageApi) stageApi.playFromPool(); }, 5500);
+      speaker.speak(text, {
+        onWord: function (w, ms) { if (stageApi) stageApi.sayWord(w, ms); },
+        onEnd: function () {
+          if (beatTimer) { clearInterval(beatTimer); beatTimer = null; }
+          if (stageApi) stageApi.stopSpeaking();
+        },
+      });
+    }
+
     function submit(question) {
       if (busy) return;
       var q = String(question || '').trim();
@@ -142,11 +206,9 @@
       input.value = '';
       chips.hidden = true;
       bubble('visitor', q);
-      var thinking = bubble('guide guide-thinking', G.copy('thinking', 'Thinking…'));
+      var thinking = bubble('guide guide-thinking', G.copy('thinking', 'Thinking...'));
 
       engine.ask(q).then(function (res) {
-        // Null means a newer question superseded this one; its bubble is
-        // already gone and delivering now would answer the wrong question.
         if (!res) { thinking.remove(); busy = false; return; }
         thinking.remove();
         var b = bubble('guide', res.answer || '');
@@ -158,134 +220,95 @@
       });
     }
 
-    /* deliver() is the ask -> speak -> gesture seam from
-       references/architecture.md. The bubble is already on screen by the time
-       this runs: text must never wait on speech, which may be off, unsupported
-       or slow. */
-    var beatTimer = null;
-    function deliver(text, gesture) {
-      if (stageApi) { if (gesture) stageApi.play(gesture); else stageApi.playFromPool(); }
-      if (!speaker.isEnabled() || !text) return;
-
-      /* Talk beats: re-fire a gesture every ~5.5s while speaking, or the hands
-         die halfway through a long answer and the avatar looks frozen. */
-      if (beatTimer) clearInterval(beatTimer);
-      beatTimer = setInterval(function () {
-        if (stageApi) stageApi.playFromPool();
-      }, 5500);
-
-      speaker.speak(text, {
-        onWord: function (word, ms) { if (stageApi) stageApi.sayWord(word, ms); },
-        onEnd: function () {
-          if (beatTimer) { clearInterval(beatTimer); beatTimer = null; }
-          if (stageApi) stageApi.stopSpeaking();
-        },
-      });
-    }
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      submit(input.value);
-    });
+    form.addEventListener('submit', function (e) { e.preventDefault(); submit(input.value); });
 
     function renderChips() {
       chips.textContent = '';
-      var list = G.config.copy.suggestions || [];
-      list.slice(0, 4).forEach(function (s) {
+      (G.config.copy.suggestions || []).slice(0, 4).forEach(function (s) {
         var c = el('button', 'guide-chip', s);
         c.type = 'button';
         c.addEventListener('click', function () { submit(s); });
         chips.appendChild(c);
       });
-      chips.hidden = list.length === 0;
+      chips.hidden = !chips.children.length;
     }
 
-    /* ---- avatar stage (phase 2) -----------------------------------------
-     * Dynamically imported on first open so three.js (~800KB) never reaches a
-     * visitor who does not open the guide. Failure is silent by design: the
-     * guide is a working text assistant without an avatar, and a WebGL or
-     * model problem must not take the answers down with it. */
-    var stageApi = null;
-    var stageTried = false;
-    function ensureStage() {
-      if (stageTried) return;
-
-      /* Gates are re-evaluated on every open and the latch is set only when an
-         import actually starts. Latching first looked equivalent and was not:
-         a viewport reporting 0 width (a page opened in a background tab, or an
-         automated browser) matches `max-width: 600px`, so the avatar would be
-         suppressed permanently for that page view and never retried after a
-         resize. Found exactly that way. */
-      if (!G.config.enableStage) return;              // see config.enableStage
-      if (!window.WebGLRenderingContext) return;      // no WebGL, no avatar
-      // Small screens skip the avatar: the panel is nearly full-height there
-      // and the transcript is worth more than the figure. A zero width is not
-      // a small screen, it is an unlaid-out page — do not treat it as one.
-      var w = window.innerWidth;
-      if (w > 0 && w <= 600) return;
-      if (w === 0) return;
-
-      stageTried = true;
-      import(G.config.stageEntry)
-        .then(function (mod) {
-          return mod.createStage(stage, {
-            modelUrl: '/assets/guide/models/anmol.glb',
-          });
-        })
-        .then(function (s) {
-          stageApi = s;
-          stage.classList.add('is-live');
-          // Respect the visitor's motion preference: a still first frame is
-          // already rendered, so honouring this costs nothing visually.
-          var reduce = window.matchMedia
-            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!reduce && !root.hidden) s.start();
-        })
-        .catch(function (err) {
-          // Leave the stage host empty; CSS collapses it when it has no canvas.
-          if (window.console && console.warn) console.warn('[guide] avatar unavailable:', err && err.message);
-        });
-    }
-
-    // ---- open / close -----------------------------------------------------
+    // ---- open / close ----------------------------------------------------
     var greeted = false;
+
     function open_() {
-      root.hidden = false;
-      ensureStage();
+      if (root.dataset.state === 'open') return;
+      ensureFigure();                       // covers a first open after a resize
+      root.dataset.state = 'open';
+      figure.setAttribute('aria-expanded', 'true');
+      /* Stand up from the desk. The laptop goes away and the pose becomes
+         attentive -- the visual cue that it is now listening rather than busy. */
+      if (stageApi) {
+        stageApi.setMode('attentive');
+        stageApi.resize(figure.clientWidth, figure.clientHeight);
+      }
       if (!greeted) {
         greeted = true;
         var seen = G.config.store.get(G.config.storageKeys.greeted);
-        bubble('guide', seen
-          ? G.copy('greetingReturn', G.copy('greeting', ''))
-          : G.copy('greeting', ''));
+        bubble('guide', seen ? G.copy('greetingReturn', G.copy('greeting', '')) : G.copy('greeting', ''));
         G.config.store.set(G.config.storageKeys.greeted, '1');
         renderChips();
       }
-      // Focus the input, not the panel: a visitor who opened this wants to type.
       setTimeout(function () { input.focus(); }, 0);
       if (opts && opts.onOpen) opts.onOpen();
     }
 
     function close_() {
-      root.hidden = true;
-      // Nothing is visible now; keep the GL context but stop the loop.
-      if (stageApi) { stageApi.stop(); stageApi.stopSpeaking(); }
+      if (root.dataset.state === 'idle') return;
+      root.dataset.state = 'idle';
+      figure.setAttribute('aria-expanded', 'false');
+      if (stageApi) {
+        stageApi.setMode('working');        // back to work
+        stageApi.stopSpeaking();
+        stageApi.resize(figure.clientWidth, figure.clientHeight);
+      }
       speaker.cancel();
       if (beatTimer) { clearInterval(beatTimer); beatTimer = null; }
       if (opts && opts.onClose) opts.onClose();
     }
 
-    close.addEventListener('click', close_);
-    root.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { e.stopPropagation(); close_(); }
+    figure.addEventListener('click', function () {
+      if (root.dataset.state === 'open') close_(); else open_();
     });
+    closeBtn.addEventListener('click', close_);
+
+    voiceBtn.addEventListener('click', function () {
+      voiceOn = !voiceOn;
+      speaker.setEnabled(voiceOn);
+      G.config.store.set(G.config.storageKeys.voice, voiceOn ? '1' : '0');
+      if (!voiceOn && stageApi) stageApi.stopSpeaking();
+      paintVoice();
+    });
+
+    /* "Drag me to either side" is a button here, not a drag.
+       A drag on a fixed overlay fights page scrolling on touch, and the only
+       meaningful destinations are the two edges -- so a control that states the
+       outcome beats a gesture the visitor has to discover. */
+    sideBtn.addEventListener('click', function () {
+      root.dataset.side = (root.dataset.side === 'left') ? 'right' : 'left';
+      G.config.store.set(G.config.storageKeys.side, root.dataset.side);
+      if (stageApi) stageApi.resize(figure.clientWidth, figure.clientHeight);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && root.dataset.state === 'open') close_();
+    });
+
+    // The figure appears on load; the rest waits for a click.
+    if (document.readyState === 'complete') ensureFigure();
+    else window.addEventListener('load', ensureFigure);
 
     return {
       el: root,
       open: open_,
       close: close_,
-      isOpen: function () { return !root.hidden; },
-      stageHost: stage,
+      isOpen: function () { return root.dataset.state === 'open'; },
+      mountFigure: ensureFigure,
       stageApi: function () { return stageApi; },
     };
   }
