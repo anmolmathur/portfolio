@@ -36,7 +36,7 @@
     var engine = G.createEngine();
     var speaker = G.createSpeaker();
 
-    var voiceOn = G.config.store.get(G.config.storageKeys.voice) === '1';
+    var voiceOn = G.config.enableVoice && G.config.store.get(G.config.storageKeys.voice) === '1';
     speaker.setEnabled(voiceOn);
 
     // ---- root ------------------------------------------------------------
@@ -53,6 +53,11 @@
     var dialog = el('div', 'guide-dialog');
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-label', G.copy('title', 'Assistant'));
+
+    var head = el('div', 'guide-head');
+    head.appendChild(el('strong', 'guide-title', G.copy('title', 'Ask about Anmol')));
+    head.appendChild(el('span', 'guide-sub', G.copy('subtitle', '')));
+    dialog.appendChild(head);
 
     var log = el('div', 'guide-log');
     log.setAttribute('role', 'log');
@@ -103,10 +108,10 @@
         : svg('<path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>');
     }
     paintVoice();
-    if (!speaker.supported) voiceBtn.hidden = true;
+    if (!speaker.supported || !G.config.enableVoice) voiceBtn.hidden = true;
 
     controls.appendChild(closeBtn);
-    controls.appendChild(sideBtn);
+    if (G.config.showAvatar) controls.appendChild(sideBtn);
     controls.appendChild(voiceBtn);
 
     root.appendChild(controls);
@@ -153,7 +158,10 @@
 
     function ensureFigure() {
       if (stageTried) return;
-      if (!G.config.enableStage || !window.WebGLRenderingContext) { useStill(); return; }
+      // Avatar off: no figure at all, not even the still. The panel below
+      // styles itself as an ordinary chat window when there is nothing to show.
+      if (!G.config.showAvatar) { root.classList.add('no-figure'); return; }
+      if (!window.WebGLRenderingContext) { useStill(); return; }
       var w = window.innerWidth;
       if (w === 0) return;                        // unlaid-out page; retry on open
       /* Small screens get the still image rather than ~15MB of three.js and

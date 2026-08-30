@@ -2081,3 +2081,95 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 @media (prefers-reduced-motion: reduce) {
   .guide-figure { transition: none; }
 }
+
+/* --------------------------------------------------------------------------
+   No-avatar mode — an ordinary chat window.
+
+   With the figure gone the cutout has nothing to be a cutout AROUND, and a
+   floating stack of unattached bubbles reads as debris rather than design. So
+   when `no-figure` is set the same DOM becomes a conventional panel: one
+   surface, a header, a scrolling transcript and a docked input.
+
+   The 3D path is untouched and still styled above; this only takes over when
+   panel.js says there is no figure.
+   -------------------------------------------------------------------------- */
+
+.guide-root.no-figure {
+  bottom: calc(var(--guide-stack-clearance, 112px) + 12px);
+  right: 20px;
+  left: auto;
+  align-items: flex-end;
+}
+.guide-root.no-figure .guide-figure { display: none; }
+
+.guide-root.no-figure .guide-dialog {
+  gap: 0;
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(600px, calc(100vh - 160px));
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.guide-root.no-figure .guide-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 13px 16px;
+  background: var(--brand-800);
+  color: #fff;
+}
+.guide-root.no-figure .guide-title { font-size: 0.98rem; }
+.guide-root.no-figure .guide-sub { font-size: 0.76rem; opacity: 0.85; }
+
+.guide-root.no-figure .guide-log {
+  max-height: none;
+  flex: 1 1 auto;
+  min-height: 140px;
+  padding: 14px 16px;
+}
+/* Inside a panel the bubbles sit on its surface, so they drop the shadow and
+   border they needed when floating free over the page. */
+.guide-root.no-figure .guide-msg-guide {
+  background: var(--bg-subtle);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.guide-root.no-figure .guide-chips { padding: 0 16px 10px; }
+.guide-root.no-figure .guide-chip { box-shadow: none; }
+
+.guide-root.no-figure .guide-bar {
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 8px 8px 8px 16px;
+}
+
+/* The controls belong on the header, not floating beside a figure that is
+   no longer there. */
+.guide-root.no-figure .guide-controls {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  bottom: auto;
+  left: auto;
+  margin: 0;
+  flex-direction: row;
+}
+.guide-root.no-figure .guide-ctl {
+  width: 30px; height: 30px;
+  background: transparent;
+  border-color: transparent;
+  color: #fff;
+  box-shadow: none;
+}
+.guide-root.no-figure .guide-ctl:hover { background: rgba(255, 255, 255, 0.18); color: #fff; }
+
+@media (max-width: 700px) {
+  .guide-root.no-figure { left: 10px; right: 10px; bottom: calc(var(--guide-stack-clearance, 96px) + 8px); }
+  .guide-root.no-figure .guide-dialog { width: 100%; max-height: min(70vh, calc(100vh - 130px)); }
+}

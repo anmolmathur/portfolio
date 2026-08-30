@@ -41,18 +41,29 @@
     // never touches a visitor who does not open the guide.
     lazyPanel: true,
 
-    /* The avatar stage is ON since phase 3 gave it a rest pose and idle
-     * motion; before that a freshly loaded Mixamo rig stood in a T-pose, which
-     * is the correct output for "stage + model" and still read as broken.
+    /* AVATAR OFF.
      *
-     * ?guide-stage=0 turns it off without a deploy — useful for isolating a
-     * WebGL or model problem from the rest of the guide, which works as a text
-     * assistant with the stage absent. */
-    enableStage: (function () {
-      try {
-        if (/[?&]guide-stage=0/.test(location.search)) return false;
-      } catch (e) { /* ignore */ }
-      return true;
+     * Turned off by the site owner on 2026-08-30: the 3D figure read as
+     * kiddish against a professional portfolio, and the browser's speech voice
+     * sounded bad. Both judgements are the owner's and both are right to act on
+     * -- a feature its owner finds embarrassing is worse than no feature.
+     *
+     * NOTHING IS DELETED. The stage, rig normalizer, poses, laptop, animator
+     * and viseme driver all remain in public/js/guide/stage/ and still work;
+     * this flag is the only thing standing between them and the page, so
+     * re-enabling after a design pass is a one-line change.
+     *
+     * ?guide-stage=1 previews it without a deploy. */
+    showAvatar: (function () {
+      try { return /[?&]guide-stage=1/.test(location.search); } catch (e) { return false; }
+    })(),
+
+    /* VOICE OFF for the same reason. speechSynthesis is the always-available
+       floor tier and it sounds like it; the good tiers (cloud TTS, Piper) are
+       not built yet. It was already opt-in, but an opt-in to something the
+       owner considers bad is still a trap for a visitor. */
+    enableVoice: (function () {
+      try { return /[?&]guide-voice=1/.test(location.search); } catch (e) { return false; }
     })(),
 
     limits: {
