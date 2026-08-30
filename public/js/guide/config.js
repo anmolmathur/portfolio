@@ -31,10 +31,26 @@
     locale: injected.locale || 'en',
     copy: injected.copy || {},
 
-    // The panel is built on first open, not on page load. Phase 2's three.js
-    // stage will be a separate dynamic import behind this same gate, so the
-    // 600KB+ of 3D never touches a visitor who does not open the guide.
+    // The panel is built on first open, not on page load. The three.js stage
+    // is a separate dynamic import behind that same gate, so the ~2MB of 3D
+    // never touches a visitor who does not open the guide.
     lazyPanel: true,
+
+    /* The avatar stage is OFF until it has a rest pose.
+     *
+     * Phase 2 loads and renders the model correctly, but a freshly loaded
+     * Mixamo rig stands in a T-pose with its arms straight out. That is the
+     * correct output for "stage + model" and it still reads as broken to a
+     * visitor, so it stays behind this flag until phase 3 (animation.md) adds
+     * the rest pose and idle motion. Flip to true to preview it.
+     *
+     * ?guide-stage=1 in the URL forces it on for testing without a deploy. */
+    enableStage: (function () {
+      try {
+        if (/[?&]guide-stage=1/.test(location.search)) return true;
+      } catch (e) { /* ignore */ }
+      return false;
+    })(),
 
     limits: {
       question: 500,      // matches MAX_QUESTION on the server

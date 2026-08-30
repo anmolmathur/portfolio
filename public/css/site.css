@@ -1922,12 +1922,29 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 }
 .guide-close:hover { background: rgba(255, 255, 255, 0.15); }
 
-/* Reserved for the phase 2 avatar. Collapsed until it has something in it, so
-   the text guide does not carry an empty gap in the meantime. */
-.guide-stage:empty { display: none; }
+/* The avatar stage. Collapsed until the canvas actually attaches, so a
+   visitor on a device without WebGL, or one where the model fails to load,
+   sees a clean text guide rather than an empty gap. `.is-live` is added by
+   panel.js only after createStage() resolves. */
+.guide-stage { display: none; }
+.guide-stage.is-live {
+  display: block;
+  /* Fixed height, and the log below is given a floor: with the stage sized
+     from the canvas's intrinsic ratio instead, it grew to 328px and squeezed
+     the transcript to 50px, clipping the greeting mid-sentence. The figure is
+     decoration; the answers are the product. */
+  height: 168px;
+  flex: 0 0 auto;
+  /* The cutout reads as a presence, not a widget: no card, no border, just the
+     figure over the panel's own surface. */
+  background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--surface) 100%);
+  border-bottom: 1px solid var(--border);
+}
 
 .guide-log {
   flex: 1 1 auto;
+  /* Never let the stage or chips starve the transcript. */
+  min-height: 132px;
   overflow-y: auto;
   padding: 14px 16px;
   display: flex;

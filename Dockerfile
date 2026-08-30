@@ -24,6 +24,10 @@ COPY server ./server
 COPY views ./views
 COPY content ./content
 COPY public ./public
+# The avatar model lives here. app.js registers `assets` as a static root, so
+# omitting it made every /assets/* URL 404 inside the container while working
+# fine in local dev, where the directory is simply present on disk.
+COPY assets ./assets
 COPY images ./images
 COPY logos ./logos
 COPY docs ./docs

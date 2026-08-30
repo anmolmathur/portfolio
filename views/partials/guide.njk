@@ -19,4 +19,24 @@
     copy: {{ copy.ui.guide | dump | replace("</script", "<\\/script") | safe }}
   };
 </script>
+{#
+  Import map for the avatar stage. MUST come before any <script type="module">
+  on the page — the browser ignores an import map that arrives after the first
+  module script, silently, and the stage then fails to resolve "three".
+
+  The trailing slash on the "three/addons/" key is load-bearing and belongs
+  OUTSIDE any path helper: without it the prefix mapping does not apply and
+  every addon import 404s.
+
+  Nothing here downloads three.js. The map is declarative; the 800KB is fetched
+  only when panel.js dynamically imports the stage, which happens on first open.
+#}
+<script type="importmap">
+{
+  "imports": {
+    "three": "/vendor/three/three.module.js",
+    "three/addons/": "/vendor/three/addons/"
+  }
+}
+</script>
 <script src="/js/guide/bundle.js?v={{ guideVersion }}" defer></script>

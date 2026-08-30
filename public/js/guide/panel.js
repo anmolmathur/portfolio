@@ -140,10 +140,58 @@
       chips.hidden = list.length === 0;
     }
 
+    /* ---- avatar stage (phase 2) -----------------------------------------
+     * Dynamically imported on first open so three.js (~800KB) never reaches a
+     * visitor who does not open the guide. Failure is silent by design: the
+     * guide is a working text assistant without an avatar, and a WebGL or
+     * model problem must not take the answers down with it. */
+    var stageApi = null;
+    var stageTried = false;
+    function ensureStage() {
+      if (stageTried) return;
+
+      /* Gates are re-evaluated on every open and the latch is set only when an
+         import actually starts. Latching first looked equivalent and was not:
+         a viewport reporting 0 width (a page opened in a background tab, or an
+         automated browser) matches `max-width: 600px`, so the avatar would be
+         suppressed permanently for that page view and never retried after a
+         resize. Found exactly that way. */
+      if (!G.config.enableStage) return;              // see config.enableStage
+      if (!window.WebGLRenderingContext) return;      // no WebGL, no avatar
+      // Small screens skip the avatar: the panel is nearly full-height there
+      // and the transcript is worth more than the figure. A zero width is not
+      // a small screen, it is an unlaid-out page — do not treat it as one.
+      var w = window.innerWidth;
+      if (w > 0 && w <= 600) return;
+      if (w === 0) return;
+
+      stageTried = true;
+      import('/js/guide/stage/stage.js')
+        .then(function (mod) {
+          return mod.createStage(stage, {
+            modelUrl: '/assets/guide/models/anmol.glb',
+          });
+        })
+        .then(function (s) {
+          stageApi = s;
+          stage.classList.add('is-live');
+          // Respect the visitor's motion preference: a still first frame is
+          // already rendered, so honouring this costs nothing visually.
+          var reduce = window.matchMedia
+            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!reduce && !root.hidden) s.start();
+        })
+        .catch(function (err) {
+          // Leave the stage host empty; CSS collapses it when it has no canvas.
+          if (window.console && console.warn) console.warn('[guide] avatar unavailable:', err && err.message);
+        });
+    }
+
     // ---- open / close -----------------------------------------------------
     var greeted = false;
     function open_() {
       root.hidden = false;
+      ensureStage();
       if (!greeted) {
         greeted = true;
         var seen = G.config.store.get(G.config.storageKeys.greeted);
@@ -160,6 +208,8 @@
 
     function close_() {
       root.hidden = true;
+      // Nothing is visible now; keep the GL context but stop the loop.
+      if (stageApi) stageApi.stop();
       if (opts && opts.onClose) opts.onClose();
     }
 
@@ -174,6 +224,7 @@
       close: close_,
       isOpen: function () { return !root.hidden; },
       stageHost: stage,
+      stageApi: function () { return stageApi; },
     };
   }
 
