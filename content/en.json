@@ -563,10 +563,10 @@
         "logoAlt": "Hungama Logo",
         "theme": "hungama",
         "title": "Tech Cost Optimization & Cloud Transformation",
-        "impact": "Impact: ₹1.5 Cr in annual savings (50% reduction)",
+        "impact": "Impact: ₹1.7 Cr in annual savings (57% reduction)",
         "period": "June 2023 – Dec 2024",
-        "body": "At Hungama Digital, I led a strategic technology cost optimization initiative that reduced annual tech spend from ₹3 Cr to ₹1.5 Cr. I began by auditing cloud usage, team structure, and third-party contracts, followed by restructuring engineering pods for agility. We migrated to optimized cloud-native stacks (Kubernetes, multi-cloud), deployed FinOps practices, and implemented AI-powered real-time dashboards. Results included auto-scaling, SLA coverage above 98%, and enhanced collaboration across Tech, Product, and Finance—realigning KPIs, reducing tech debt, and embedding cost accountability in the engineering culture.",
-        "metric": "₹1.5 Cr",
+        "body": "At Hungama Digital, I led a strategic technology cost optimization initiative that reduced annual tech spend from ₹3 Cr to ₹1.3 Cr. I began by auditing cloud usage, team structure, and third-party contracts, followed by restructuring engineering pods for agility. We migrated to optimized cloud-native stacks (Kubernetes, multi-cloud), deployed FinOps practices, and implemented AI-powered real-time dashboards. Results included auto-scaling, SLA coverage above 98%, and enhanced collaboration across Tech, Product, and Finance—realigning KPIs, reducing tech debt, and embedding cost accountability in the engineering culture.",
+        "metric": "₹1.7 Cr",
         "metricLabel": "annual savings — a 50% reduction"
       },
       {

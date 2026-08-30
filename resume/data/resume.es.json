@@ -1,0 +1,297 @@
+{
+  "locale": "es",
+  "meta": {
+    "title": "Anmol Mathur — Director de Tecnología (CTO)",
+    "subject": "Currículum Vítae",
+    "keywords": "Director de Tecnología, CTO, VP de Ingeniería, Líder Tecnológico, EdTech, OTT, Tecnología Bancaria, Estrategia de IA, Cloud, Kubernetes, Transformación Digital, Mumbai, India, España"
+  },
+  "labels": {
+    "summary": "Perfil Profesional",
+    "competencies": "Competencias Clave",
+    "highlights": "Logros Destacados",
+    "experience": "Experiencia Profesional",
+    "education": "Formación Académica",
+    "technology": "Tecnologías y Herramientas",
+    "publications": "Publicaciones",
+    "industries": "Sectores de Experiencia",
+    "languages": "Idiomas",
+    "international": "Experiencia Internacional",
+    "present": "Actualidad",
+    "coverLetter": "Carta de Presentación",
+    "continued": "Experiencia Profesional (continuación)",
+    "interests": "Intereses",
+    "beyond": "Sectores · Experiencia Internacional · Idiomas · Intereses"
+  },
+  "person": {
+    "name": "Anmol Mathur",
+    "headline": "Director de Tecnología (CTO) · Líder de Tecnología e Ingeniería",
+    "location": "Mumbai, India",
+    "phone": "+91 98671 91999",
+    "email": "anmolm@gmail.com",
+    "website": "anmolmathur.com",
+    "linkedin": "linkedin.com/in/anmolmathur",
+    "linkedinUrl": "https://www.linkedin.com/in/anmolmathur/",
+    "websiteUrl": "https://anmolmathur.com"
+  },
+  "summary": [
+    "Directivo tecnológico con 25 años en ingeniería y más de 12 en puestos de dirección (C-level y VP), creando y liderando organizaciones de tecnología en educación digital (EdTech), medios y OTT, comercio electrónico, deporte y banca global.",
+    "Trayectoria contrastada llevando plataformas del concepto a la comercialización, modernizando sistemas heredados hacia arquitecturas cloud-native e incorporando la IA a la operativa real del negocio, reduciendo el coste de explotación y manteniendo la disponibilidad por encima del 98%."
+  ],
+  "highlights": [
+    "Reducción de más del 50% del coste operativo anual de tecnología —de 3 Cr a 1,3 Cr de rupias— elevando a la vez la disponibilidad del servicio por encima del 98%.",
+    "Responsable tecnológico de la mayor plataforma de titulaciones universitarias vinculadas al empleo de India: más de 60 universidades y más de 600.000 estudiantes.",
+    "Creación y dirección de organizaciones de tecnología de 20, 35, 40 y 66 personas, con un alcance máximo de más de 150 profesionales entre India y el Reino Unido.",
+    "Lanzamiento de un producto OTT y blockchain de 0 a 10.000 usuarios, incluida la puesta en marcha desde cero de su línea de ingresos por publicidad digital."
+  ],
+  "competencies": [
+    "Estrategia y Hoja de Ruta Tecnológica",
+    "Estrategia de IA y Adopción de GenAI",
+    "Cloud y Modernización de Plataformas",
+    "Diseño de Organizaciones de Ingeniería",
+    "Control de Costes y FinOps",
+    "Arquitectura Empresarial y de Microservicios",
+    "Gestión de Producto",
+    "Gestión de Proveedores y Socios",
+    "Plataformas de Datos y Analítica",
+    "Metodologías Ágiles a Escala",
+    "Ciberseguridad y Cumplimiento",
+    "Relación con Consejo y Stakeholders"
+  ],
+  "experience": [
+    {
+      "title": "Director de Tecnología (CTO)",
+      "company": "TeamLease EdTech",
+      "location": "Mumbai, India",
+      "start": "Sep 2025",
+      "end": "Present",
+      "context": "La mayor plataforma de titulaciones universitarias vinculadas al empleo de India: más de 60 universidades y más de 600.000 estudiantes. Reporte directo al Fundador y CEO, con responsabilidad plena sobre estrategia, arquitectura y ejecución en un ecosistema de 15 sistemas.",
+      "bullets": [
+        "Responsabilidad integral de la función tecnológica —ingeniería, producto, infraestructura, datos, seguridad y presupuesto— en una compañía que prepara ronda institucional y salida a bolsa.",
+        "Dirección de la <b>modernización de la plataforma UMS 2.0</b>: migración del sistema central de gestión universitaria desde un monolito heredado en .NET hacia microservicios en React y .NET Core mediante el patrón <i>Strangler Fig</i>, reduciendo el riesgo sin una migración de golpe.",
+        "Implantación de un <b>data warehouse y una capa de inteligencia de negocio</b> que resolvió problemas históricos de integridad y reporte de datos que afectaban a más de 60 universidades, dando a la dirección una visión única y conciliada de admisiones, ingresos y entrega.",
+        "Lanzamiento de la <b>captación de estudiantes asistida por IA</b>: cualificación de leads por voz, análisis automático de llamadas y una plataforma propia de entrevistas simuladas con IA.",
+        "Institucionalización de la <b>ingeniería asistida por IA y la automatización de flujos de trabajo (n8n)</b> en toda la organización, aumentando la velocidad de entrega y permitiendo a los equipos no técnicos automatizar su propia operativa.",
+        "Refuerzo del gobierno tecnológico: consolidación de proveedores de telefonía y SaaS, controles de doble validación sobre la configuración en producción y un programa de adecuación a la normativa DPDP antes del plazo de 2027."
+      ]
+    },
+    {
+      "title": "Director de Tecnología y VP de Ingeniería",
+      "company": "Hungama Digital Media Entertainment",
+      "location": "Mumbai, India",
+      "start": "Jun 2023",
+      "end": "Sep 2025",
+      "context": "Grupo líder de medios digitales y OTT en India (Hungama Music, Hungama Play, Bollywood Hungama), con servicios de música y vídeo para consumidores, operadoras y socios de medios.",
+      "bullets": [
+        "Dirección de una <b>organización tecnológica de 66 personas</b> entre ingeniería, DevOps, calidad y operaciones, con responsabilidad sobre la arquitectura y la entrega de todos los servicios de cara al usuario y a los socios.",
+        "Reducción del gasto operativo de tecnología en <b>más del 50%, de 3 Cr a 1,3 Cr de rupias anuales</b>, mediante dimensionamiento del cloud, renegociación de contratos y consolidación de cargas, sin merma de calidad.",
+        "Replataformado de la pila tecnológica sobre <b>Kubernetes y herramientas CNCF</b>, sustituyendo un entorno heredado y fragmentado por una plataforma estandarizada, observable y escalable horizontalmente.",
+        "Mantenimiento de <b>acuerdos de nivel de servicio superiores al 98% de disponibilidad</b> en todos los servicios durante la propia reconstrucción de la plataforma, gracias a un mejor gobierno de releases, monitorización y gestión de incidencias.",
+        "Impulso de la <b>estrategia de IA</b>: plataforma LLM sin código e infraestructura GPU para que contenido, marketing y operaciones construyeran sus propios flujos de trabajo con IA."
+      ]
+    },
+    {
+      "title": "Director de Tecnología y VP de Ingeniería",
+      "company": "Times Professional Learning (TimesPro)",
+      "location": "Mumbai, India",
+      "start": "Sep 2021",
+      "end": "Mar 2023",
+      "context": "División de formación profesional del grupo The Times of India, con programas ejecutivos junto a los IIM, los IIT e instituciones internacionales.",
+      "bullets": [
+        "Creación de la función tecnológica desde cero: <b>contratación y dirección de un equipo de más de 40 personas en un año</b> entre ingeniería, producto y operaciones de TI.",
+        "Conceptualización y lanzamiento de las plataformas propias de <b>gestión del aprendizaje (LMS) y gestión comercial</b>, sustituyendo procesos manuales en todo el recorrido del alumno y de admisiones.",
+        "Definición de la arquitectura de software y puesta en marcha de una práctica de desarrollo ágil para aplicaciones web y móviles.",
+        "Consolidación del parque disperso de proveedores y productos SaaS, y definición de la hoja de ruta de transformación digital de la organización."
+      ]
+    },
+    {
+      "title": "Director de Tecnología",
+      "company": "Xfinite Technologies (Mzaalo)",
+      "location": "Mumbai, India",
+      "start": "Ene 2020",
+      "end": "Ago 2021",
+      "context": "Startup con respaldo de capital riesgo en OTT, contenido generado por usuarios y tokens blockchain.",
+      "bullets": [
+        "Desempeño simultáneo de tres funciones —<b>Director de Tecnología, Director de Producto y Director de Operaciones Publicitarias</b>— para la plataforma Mzaalo en un entorno de fase temprana.",
+        "Creación y dirección de un <b>equipo de más de 20 personas en un año</b>, trabajando directamente con el Fundador y el COO en la arquitectura de producto y tecnología y en la hoja de ruta.",
+        "Crecimiento del producto de <b>0 a 10.000 usuarios</b> y su comercialización.",
+        "Puesta en marcha desde cero de la línea de ingresos por publicidad digital, articulando editores, socios de marketing y la integración tecnológica correspondiente."
+      ]
+    },
+    {
+      "title": "Director de Tecnología y Responsable de Outsourcing",
+      "company": "Digitas India (Publicis Groupe) — Cliente: Fórmula 1",
+      "location": "Mumbai, India y Londres, Reino Unido",
+      "start": "Dic 2016",
+      "end": "Ene 2020",
+      "context": "Responsable tecnológico de la división india de Digitas UK para la Fórmula 1, una de las mayores propiedades deportivas del mundo.",
+      "bullets": [
+        "Creación y dirección de un <b>centro de entrega en India de más de 35 personas</b> —arquitectos, desarrolladores y gestión de proyectos— incluida la definición de procesos y la implantación tecnológica.",
+        "Escalado de la entrega externalizada al conjunto de la cartera de clientes de Digitas, con un <b>alcance máximo de más de 150 profesionales</b>.",
+        "Responsabilidad sobre la cuenta de <b>Fórmula 1 en el Reino Unido</b> junto a Digitas UK, aportando soluciones de arquitectura y ejecutándolas de forma eficiente en coste con metodologías ágiles.",
+        "Construcción del modelo operativo offshore —gobierno, controles de calidad y gestión de cliente— que hizo repetible la entrega Reino Unido–India."
+      ]
+    },
+    {
+      "title": "Director de Tecnología (CTO)",
+      "company": "Ogaan Media (ELLE, ELLE DÉCOR, SquareInch)",
+      "location": "Mumbai, India",
+      "start": "Ene 2016",
+      "end": "Dic 2016",
+      "context": "Editora de ELLE India y ELLE DÉCOR, y matriz de la startup de comercio de diseño SquareInch.",
+      "bullets": [
+        "Responsabilidad sobre el diseño estratégico, el desarrollo y la implantación de las propiedades digitales <b>ELLE, ELLE DÉCOR, SquareInch e IndiaDesignID</b>.",
+        "Creación de la línea de ingresos por publicidad online y gestión de la cartera de TI en su totalidad.",
+        "Desarrollo de la startup de comercio electrónico <b>SquareInch desde el concepto hasta su comercialización</b>, incluyendo el diseño del modelo de marketplace, la incorporación de socios y la gestión de clientes."
+      ]
+    },
+    {
+      "title": "Vicepresidente — Desarrollo de TI",
+      "company": "HSBC (The Hongkong and Shanghai Banking Corporation)",
+      "location": "Mumbai, India y Hong Kong",
+      "start": "Ago 2008",
+      "end": "Ene 2016",
+      "context": "Tecnología de banca corporativa y minorista a escala global, con una asignación de cuatro meses en Hong Kong.",
+      "bullets": [
+        "Responsable del conjunto de aplicaciones de <b>gestión de cobros y tesorería (cash management)</b> del negocio de banca corporativa de HSBC, con responsabilidad sobre coste, implantación y soporte.",
+        "Propiedad de aplicaciones de banca corporativa y minorista a lo largo de todo su ciclo de vida: <b>gestión de proveedores, selección de producto y plataforma, requisitos, gestión de pruebas, despliegues globales y soporte en producción</b>.",
+        "Ejecución de despliegues multiproveedor en distintas geografías bajo controles de cambio y auditoría propios del sector bancario."
+      ]
+    },
+    {
+      "title": "Jefe de Proyecto y Analista de Negocio",
+      "company": "Oracle Financial Services / Polaris Software",
+      "location": "Nueva York (EE. UU.), Mumbai y Chennai (India)",
+      "start": "Dic 2001",
+      "end": "Ago 2008",
+      "context": "Ingeniería de producto de core bancario, incluida una asignación de un año en Nueva York.",
+      "bullets": [
+        "Dirección del <b>Global Cash Management System (GCMS)</b> con equipos de 12 a 25 personas, abarcando requisitos, ciclo de vida del software, gestión del cambio, diseño, desarrollo, implantación y soporte.",
+        "Entrega bajo estándares <b>CMMI Nivel 5 y SQA</b>, con responsabilidad sobre el cumplimiento y la relación con el cliente.",
+        "Trabajo técnico directo como desarrollador, diseñador de aplicaciones y responsable de pruebas antes de pasar a la dirección de entrega."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Certificado en Liderazgo y Gestión Eficaces",
+      "institution": "Michigan State University",
+      "place": "EE. UU.",
+      "dates": "2020 – 2021"
+    },
+    {
+      "degree": "Máster en Administración de Empresas (MBA), Marketing",
+      "institution": "NMIMS, Universidad de Mumbai",
+      "place": "Mumbai, India",
+      "dates": "2004 – 2008"
+    },
+    {
+      "degree": "Ingeniería Técnica Superior (B.E.), Electrónica",
+      "institution": "V.E.S. Institute of Technology, Universidad de Mumbai",
+      "place": "Mumbai, India",
+      "dates": "1997 – 2001"
+    },
+    {
+      "degree": "Bachillerato (H.S.C.), Ciencias",
+      "institution": "Bhavan's College, Universidad de Mumbai",
+      "place": "Mumbai, India",
+      "dates": "1995 – 1997"
+    }
+  ],
+  "technology": [
+    {
+      "title": "IA y Aprendizaje Automático",
+      "body": "API de OpenAI, API de Anthropic Claude, Llama 3.3, Gemini, LangChain, Ollama, Hugging Face, AutoGen Studio, Open WebUI, Qdrant, IA agéntica, RAG, infraestructura GPU"
+    },
+    {
+      "title": "Cloud y DevOps",
+      "body": "AWS, Google Cloud, Azure, Kubernetes, Docker, Terraform, herramientas CNCF, WebSphere, APIGEE, API REST, CI/CD"
+    },
+    {
+      "title": "Pila de Ingeniería",
+      "body": "Java, Python, PHP, Node.js, React.js, Vue.js, Ruby on Rails, .NET Core, microservicios, arquitectura orientada a eventos"
+    },
+    {
+      "title": "Datos y Analítica",
+      "body": "Snowflake, BigQuery, bases de datos SQL y NoSQL, data warehousing, Tableau, Power BI, PostHog, canalizaciones de big data"
+    },
+    {
+      "title": "Plataformas y SaaS",
+      "body": "Salesforce, Moodle, Strapi, Contentful, Brightcove, Vimeo, WordPress, Adobe AEM, n8n, Magento, Spree Commerce"
+    }
+  ],
+  "publications": [
+    {
+      "title": "Impact of Technologies and Cloud Computing Applications in Higher Education",
+      "outlet": "Higher Education Digest",
+      "year": "2022",
+      "url": "https://www.highereducationdigest.com/impact-of-technologies-and-cloud-computing-applications-in-higher-education/"
+    },
+    {
+      "title": "Cybersecurity: How is India faring?",
+      "outlet": "The Times of India",
+      "year": "2022",
+      "url": "https://timesofindia.indiatimes.com/education/news/cybersecurity-how-is-india-faring/articleshow/90092422.cms"
+    }
+  ],
+  "industries": [
+    "Educación y EdTech",
+    "Medios — OTT, UGC, Prensa",
+    "Comercio Electrónico",
+    "Deporte",
+    "Banca Minorista",
+    "Canales Fintech (Cajeros, TPV)",
+    "Financiación del Comercio Exterior",
+    "Gestión Global de Tesorería"
+  ],
+  "international": [
+    "Nueva York, EE. UU. — 1 año",
+    "Londres, Reino Unido — 4 meses",
+    "Hong Kong — 4 meses"
+  ],
+  "languages": [
+    {
+      "name": "Inglés",
+      "level": "Nativo / Profesional"
+    },
+    {
+      "name": "Hindi",
+      "level": "Nativo"
+    },
+    {
+      "name": "Español",
+      "level": "Elemental (A1) — en formación"
+    }
+  ],
+  "coverLetter": {
+    "date": "",
+    "to": [
+      "A la atención del Comité de Selección"
+    ],
+    "salutation": "Estimado Comité de Selección:",
+    "paragraphs": [
+      "Me dirijo a ustedes para expresar mi interés en incorporarme a su organización en un puesto de dirección tecnológica. A lo largo de 25 años he pasado de programar sistemas de core bancario en Chennai y Nueva York a dirigir funciones tecnológicas como CTO y VP de Ingeniería, y el hilo conductor ha sido siempre el mismo: tomar un ecosistema tecnológico que frena al negocio y convertirlo en aquello que lo impulsa.",
+      "Actualmente, como Director de Tecnología en TeamLease EdTech, asumo la estrategia y la ejecución tecnológica de la mayor plataforma de titulaciones vinculadas al empleo de India, con más de 60 universidades asociadas y más de 600.000 estudiantes. Dirijo la migración del sistema central de gestión universitaria desde un monolito heredado hacia microservicios mediante el patrón Strangler Fig; he implantado el data warehouse y la capa de inteligencia de negocio que por fin dieron a la dirección una visión única y conciliada de la compañía; y he llevado la inteligencia artificial de la presentación a la producción, con cualificación de leads por voz, análisis automático de llamadas y una plataforma de entrevistas simuladas ya en manos de los estudiantes.",
+      "Con anterioridad, en Hungama Digital Media Entertainment, dirigí una organización tecnológica de 66 personas y reduje el coste operativo anual a menos de la mitad —de 3 Cr a 1,3 Cr de rupias— al tiempo que replataformaba la compañía sobre Kubernetes y mantenía la disponibilidad por encima del 98%. En mi experiencia, la disciplina de costes y la ambición técnica no son opuestas: la misma claridad arquitectónica compra ambas cosas.",
+      "Lo que aporto es amplitud con profundidad. He construido equipos de cero a cuarenta personas en un año y he gestionado un alcance de más de 150 profesionales entre India y el Reino Unido. He entregado bajo estándares CMMI Nivel 5 y controles de auditoría bancaria en HSBC y Oracle Financial Services, y he llevado el producto de una startup de cero a diez mil usuarios en Mzaalo. He trabajado sobre el terreno en Nueva York, Londres y Hong Kong, y me manejo con la misma soltura en una conversación de consejo sobre asignación de capital que en una revisión de diseño sobre límites de servicio.",
+      "Quedo a su entera disposición para comentar cómo esta trayectoria encaja con lo que están construyendo. Agradezco de antemano su tiempo y consideración."
+    ],
+    "closing": "Atentamente,",
+    "signature": "Anmol Mathur"
+  },
+  "tagline": "Futbolista apasionado: entreno a equipos de tecnología, organizaciones y clientes para que alcancen nuevas cotas de productividad y éxito.",
+  "interests": [
+    "Fútbol — jugador y entrenador",
+    "Desarrollo del deporte base",
+    "Divulgación sobre política educativa y EdTech"
+  ],
+  "designedBullets": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    2,
+    3,
+    2
+  ]
+}

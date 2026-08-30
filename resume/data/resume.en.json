@@ -1,0 +1,287 @@
+{
+  "locale": "en",
+  "meta": {
+    "title": "Anmol Mathur — Chief Technology Officer",
+    "subject": "Curriculum Vitae",
+    "keywords": "Chief Technology Officer, CTO, VP Engineering, Technology Leader, EdTech, OTT, Banking Technology, AI Strategy, Cloud, Kubernetes, Digital Transformation, Mumbai, India"
+  },
+  "labels": {
+    "summary": "Professional Summary",
+    "competencies": "Core Competencies",
+    "highlights": "Selected Achievements",
+    "experience": "Professional Experience",
+    "education": "Education",
+    "technology": "Technology & Tools",
+    "publications": "Publications",
+    "industries": "Industry Experience",
+    "languages": "Languages",
+    "international": "International Exposure",
+    "present": "Present",
+    "coverLetter": "Cover Letter",
+    "continued": "Professional Experience (continued)",
+    "interests": "Interests",
+    "beyond": "Industries · International · Languages · Interests"
+  },
+  "person": {
+    "name": "Anmol Mathur",
+    "headline": "Chief Technology Officer · Technology & Engineering Leader",
+    "location": "Mumbai, India",
+    "phone": "+91 98671 91999",
+    "email": "anmolm@gmail.com",
+    "website": "anmolmathur.com",
+    "linkedin": "linkedin.com/in/anmolmathur",
+    "linkedinUrl": "https://www.linkedin.com/in/anmolmathur/",
+    "websiteUrl": "https://anmolmathur.com"
+  },
+  "summary": [
+    "Technology executive with 25 years in engineering and 12+ years in C-level and VP roles, building and leading technology organisations across EdTech, media and OTT, e-commerce, sports and global banking.",
+    "Track record of taking platforms from concept to commercialisation, modernising legacy estates onto cloud-native architectures, and embedding AI into how the business actually operates — while cutting run-cost and holding availability above 98%."
+  ],
+  "highlights": [
+    "Cut annual technology operating cost by more than 50% — from ₹3 Cr to ₹1.3 Cr — while raising service availability above 98%.",
+    "Serving 60+ university partners and 600,000+ students as CTO of India's leading Work-Linked Degree platform.",
+    "Built and led technology organisations of 20, 35, 40 and 66 people; peak span of 150+ technologists across India and the UK.",
+    "Took an OTT and blockchain product from 0 to 10,000 users and stood up its digital advertising revenue line from scratch."
+  ],
+  "competencies": [
+    "Technology Strategy & Roadmap",
+    "AI Strategy & GenAI Adoption",
+    "Cloud & Platform Modernisation",
+    "Engineering Org Design & Hiring",
+    "P&L, Cost Control & FinOps",
+    "Enterprise & Microservice Architecture",
+    "Product Management",
+    "Vendor & Partner Management",
+    "Data Platforms & Analytics",
+    "Agile Delivery at Scale",
+    "Cybersecurity & Compliance",
+    "Board & Stakeholder Management"
+  ],
+  "experience": [
+    {
+      "title": "Chief Technology Officer",
+      "company": "TeamLease EdTech",
+      "location": "Mumbai, India",
+      "start": "Sep 2025",
+      "end": "Present",
+      "context": "India's largest Work-Linked Degree platform — 60+ university partners, 600,000+ students. Reporting to the Founder & CEO with full ownership of technology strategy, architecture and execution across a 15-system estate.",
+      "bullets": [
+        "Own the technology function end to end — engineering, product, infrastructure, data, security and the technology budget — for a business preparing for institutional fundraise and IPO readiness.",
+        "Leading <b>UMS 2.0 platform modernisation</b>: migrating the core University Management System from a legacy .NET monolith to microservices on React and .NET Core using the Strangler Fig pattern, de-risking the platform without a big-bang cutover.",
+        "Delivered a <b>data warehouse and business intelligence layer</b> that closed long-standing data-integrity and reporting gaps affecting 60+ university clients, giving leadership a single reconciled view of admissions, revenue and delivery.",
+        "Launched <b>AI-driven student engagement</b> — voice-AI lead qualification through a strategic partner, an AI call-analysis pipeline, and a proprietary AI Mock Interview platform — positioning the company as an AI-native EdTech player.",
+        "Institutionalised <b>AI-assisted engineering and workflow automation (n8n)</b> across the organisation, lifting delivery velocity and letting non-technical teams automate their own operations.",
+        "Rebuilt technology governance: consolidated telephony and SaaS vendors, introduced maker-checker controls on production configuration, and put a DPDP-readiness programme in place ahead of the 2027 deadline."
+      ]
+    },
+    {
+      "title": "Head of Technology & VP Engineering",
+      "company": "Hungama Digital Media Entertainment",
+      "location": "Mumbai, India",
+      "start": "Jun 2023",
+      "end": "Sep 2025",
+      "context": "India's leading digital media and OTT group — Hungama Music, Hungama Play, Hungama Gold and Bollywood Hungama — delivering music and video services to consumers, telcos and media partners.",
+      "bullets": [
+        "Led a <b>66-member technology organisation</b> across engineering, DevOps, QA and operations, owning the architecture and delivery of every consumer-facing and partner-facing service.",
+        "Reduced technology operating expenditure by <b>more than 50%, from ₹3 Cr to ₹1.3 Cr annually</b>, through cloud right-sizing, contract renegotiation and workload consolidation — with no reduction in service quality.",
+        "Re-platformed the technology stack onto <b>Kubernetes and CNCF tooling</b>, replacing a fragmented legacy estate with a standardised, observable, horizontally scalable platform.",
+        "Held <b>SLAs above 98% uptime</b> across all services while the platform was being rebuilt underneath, through improved release governance, monitoring and incident practice.",
+        "Drove the organisational <b>AI strategy</b> — deployed a no-code LLM platform and GPU infrastructure so content, marketing and operations teams could build their own AI workflows."
+      ]
+    },
+    {
+      "title": "Head of Technology & VP Engineering",
+      "company": "Times Professional Learning (TimesPro)",
+      "location": "Mumbai, India",
+      "start": "Sep 2021",
+      "end": "Mar 2023",
+      "context": "The professional-education arm of The Times of India Group, delivering executive programmes with IIMs, IITs and global institutions.",
+      "bullets": [
+        "Built the technology function from the ground up — <b>hired and led a 40+ person team within one year</b> spanning engineering, product and IT operations.",
+        "Conceptualised and shipped the in-house <b>Learning Management and Sales Management platforms</b>, replacing manual processes across the learner and admissions journey.",
+        "Defined the software architecture and stood up an agile development practice supporting both web and mobile applications.",
+        "Consolidated the fragmented SaaS and vendor estate and set the digital transformation roadmap for the organisation."
+      ]
+    },
+    {
+      "title": "Technology Director",
+      "company": "Xfinite Technologies (Mzaalo)",
+      "location": "Mumbai, India",
+      "start": "Jan 2020",
+      "end": "Aug 2021",
+      "context": "Venture-backed OTT, user-generated content and blockchain-token startup.",
+      "bullets": [
+        "Held three functions concurrently — <b>Head of Technology, Head of Product and Head of Ad Operations</b> — for the Mzaalo platform in an early-stage environment.",
+        "Built and led a <b>20+ person team within one year</b>, working directly with the Founder and COO on product and technology architecture and the roadmap.",
+        "Took the product from <b>0 to 10,000 users</b> and commercialised it.",
+        "Established the digital advertising revenue line from zero, bringing together publishers, marketing partners and the technology integration behind it."
+      ]
+    },
+    {
+      "title": "Technology Director & Head of Outsourcing",
+      "company": "Digitas India (Publicis Groupe) — Client: Formula 1",
+      "location": "Mumbai & London, UK",
+      "start": "Dec 2016",
+      "end": "Jan 2020",
+      "context": "Technology lead for the India division of Digitas UK, serving Formula 1 — one of the largest sporting properties in the world.",
+      "bullets": [
+        "Set up and led a <b>35+ person India delivery centre</b> — architects, developers and project management — including process definition and technology implementation.",
+        "Scaled outsourced delivery across the wider Digitas client portfolio to a <b>peak span of 150+ technologists</b>.",
+        "Owned the <b>Formula 1 UK</b> engagement alongside Digitas UK, providing architecture solutions and delivering them cost-effectively under agile methodologies.",
+        "Built the offshore operating model — governance, quality gates and client management — that made UK-to-India delivery repeatable."
+      ]
+    },
+    {
+      "title": "Chief Technology Officer",
+      "company": "Ogaan Media (ELLE, ELLE DÉCOR, SquareInch)",
+      "location": "Mumbai, India",
+      "start": "Jan 2016",
+      "end": "Dec 2016",
+      "context": "Publisher of ELLE India and ELLE DÉCOR, and parent of the SquareInch design-commerce startup.",
+      "bullets": [
+        "Owned the strategic design, development and implementation of the <b>ELLE, ELLE DÉCOR, SquareInch and IndiaDesignID</b> web properties.",
+        "Built the online advertising revenue stream and managed the complete IT portfolio.",
+        "Took the <b>SquareInch e-commerce startup from concept through product development to commercialisation</b>, covering marketplace model design, partner onboarding and client management."
+      ]
+    },
+    {
+      "title": "Vice President — IT Development",
+      "company": "HSBC (The Hongkong and Shanghai Banking Corporation)",
+      "location": "Mumbai, India & Hong Kong",
+      "start": "Aug 2008",
+      "end": "Jan 2016",
+      "context": "Global corporate and retail banking technology, with a four-month posting in Hong Kong.",
+      "bullets": [
+        "Application owner for the <b>receivables and cash management software estate</b> supporting HSBC's corporate banking business, accountable for cost, implementation and support.",
+        "Owned corporate and retail banking applications across the lifecycle — <b>vendor management, product and platform selection, requirements, test management, global rollouts and production support</b>.",
+        "Delivered multi-vendor product rollouts across geographies under banking-grade change and audit controls."
+      ]
+    },
+    {
+      "title": "Project Manager & Business Analyst",
+      "company": "Oracle Financial Services / Polaris Software",
+      "location": "New York, USA · Mumbai & Chennai, India",
+      "start": "Dec 2001",
+      "end": "Aug 2008",
+      "context": "Core banking product engineering, including a one-year onsite posting in New York.",
+      "bullets": [
+        "Managed the <b>Global Cash Management System (GCMS)</b> with teams of 12–25 across requirements, SDLC, change management, design, development, implementation and support.",
+        "Delivered under <b>CMMI Level 5 and SQA standards</b>, owning compliance and client management for the engagement.",
+        "Worked hands-on as developer, application designer and tester before moving into delivery leadership."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Certificate in Effective Leadership and Management",
+      "institution": "Michigan State University",
+      "place": "USA",
+      "dates": "2020 – 2021"
+    },
+    {
+      "degree": "Master of Business Administration (MBA), Marketing",
+      "institution": "NMIMS, University of Mumbai",
+      "place": "Mumbai, India",
+      "dates": "2004 – 2008"
+    },
+    {
+      "degree": "Bachelor of Engineering (B.E.), Electronics",
+      "institution": "V.E.S. Institute of Technology, University of Mumbai",
+      "place": "Mumbai, India",
+      "dates": "1997 – 2001"
+    },
+    {
+      "degree": "Higher Secondary Certificate (H.S.C.), Science",
+      "institution": "Bhavan's College, University of Mumbai",
+      "place": "Mumbai, India",
+      "dates": "1995 – 1997"
+    }
+  ],
+  "technology": [
+    {
+      "title": "AI & Machine Learning",
+      "body": "OpenAI API, Anthropic Claude API, Llama 3.3, Gemini, LangChain, Ollama, Hugging Face, AutoGen Studio, Open WebUI, Qdrant, agentic AI, RAG, GPU infrastructure"
+    },
+    {
+      "title": "Cloud & DevOps",
+      "body": "AWS, Google Cloud, Azure, Kubernetes, Docker, Terraform, CNCF tooling, WebSphere, APIGEE, REST APIs, CI/CD"
+    },
+    {
+      "title": "Engineering Stack",
+      "body": "Java, Python, PHP, Node.js, React.js, Vue.js, Ruby on Rails, .NET Core, microservices, event-driven architecture"
+    },
+    {
+      "title": "Data & Analytics",
+      "body": "Snowflake, BigQuery, SQL and NoSQL databases, data warehousing, Tableau, Power BI, PostHog, big data pipelines"
+    },
+    {
+      "title": "Platforms & SaaS",
+      "body": "Salesforce, Moodle, Strapi, Contentful, Brightcove, Vimeo, WordPress, Adobe AEM, n8n, Magento, Spree Commerce"
+    }
+  ],
+  "publications": [
+    {
+      "title": "Impact of Technologies and Cloud Computing Applications in Higher Education",
+      "outlet": "Higher Education Digest",
+      "year": "2022",
+      "url": "https://www.highereducationdigest.com/impact-of-technologies-and-cloud-computing-applications-in-higher-education/"
+    },
+    {
+      "title": "Cybersecurity: How is India faring?",
+      "outlet": "The Times of India",
+      "year": "2022",
+      "url": "https://timesofindia.indiatimes.com/education/news/cybersecurity-how-is-india-faring/articleshow/90092422.cms"
+    }
+  ],
+  "industries": [
+    "Education & EdTech",
+    "Media — OTT, UGC, Print",
+    "E-commerce",
+    "Sports",
+    "Retail Banking",
+    "Fintech Channels (ATM, POS)",
+    "Trade Finance",
+    "Global Cash Management"
+  ],
+  "international": [
+    "New York, USA — 1 year",
+    "London, UK — 4 months",
+    "Hong Kong — 4 months"
+  ],
+  "languages": [
+    {
+      "name": "English",
+      "level": "Native / Professional"
+    },
+    {
+      "name": "Hindi",
+      "level": "Native"
+    },
+    {
+      "name": "Spanish",
+      "level": "Elementary (A1) — in progress"
+    }
+  ],
+  "coverLetter": {
+    "date": "",
+    "to": [
+      "Hiring Committee"
+    ],
+    "salutation": "Dear Hiring Committee,",
+    "paragraphs": [
+      "I am writing to express my interest in a senior technology leadership role within your organisation. Over 25 years I have moved from writing core banking code in Chennai and New York to running technology functions as CTO and VP of Engineering — and the through-line has been the same throughout: take a technology estate that is holding the business back, and turn it into the thing that moves the business forward.",
+      "Most recently, as Chief Technology Officer at TeamLease EdTech, I own technology strategy and execution for India's largest Work-Linked Degree platform, serving 60+ university partners and over 600,000 students. I am leading the migration of the core University Management System off a legacy monolith onto microservices using the Strangler Fig pattern, I have delivered the data warehouse and business intelligence layer that finally gave leadership one reconciled view of the business, and I have taken AI from a slide into production — voice-AI lead qualification, AI call analysis, and an AI mock-interview platform now in the hands of students.",
+      "Before that, at Hungama Digital Media Entertainment, I led a 66-person technology organisation and reduced annual operating cost by more than half — from ₹3 Cr to ₹1.3 Cr — while re-platforming onto Kubernetes and holding availability above 98%. Cost discipline and engineering ambition are not opposites in my experience; the same architectural clarity buys you both.",
+      "What I bring is range with depth. I have built teams from zero to forty in a year, and managed a span of 150+ technologists across India and the UK. I have delivered under CMMI Level 5 and banking audit controls at HSBC and Oracle Financial Services, and I have shipped a startup product from zero to ten thousand users at Mzaalo. I have worked onsite in New York, London and Hong Kong, and I am equally comfortable in a board conversation about capital allocation and in a design review about service boundaries.",
+      "I would welcome the opportunity to discuss how that experience maps onto what you are building. Thank you for your time and consideration."
+    ],
+    "closing": "Sincerely,",
+    "signature": "Anmol Mathur"
+  },
+  "tagline": "Passionate soccer player — coaching technology teams, organisations and clients to new heights of productivity and success.",
+  "interests": [
+    "Football — playing and coaching",
+    "Youth sport development",
+    "Writing on EdTech policy"
+  ]
+}

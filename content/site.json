@@ -39,6 +39,18 @@
       "path": "/docs/Anmol_Mathur_Resume.pdf",
       "id": "general"
     },
+    "ats": {
+      "path": "/docs/Anmol_Mathur_Resume_ATS.pdf",
+      "id": "ats"
+    },
+    "es": {
+      "path": "/docs/Anmol_Mathur_Resume_ES.pdf",
+      "id": "es"
+    },
+    "atsEs": {
+      "path": "/docs/Anmol_Mathur_Resume_ATS_ES.pdf",
+      "id": "ats-es"
+    },
     "bfsi": {
       "path": "/docs/Anmol Mathur - Resume BFSI.pdf",
       "id": "bfsi"
@@ -59,6 +71,7 @@
   },
   "_notes": {
     "images": "hero/og use the blazer headshot (authoritative frame for cold visitors and social cards); about uses the striped shirt (warmer); candid is optional, used in the footer.",
-    "audio": "AnmolMathur.wav is 44MB and served with a wrong audio/mpeg MIME type. Transcode to Opus/MP3 (~1-2MB) and update this path."
+    "audio": "AnmolMathur.wav is 44MB and served with a wrong audio/mpeg MIME type. Transcode to Opus/MP3 (~1-2MB) and update this path.",
+    "resumes": "Built from resume/data/resume.<locale>.json via `node resume/build.cjs`. 'general' and 'es' are the designed 3-page CV + cover letter; the ATS variants are the same content with a plain text layer for job portals. Do not hand-edit the PDFs - edit the JSON and rebuild."
   }
 }

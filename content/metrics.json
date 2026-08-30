@@ -15,11 +15,11 @@
     },
     {
       "id": "savings",
-      "value": 1.5,
+      "value": 1.7,
       "prefix": "₹",
       "suffix": " Cr",
       "decimals": 1,
-      "source": "Hungama project: annual tech spend ₹3 Cr → ₹1.5 Cr."
+      "source": "Hungama role: annual tech spend ₹3 Cr (May 23) → ₹1.3 Cr (Dec 24), so ₹1.7 Cr saved. Confirmed by Anmol 30 Aug 2026; ₹1.3 Cr is the canonical endpoint everywhere."
     },
     {
       "id": "students",

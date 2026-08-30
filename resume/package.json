@@ -1,0 +1,8 @@
+{
+  "name": "anmol-resume",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Resume + cover letter build (EN/ES) for anmolmathur.com. Kept separate from the site's dependency tree.",
+  "scripts": { "build": "node build.cjs" },
+  "dependencies": { "pdfkit": "^0.15.0" }
+}
