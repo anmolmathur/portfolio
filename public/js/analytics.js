@@ -36,9 +36,25 @@
       .slice(0, 300);
   }
 
+  /* Identity properties are exempt from the scrubber.
+
+     PostHog's ids are UUIDs, and a UUID contains digit runs long enough to
+     match the phone pattern — so `01a05220-f3f8-…` was being stored as
+     `01a[phone]-f3f8-…`. The mangling is deterministic, so counts stayed
+     right, but the stored person id was corrupt, and two ids differing only
+     inside the eaten span would collapse into one person.
+
+     The exemption is a fixed list rather than "skip everything $-prefixed":
+     autocapture props like $current_url and $el_text genuinely can carry an
+     email or a phone number, and those must still be scrubbed. */
+  const IDENTITY = {
+    distinct_id: 1, token: 1, $device_id: 1, $session_id: 1, $window_id: 1,
+    $pageview_id: 1, $user_id: 1, $anon_distinct_id: 1, $group_key: 1
+  };
+
   function scrubProps(props) {
     const out = {};
-    for (const [k, v] of Object.entries(props || {})) out[k] = scrub(v);
+    for (const [k, v] of Object.entries(props || {})) out[k] = IDENTITY[k] ? v : scrub(v);
     return out;
   }
 

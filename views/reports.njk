@@ -1,0 +1,215 @@
+{#
+  /reports — the analytics dashboard.
+
+  Deliberately NOT extending layout.njk. That layout is the public site: it
+  needs `copy`, `locale`, `alternates` and a consent banner, none of which mean
+  anything on a password-gated internal page, and its marketing chrome would be
+  in the way. Tokens are shared, so the two still look like the same hand.
+
+  The page renders empty and fills itself from /api/reports/*. A ClickHouse
+  query on a cold cache can take several seconds; holding the HTML response
+  open for that long would look like a dead site.
+#}
+<!DOCTYPE html>
+<html lang="en" data-page="reports">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{# Same pre-paint theme resolution as the public site — without it this page
+   flashes light before switching, on every load. #}
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+  } catch (e) { /* private mode */ }
+})();
+</script>
+
+<title>Analytics — anmolmathur.com</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/reports.css?v={{ assetV }}">
+</head>
+<body class="rp">
+
+<header class="rp-top">
+  <div class="rp-top-in">
+    <div class="rp-brand">
+      <h1>Analytics</h1>
+      <p>Events from <strong>anmolmathur.com</strong> and <strong>immersive.anmolmathur.com</strong>,
+         read from self-hosted PostHog.</p>
+    </div>
+
+    {# Links, not a form. Buttons named `site` alongside a hidden `site` submit
+       BOTH values, which Fastify parses as an array and every downstream check
+       then rejects. Links also make each view bookmarkable. #}
+    <nav class="rp-filters" aria-label="Filters">
+      <div class="rp-seg" role="group" aria-label="Site">
+        <a class="rp-chip {{ 'is-on' if site == 'all' }}"
+           href="/reports?site=all&amp;days={{ days }}">All</a>
+        {% for s in sites %}
+        <a class="rp-chip {{ 'is-on' if site == s.key }}"
+           href="/reports?site={{ s.key }}&amp;days={{ days }}">{{ s.label }}</a>
+        {% endfor %}
+      </div>
+
+      <div class="rp-seg" role="group" aria-label="Time window">
+        {% for w in windows %}
+        <a class="rp-chip {{ 'is-on' if days == w }}"
+           href="/reports?site={{ site }}&amp;days={{ w }}">{{ w }}d</a>
+        {% endfor %}
+      </div>
+
+      <button type="button" class="rp-chip rp-refresh" id="refresh"
+              title="Drop the server cache and re-query PostHog">Refresh</button>
+      <label class="rp-live"><input type="checkbox" id="autorefresh"> Live</label>
+    </nav>
+  </div>
+</header>
+
+<main class="rp-main">
+
+  {% if not configured %}
+  <div class="rp-alert" role="alert">
+    <strong>PostHog reads are not configured.</strong>
+    Set <code>POSTHOG_API_KEY</code> (a personal key, <code>phx_…</code>) in the server
+    environment and restart. The public <code>phc_</code> project key can only write.
+  </div>
+  {% endif %}
+
+  <div class="rp-alert rp-alert-err" id="error" role="alert" hidden></div>
+
+  {# ── Weekly reports ────────────────────────────────────────────────────
+     First, deliberately. The live panels below answer "what is happening right
+     now"; this is the written read of the week, and it is what gets opened
+     when the page is only visited on a Saturday. #}
+  <section class="rp-card rp-weekly">
+    <div class="rp-card-h">
+      <h2>Weekly reports</h2>
+      <span class="rp-count" id="weekly-count"></span>
+    </div>
+    <div id="weekly"><p class="rp-weekly-empty">Loading…</p></div>
+  </section>
+
+  {# ── Headline numbers ─────────────────────────────────────────────────── #}
+  <section class="rp-stats" id="stats" aria-label="Totals">
+    <div class="rp-stat"><span class="rp-stat-k">Events</span><span class="rp-stat-v" data-stat="events">—</span></div>
+    <div class="rp-stat"><span class="rp-stat-k">Pageviews</span><span class="rp-stat-v" data-stat="pageviews">—</span></div>
+    <div class="rp-stat"><span class="rp-stat-k">Visitors</span><span class="rp-stat-v" data-stat="visitors">—</span></div>
+    <div class="rp-stat"><span class="rp-stat-k">Sessions</span><span class="rp-stat-v" data-stat="sessions">—</span></div>
+  </section>
+
+  {# ── Volume over time ─────────────────────────────────────────────────── #}
+  <section class="rp-card rp-chart-card">
+    <div class="rp-card-h">
+      <h2>Events per day</h2>
+      <span class="rp-legend">
+        <i class="rp-key rp-key-a"></i> anmolmathur.com
+        <i class="rp-key rp-key-b"></i> immersive
+      </span>
+    </div>
+    <div class="rp-chart" id="chart" role="img" aria-label="Daily event volume by site"></div>
+  </section>
+
+  <div class="rp-grid">
+    <section class="rp-card">
+      <div class="rp-card-h"><h2>Events by name</h2></div>
+      <div class="rp-scroll"><table class="rp-table" id="by-event">
+        <thead><tr><th>Event</th><th>Site</th><th class="n">Count</th><th>Last seen</th></tr></thead>
+        <tbody><tr class="rp-empty"><td colspan="4">Loading…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section class="rp-card">
+      <div class="rp-card-h"><h2>Top pages</h2></div>
+      <div class="rp-scroll"><table class="rp-table" id="pages">
+        <thead><tr><th>Path</th><th>Site</th><th class="n">Views</th><th class="n">Visitors</th></tr></thead>
+        <tbody><tr class="rp-empty"><td colspan="4">Loading…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section class="rp-card">
+      <div class="rp-card-h"><h2>Where they came from</h2></div>
+      <div class="rp-scroll"><table class="rp-table" id="referrers">
+        <thead><tr><th>Source</th><th class="n">Views</th><th class="n">Visitors</th></tr></thead>
+        <tbody><tr class="rp-empty"><td colspan="3">Loading…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section class="rp-card">
+      <div class="rp-card-h"><h2>Devices</h2></div>
+      <div class="rp-scroll"><table class="rp-table" id="devices">
+        <thead><tr><th>Device</th><th>Browser</th><th class="n">Events</th></tr></thead>
+        <tbody><tr class="rp-empty"><td colspan="3">Loading…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section class="rp-card">
+      <div class="rp-card-h"><h2>Countries</h2></div>
+      <div class="rp-scroll"><table class="rp-table" id="countries">
+        <thead><tr><th>Country</th><th class="n">Events</th><th class="n">Visitors</th></tr></thead>
+        <tbody><tr class="rp-empty"><td colspan="3">Loading…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    {# Immersive-only: which of the three doors people walk through. Hidden
+       when the current filter has no concept data rather than showing a
+       permanently empty card. #}
+    <section class="rp-card" id="concepts-card" hidden>
+      <div class="rp-card-h"><h2>Immersive concepts</h2></div>
+      <div class="rp-scroll"><table class="rp-table" id="concepts">
+        <thead><tr><th>Concept</th><th class="n">Events</th><th class="n">Visitors</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </section>
+  </div>
+
+  {# ── The raw log ──────────────────────────────────────────────────────── #}
+  <section class="rp-card rp-log-card">
+    <div class="rp-card-h">
+      <h2>Event log</h2>
+      <div class="rp-log-tools">
+        <input type="search" id="event-filter" placeholder="Filter by event name…"
+               autocomplete="off" spellcheck="false" aria-label="Filter by event name">
+        <span class="rp-count" id="log-count"></span>
+      </div>
+    </div>
+    <div class="rp-scroll rp-log-scroll"><table class="rp-table rp-log" id="log">
+      <thead><tr>
+        <th>Time</th><th>Event</th><th>Site</th><th>Path</th>
+        <th>Properties</th><th>Who</th><th>Where</th>
+      </tr></thead>
+      <tbody><tr class="rp-empty"><td colspan="7">Loading…</td></tr></tbody>
+    </table></div>
+    <div class="rp-more"><button type="button" id="load-more" hidden>Load older events</button></div>
+  </section>
+
+  <footer class="rp-foot">
+    <span id="meta"></span>
+    <a href="/">← back to the site</a>
+  </footer>
+</main>
+
+{# Full-page viewer for a report. Sandboxed: the reports are generated by my
+   own job, but they are whole HTML documents and there is no reason to let one
+   script into this origin. #}
+<div class="rp-modal" id="viewer" hidden>
+  <div class="rp-modal-box">
+    <div class="rp-modal-h">
+      <span id="viewer-title"></span>
+      <span class="rp-modal-actions">
+        <a id="viewer-open" href="#" target="_blank" rel="noopener">Open in a tab</a>
+        <button type="button" id="viewer-close" aria-label="Close">Close</button>
+      </span>
+    </div>
+    <iframe id="viewer-frame" title="Weekly report" sandbox=""></iframe>
+  </div>
+</div>
+
+<script>window.__REPORTS__ = {{ { days: days, site: site } | dump | safe }};</script>
+<script src="/js/reports.js?v={{ assetV }}" defer></script>
+</body>
+</html>

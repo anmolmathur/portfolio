@@ -40,6 +40,43 @@ export const config = {
   },
 
   /**
+   * The /reports dashboard.
+   *
+   * Reads analytics back out of PostHog. Two things it needs that the public
+   * site does not:
+   *
+   *   POSTHOG_API_KEY  a PERSONAL key (phx_…). Unlike the phc_ project key it
+   *                    can read every project on the instance, so it is
+   *                    server-side only and never reaches a template.
+   *   REPORTS_PASSWORD the gate. This page shows visitor-level behaviour for
+   *                    both my domains; it is not public. With no password set
+   *                    the route refuses to serve rather than defaulting open —
+   *                    a misconfigured deploy should 503, not leak.
+   */
+  reports: {
+    apiKey: env.POSTHOG_API_KEY ?? '',
+    projectId: env.POSTHOG_PROJECT_ID ?? '1',
+    user: env.REPORTS_USER ?? 'anmol',
+    password: env.REPORTS_PASSWORD ?? '',
+    /** Cache TTL for PostHog responses — a reload should be cheap, not stale. */
+    cacheTtlMs: Number(env.REPORTS_CACHE_TTL_MS ?? 60_000),
+    /**
+     * Where the weekly analysis job drops its rendered reports.
+     *
+     * Mounted read-only from the host, so the job writes over scp and the
+     * container only ever reads. A missing directory is not an error — it just
+     * means no report has landed yet, and the page says so.
+     */
+    archiveDir: env.WEEKLY_REPORTS_DIR ?? '/weekly-reports',
+    get enabled() {
+      return Boolean(this.apiKey);
+    },
+    get locked() {
+      return Boolean(this.password);
+    },
+  },
+
+  /**
    * Text to speech.
    *
    * Gemini TTS, per the site owner's choice. Two constraints drive the design:
@@ -96,6 +133,12 @@ export function describeConfig() {
       proxy: config.analytics.proxyPath,
       ga: config.analytics.gaId,
       enabled: config.analytics.posthogEnabled,
+    },
+    reports: {
+      apiKey: config.reports.apiKey ? 'set' : 'MISSING',
+      project: config.reports.projectId,
+      auth: config.reports.locked ? 'password set' : 'NO PASSWORD — /reports will refuse to serve',
+      enabled: config.reports.enabled,
     },
     tts: {
       provider: config.tts.provider,

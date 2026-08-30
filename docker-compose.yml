@@ -29,6 +29,12 @@ services:
     read_only: true
     tmpfs:
       - /tmp
+    volumes:
+      # The weekly PostHog analysis job scp's its rendered reports to the host
+      # directory; the container only ever reads them, which is why this is :ro
+      # and why the job never needs to touch the container at all. Landing a
+      # file there makes it appear on /reports immediately — no restart.
+      - /opt/cloud-data/anmolmathur-reports:/weekly-reports:ro
     security_opt:
       - no-new-privileges:true
     logging:
