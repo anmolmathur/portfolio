@@ -88,15 +88,68 @@ export function buildIndex(locale) {
     });
   }
 
+  /* Articles are indexed twice, at two granularities.
+   *
+   * references/brain.md says the index unit should be an article SECTION, not
+   * a whole article, because a long body dilutes BM25 (length normalisation
+   * penalises it) and only the head survives the excerpt cap -- these bodies
+   * run to ~2000 chars against a 900-char cap, so every article's tail was
+   * unreachable by the guide.
+   *
+   * The reference splits on H2. These articles have no headings at all -- flat
+   * prose, seven <p> and a list -- so the equivalent structural unit here is
+   * the paragraph. Same intent, different seam.
+   *
+   * The whole-article record stays for NAVIGATION (the palette needs one
+   * entry per article, and the guide needs something to link to); the passage
+   * records are retrieval-only and filtered out of the client payload, so the
+   * palette is not littered with paragraph fragments. */
   for (const a of copy.articles.items) {
     const full = articles[a.slug];
+    const keywords = (full?.keywords ?? '').split(',').map((x) => x.trim()).filter(Boolean);
+
     push({
       id: `article:${a.slug}`, kind: 'article', anchor: 'articles',
       url: articleUrl(locale, a.slug),
       title: a.title, body: join(a.excerpt, full?.body),
-      keywords: (full?.keywords ?? '').split(',').map((s) => s.trim()).filter(Boolean),
+      keywords,
+    });
+
+    const paragraphs = String(full?.body ?? '')
+      .split(/<\/(?:p|li|blockquote)>/i)
+      .map((chunk) => text(chunk))
+      .filter((t) => t.length > 60);
+
+    paragraphs.forEach((body, i) => {
+      push({
+        id: `passage:${a.slug}:${i}`, kind: 'passage', retrievalOnly: true,
+        anchor: 'articles', url: articleUrl(locale, a.slug),
+        // Carrying the article title keeps the topic gate meaningful: a
+        // passage is still "about" the article it came from.
+        title: a.title,
+        subtitle: copy.articles.heading,
+        body,
+        keywords,
+      });
     });
   }
+
+  /* The guide, described to itself.
+   *
+   * references/brain.md: "users ask the guide about the guide". Without this
+   * record, "are you actually Anmol?" or "do you store my questions?" hit the
+   * honest-miss path -- the guide could describe every job on the page and
+   * nothing at all about itself, which reads as evasive rather than careful.
+   *
+   * Retrieval-only: it answers questions but is not a place on the page the
+   * palette can navigate to. */
+  push({
+    id: 'guide-about', kind: 'about-guide', retrievalOnly: true,
+    anchor: 'contact', url: at('contact'),
+    title: copy.ui.guide.about.title,
+    body: text(copy.ui.guide.about.body),
+    keywords: copy.ui.guide.about.keywords.split(',').map((k) => k.trim()).filter(Boolean),
+  });
 
   /* The actual channels are part of the record, not just the invitation to get
      in touch. "How do I contact him?" is the conversion question on a
@@ -129,7 +182,9 @@ export function getIndex(locale) {
 
 /** Compact payload for the browser — full bodies stay server-side. */
 export function clientIndex(locale) {
-  return getIndex(locale).map(({ id, kind, title, subtitle, url, externalUrl, body, keywords }) => ({
+  // Passages exist for the guide's retrieval only; the palette lists things a
+  // visitor can navigate TO, and a paragraph fragment is not one of those.
+  return getIndex(locale).filter((r) => !r.retrievalOnly).map(({ id, kind, title, subtitle, url, externalUrl, body, keywords }) => ({
     id, kind, title, subtitle, url, externalUrl,
     snippet: body.slice(0, 180),
     terms: [title, subtitle, ...(keywords ?? [])].filter(Boolean).join(' ').toLowerCase(),

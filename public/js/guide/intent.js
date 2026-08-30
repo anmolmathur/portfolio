@@ -50,6 +50,31 @@
       gesture: 'explain',
     },
     {
+      /* Identity questions go here rather than to retrieval.
+       *
+       * BM25 cannot win these: "are you actually Anmol?" is dominated by
+       * "Anmol", which appears in every record on the site, and "is this an
+       * AI?" matches the AI skills domain. Both resolved to confident,
+       * irrelevant answers. The indexed self-description still covers the long
+       * tail of phrasings; these are the ones worth answering exactly. */
+      id: 'identity',
+      test: /^(are you (really |actually )?(anmol|a ?(bot|robot|human|person|real))|is (this|it) (an? )?(ai|bot|robot|real person)|who am i (talking|speaking) to|are you real)[\s?.!]*$/i,
+      reply: function () {
+        return 'No — I’m an AI assistant on Anmol’s site, not Anmol himself. '
+          + 'I answer using only what is written on these pages, and the figure you see is an animated likeness.';
+      },
+      gesture: 'offer',
+    },
+    {
+      id: 'privacy',
+      test: /^(do you (store|save|record|keep) (my )?(questions|data|messages|chats)|is this private|what do you do with my data)[\s?.!]*$/i,
+      reply: function () {
+        return 'Your questions go to this site’s own server to be answered, and are not stored or used to identify you. '
+          + 'The voice, if you turn it on, uses your browser’s built-in speech — no audio leaves your device.';
+      },
+      gesture: 'explain',
+    },
+    {
       id: 'affirm',
       test: YES,
       reply: function () { return 'What would you like to know?'; },
@@ -71,7 +96,7 @@
     // Only short messages are considered. "Hi, can you tell me what he did at
     // HSBC?" opens with a greeting but is plainly a real question, and
     // answering it with "Hello!" would be worse than useless.
-    if (!q || q.length > 40) return null;
+    if (!q || q.length > 64) return null;
     for (var i = 0; i < RULES.length; i++) {
       if (RULES[i].test.test(q)) {
         return {

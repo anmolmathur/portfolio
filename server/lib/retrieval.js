@@ -159,6 +159,20 @@ function indexFor(locale) {
  * a record whose title shares no words with the question.
  */
 function passesTopicGate(doc, terms) {
+  /* Passages are exempt, and the exemption is principled rather than a patch.
+   *
+   * The gate exists because a long record can match a query on one rare prose
+   * word it merely MENTIONS, while being about something else entirely -- a
+   * 2000-char article winning on "leadership". A passage is a single
+   * paragraph: what it mentions IS what it is about, so the dilution the gate
+   * guards against cannot occur, and BM25's length normalisation already makes
+   * a short record earn its score.
+   *
+   * Leaving them gated was actively wrong. Passages inherit their article's
+   * TITLE as their topic, so a paragraph contrasting "virtual access" with
+   * "real-world access" was blocked -- its own subject appeared nowhere in the
+   * article's title -- and the question fell through to a much worse record. */
+  if (doc.record.kind === 'passage') return true;
   return terms.some((t) => doc.topic.has(t));
 }
 
