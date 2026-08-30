@@ -73,6 +73,11 @@
       sanitize_properties: (props) => scrubProps(props),
       loaded: () => { ready = true; flush(); },
     });
+
+    // NOTE: super properties are registered in grant(), NOT here. Registering
+    // before consent writes them into the in-memory persistence store, and the
+    // switch to localStorage+cookie on consent discards that store -- so they
+    // silently never reach PostHog. Verified the hard way.
   }
 
   function flush() {
@@ -91,6 +96,20 @@
         autocapture: true,
         disable_session_recording: false,
       });
+      /* This PostHog project is shared with BombayGothic, so tag every
+         portfolio event to keep the two separable:
+
+         - `bg_property: 'portfolio'` reuses the dimension BombayGothic already
+           breaks down by (`main_site` / `shopify_store`), so existing insights
+           filtered to those values exclude portfolio traffic on their own.
+         - `site` is the honest name, for portfolio analysis and for the day
+           these become separate projects.
+
+         Must run AFTER set_config: switching persistence resets the property
+         store, so anything registered earlier is thrown away. Registering here
+         -- before opt_in and the first $pageview -- means every event that is
+         ever actually sent carries both tags, autocapture included. */
+      window.posthog.register({ bg_property: 'portfolio', site: 'anmolmathur.com' });
       window.posthog.opt_in_capturing();
       window.posthog.capture('$pageview');
     } catch (e) { /* ignore */ }
