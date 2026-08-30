@@ -1911,6 +1911,22 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 .guide-heading strong { font-size: 1rem; }
 .guide-sub { font-size: 0.78rem; opacity: 0.85; }
 
+.guide-head-btns { display: flex; align-items: center; gap: 2px; }
+
+.guide-voice {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius);
+  line-height: 0;
+  opacity: 0.75;
+}
+.guide-voice[aria-pressed="true"] { opacity: 1; }
+.guide-voice:hover { background: rgba(255, 255, 255, 0.15); opacity: 1; }
+.guide-voice[hidden] { display: none; }
+
 .guide-close {
   background: none;
   border: 0;

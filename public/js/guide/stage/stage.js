@@ -8,6 +8,7 @@ import * as THREE from 'three';
 import { loadGlbAvatar, UnusableModelError } from './glbAvatar.js';
 import { applyRestPose } from './restPose.js';
 import { createAnimator } from './animator.js';
+import { createVisemeDriver } from './visemeDriver.js';
 
 export { UnusableModelError };
 
@@ -84,6 +85,7 @@ export async function createStage(host, opts = {}) {
   const framing = frame();
 
   const animator = createAnimator(avatar, { persona: opts.persona });
+  const visemes = createVisemeDriver(avatar);
 
   /* The frame pipeline, in the order references/animation.md requires:
    *
@@ -95,10 +97,18 @@ export async function createStage(host, opts = {}) {
    * `t` is seconds from performance.now(), never THREE.Clock and never the rAF
    * timestamp — both run fast under shims and headless browsers, and the
    * symptom is animation that subtly speeds up. */
+  let lastTime = null;
   function renderFrame(t) {
     const time = (typeof t === 'number' ? t : performance.now() / 1000);
+    // dt is derived from the same clock the caller drives, and clamped: a
+    // backgrounded tab resuming can hand over a multi-second gap, which would
+    // snap every eased weight to its target in one frame.
+    const dt = lastTime === null ? 1 / 60 : Math.max(0, Math.min(0.1, time - lastTime));
+    lastTime = time;
+
     applyRestPose(avatar.proxies);
     animator.update(time);
+    visemes.update(dt);
     avatar.update();              // proxy -> real bone conjugation
     renderer.render(scene, camera);
   }
@@ -149,6 +159,8 @@ export async function createStage(host, opts = {}) {
     setExpression: (n, w) => avatar.expressionManager.setValue(n, w),
     play: animator.play,
     playFromPool: animator.playFromPool,
+    sayWord: visemes.say,
+    stopSpeaking: visemes.silence,
     setLookTarget: avatar.setLookTarget,
   };
 
@@ -165,6 +177,7 @@ export async function createStage(host, opts = {}) {
     expressions: avatar.availableExpressions,
     step: renderFrame,          // call with an explicit t to advance deterministically
     animator,
+    visemes,
     boneWorldY: (name) => {
       const b = avatar.bones[name];
       if (!b) return null;

@@ -38,20 +38,18 @@
     // never touches a visitor who does not open the guide.
     lazyPanel: true,
 
-    /* The avatar stage is OFF until it has a rest pose.
+    /* The avatar stage is ON since phase 3 gave it a rest pose and idle
+     * motion; before that a freshly loaded Mixamo rig stood in a T-pose, which
+     * is the correct output for "stage + model" and still read as broken.
      *
-     * Phase 2 loads and renders the model correctly, but a freshly loaded
-     * Mixamo rig stands in a T-pose with its arms straight out. That is the
-     * correct output for "stage + model" and it still reads as broken to a
-     * visitor, so it stays behind this flag until phase 3 (animation.md) adds
-     * the rest pose and idle motion. Flip to true to preview it.
-     *
-     * ?guide-stage=1 in the URL forces it on for testing without a deploy. */
+     * ?guide-stage=0 turns it off without a deploy — useful for isolating a
+     * WebGL or model problem from the rest of the guide, which works as a text
+     * assistant with the stage absent. */
     enableStage: (function () {
       try {
-        if (/[?&]guide-stage=1/.test(location.search)) return true;
+        if (/[?&]guide-stage=0/.test(location.search)) return false;
       } catch (e) { /* ignore */ }
-      return false;
+      return true;
     })(),
 
     limits: {
@@ -62,6 +60,7 @@
 
     storageKeys: {
       greeted: 'guide-greeted',
+      voice: 'guide-voice',
     },
 
     store: store,

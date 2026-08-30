@@ -29,13 +29,47 @@
     var heading = el('div', 'guide-heading');
     heading.appendChild(el('strong', null, G.copy('title', 'Ask about Anmol')));
     heading.appendChild(el('span', 'guide-sub', G.copy('subtitle', '')));
+    /* Voice is OFF by default.
+     *
+     * The reference's B2C guide greets visitors out loud, but speechSynthesis
+     * utterances are exempt from autoplay policy, so that would mean a
+     * portfolio that starts talking at a recruiter who only clicked a chat
+     * button. Opt-in is the right default here; the toggle remembers itself. */
+    var speaker = G.createSpeaker();
+    var voiceOn = G.config.store.get(G.config.storageKeys.voice) === '1';
+    speaker.setEnabled(voiceOn);
+
+    var voiceBtn = el('button', 'guide-voice');
+    voiceBtn.type = 'button';
+    function paintVoiceBtn() {
+      voiceBtn.setAttribute('aria-pressed', voiceOn ? 'true' : 'false');
+      voiceBtn.setAttribute('aria-label',
+        voiceOn ? G.copy('speakOff', 'Turn voice off') : G.copy('speakOn', 'Turn voice on'));
+      voiceBtn.title = voiceBtn.getAttribute('aria-label');
+      voiceBtn.innerHTML = voiceOn
+        ? '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+        : '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    }
+    paintVoiceBtn();
+    voiceBtn.addEventListener('click', function () {
+      voiceOn = !voiceOn;
+      speaker.setEnabled(voiceOn);
+      G.config.store.set(G.config.storageKeys.voice, voiceOn ? '1' : '0');
+      if (!voiceOn && stageApi) stageApi.stopSpeaking();
+      paintVoiceBtn();
+    });
+    if (!speaker.supported) voiceBtn.hidden = true;
+
     var close = el('button', 'guide-close');
     close.type = 'button';
     close.setAttribute('aria-label', G.copy('close', 'Close'));
     close.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
       + '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
     head.appendChild(heading);
-    head.appendChild(close);
+    var headBtns = el('div', 'guide-head-btns');
+    headBtns.appendChild(voiceBtn);
+    headBtns.appendChild(close);
+    head.appendChild(headBtns);
 
     // Reserved for the avatar. Empty in phase 1 — the panel is a working text
     // guide without it, which is the point of shipping the phases separately.
@@ -120,6 +154,32 @@
         log.scrollTop = log.scrollHeight;
         busy = false;
         input.focus();
+        deliver(res.answer || '');
+      });
+    }
+
+    /* deliver() is the ask -> speak -> gesture seam from
+       references/architecture.md. The bubble is already on screen by the time
+       this runs: text must never wait on speech, which may be off, unsupported
+       or slow. */
+    var beatTimer = null;
+    function deliver(text) {
+      if (stageApi) stageApi.playFromPool();
+      if (!speaker.isEnabled() || !text) return;
+
+      /* Talk beats: re-fire a gesture every ~5.5s while speaking, or the hands
+         die halfway through a long answer and the avatar looks frozen. */
+      if (beatTimer) clearInterval(beatTimer);
+      beatTimer = setInterval(function () {
+        if (stageApi) stageApi.playFromPool();
+      }, 5500);
+
+      speaker.speak(text, {
+        onWord: function (word, ms) { if (stageApi) stageApi.sayWord(word, ms); },
+        onEnd: function () {
+          if (beatTimer) { clearInterval(beatTimer); beatTimer = null; }
+          if (stageApi) stageApi.stopSpeaking();
+        },
       });
     }
 
@@ -209,7 +269,9 @@
     function close_() {
       root.hidden = true;
       // Nothing is visible now; keep the GL context but stop the loop.
-      if (stageApi) stageApi.stop();
+      if (stageApi) { stageApi.stop(); stageApi.stopSpeaking(); }
+      speaker.cancel();
+      if (beatTimer) { clearInterval(beatTimer); beatTimer = null; }
       if (opts && opts.onClose) opts.onClose();
     }
 
