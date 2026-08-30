@@ -11,17 +11,41 @@
   var G = (window.Guide = window.Guide || {});
 
   function createEngine() {
-    var history = [];
+    /* The transcript lives in sessionStorage, not memory.
+     *
+     * In memory it survived closing and reopening the panel, but not a page
+     * NAVIGATION -- and the guide's own source links navigate. A visitor who
+     * asked three questions, followed a citation, and came back found a blank
+     * panel and a greeting, which reads as the assistant having forgotten them.
+     *
+     * sessionStorage is the right scope: it survives navigation and reload,
+     * and dies with the tab, so a shared or public machine does not hand the
+     * next person someone else's conversation. It is best-effort like every
+     * other storage call here -- private mode throws, and a guide that works
+     * without memory is better than one that fails to open. */
+    var KEY = G.config.storageKeys.transcript;
+    var history = (function () {
+      try {
+        var raw = sessionStorage.getItem(KEY);
+        var parsed = raw ? JSON.parse(raw) : null;
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) { return []; }
+    })();
+
+    function persist() {
+      try { sessionStorage.setItem(KEY, JSON.stringify(history)); } catch (e) { /* private mode */ }
+    }
     /* Stale-response guard from references/brain.md: a visitor who asks a
        second question before the first returns must not receive the first
        answer afterwards. Each ask takes a token; a reply is delivered only if
        its token is still the current one. */
     var token = 0;
 
-    function remember(role, text) {
-      history.push({ role: role, text: text });
+    function remember(role, text, sources) {
+      history.push({ role: role, text: text, sources: sources || null });
       var max = G.config.limits.historyTurns;
       if (history.length > max) history.splice(0, history.length - max);
+      persist();
     }
 
     function ask(question) {
@@ -68,7 +92,7 @@
         })
         .then(function (data) {
           if (mine !== token) return null;   // superseded
-          remember('guide', data.answer || '');
+          remember('guide', data.answer || '', data.sources);
           return data;
         })
         .catch(function (err) {
@@ -90,6 +114,10 @@
     return {
       ask: ask,
       history: function () { return history.slice(); },
+      clear: function () {
+        history.length = 0;
+        try { sessionStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+      },
       /* Phase 4 will add speak() here; the delivery order (clear bubble ->
          set reply -> speak -> gesture) is defined in architecture.md and
          belongs in this seam, not in the panel. */

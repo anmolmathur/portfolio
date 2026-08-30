@@ -14,8 +14,9 @@
  * to hallucinate from.
  */
 import { config } from './config.js';
-import { site } from './content.js';
+import { site, locales } from './content.js';
 import { excerpts } from './retrieval.js';
+import { factsBlock } from './career-facts.js';
 
 const MISS_LINE = 'I don’t have anything about that on this site. '
   + 'Ask me about Anmol’s roles, skills, education, projects or how to get in touch.';
@@ -50,7 +51,8 @@ function systemPrompt(personName) {
     '',
     'ABSOLUTE RULES:',
     `1. Answer ONLY from the numbered excerpts supplied below. They are ${personName}'s own website copy.`,
-    '2. If the excerpts do not contain the answer, say you do not have that on the site. Never guess, never fill gaps from general knowledge, never infer dates, employers, figures or technologies that are not written in an excerpt.',
+    '2. If the material does not contain the answer, say you do not have that on the site. Never guess, never fill gaps from general knowledge, never introduce employers, dates, figures or technologies that are not written in the material.',
+    '2a. DERIVING from the material is allowed and expected. Counting roles, adding up the durations already computed for you, grouping them by sector, or comparing two dates that are both given are arithmetic over stated facts, not invention. A question like "how many years in X?" should be answered from the CAREER FACTS below rather than refused. Only refuse when the material genuinely lacks the input.',
     `3. Speak about ${personName} in the third person ("he", "his").`,
     '4. Reply in plain prose: 1-3 short sentences. This is read aloud, so no markdown, no bullet points, no headings, no emoji.',
     '5. Never output "Reasoning:", "Next actions:", "Pillar", scores, or any planning framework. Those belong to a different task and are wrong here.',
@@ -58,12 +60,14 @@ function systemPrompt(personName) {
   ].join('\n');
 }
 
-function userPrompt(question, found) {
+function userPrompt(question, found, facts) {
   const blocks = found.map((e, i) => {
     const head = [`[${i + 1}] ${e.title}`, e.subtitle].filter(Boolean).join(' — ');
     return `${head}\n${e.text}`;
   }).join('\n\n');
-  return `EXCERPTS FROM THE WEBSITE:\n\n${blocks}\n\nVISITOR'S QUESTION: ${question}\n\nAnswer in 1-3 plain sentences using only the excerpts above.`;
+  return `${facts}\n\nEXCERPTS FROM THE WEBSITE:\n\n${blocks}\n\nVISITOR'S QUESTION: ${question}\n\n`
+    + `Answer in 1-3 plain sentences using only the material above. If the question asks `
+    + `how long or how many, use the CAREER FACTS rather than saying it is not specified.`;
 }
 
 /**
@@ -172,7 +176,7 @@ export async function ask({ question, locale, history }) {
             role: t.role === 'guide' ? 'assistant' : 'user',
             content: String(t.text || '').slice(0, MAX_HISTORY_CHARS),
           })),
-          { role: 'user', content: userPrompt(q, found) },
+          { role: 'user', content: userPrompt(q, found, factsBlock(locales[locale].copy)) },
         ],
       }),
     });

@@ -110,6 +110,21 @@
     paintVoice();
     if (!speaker.supported || !G.config.enableVoice) voiceBtn.hidden = true;
 
+    var resetBtn = el('button', 'guide-ctl guide-ctl-reset');
+    resetBtn.type = 'button';
+    resetBtn.setAttribute('aria-label', G.copy('reset', 'Start a new conversation'));
+    resetBtn.title = resetBtn.getAttribute('aria-label');
+    resetBtn.innerHTML = svg('<path d="M4 12a8 8 0 1 1 2.3 5.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 20v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>');
+    resetBtn.addEventListener('click', function () {
+      engine.clear();
+      log.textContent = '';
+      speaker.cancel();
+      bubble('guide', G.copy('greeting', ''));
+      renderChips();
+      input.focus();
+    });
+
+    controls.appendChild(resetBtn);
     controls.appendChild(closeBtn);
     if (G.config.showAvatar) controls.appendChild(sideBtn);
     controls.appendChild(voiceBtn);
@@ -244,6 +259,26 @@
     // ---- open / close ----------------------------------------------------
     var greeted = false;
 
+    /* Replay whatever the visitor already said this session.
+     *
+     * Runs once, before the first greeting decision, so a returning visitor
+     * sees their own conversation rather than an empty panel and a greeting
+     * that ignores it. Following a source link and coming back is the common
+     * case, and the guide's own citations navigate. */
+    var restored = false;
+    function restore() {
+      if (restored) return;
+      restored = true;
+      var prior = engine.history();
+      if (!prior.length) return false;
+      prior.forEach(function (turn) {
+        var b = bubble(turn.role === 'visitor' ? 'visitor' : 'guide', turn.text);
+        if (turn.role !== 'visitor') addSources(b, turn.sources);
+      });
+      log.scrollTop = log.scrollHeight;
+      return true;
+    }
+
     function open_() {
       if (root.dataset.state === 'open') return;
       ensureFigure();                       // covers a first open after a resize
@@ -257,10 +292,16 @@
       }
       if (!greeted) {
         greeted = true;
-        var seen = G.config.store.get(G.config.storageKeys.greeted);
-        bubble('guide', seen ? G.copy('greetingReturn', G.copy('greeting', '')) : G.copy('greeting', ''));
-        G.config.store.set(G.config.storageKeys.greeted, '1');
-        renderChips();
+        var hadTranscript = restore();
+        if (!hadTranscript) {
+          var seen = G.config.store.get(G.config.storageKeys.greeted);
+          bubble('guide', seen ? G.copy('greetingReturn', G.copy('greeting', '')) : G.copy('greeting', ''));
+          G.config.store.set(G.config.storageKeys.greeted, '1');
+          renderChips();
+        }
+        // Chips are for a blank slate. Mid-conversation they are noise, and
+        // re-offering "What does he do now?" after it has been answered reads
+        // as the guide not having followed along.
       }
       setTimeout(function () { input.focus(); }, 0);
       if (opts && opts.onOpen) opts.onOpen();

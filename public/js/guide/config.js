@@ -77,6 +77,7 @@
       greeted: 'guide-greeted',
       voice: 'guide-voice',
       side: 'guide-side',
+      transcript: 'guide-transcript',
     },
 
     store: store,
