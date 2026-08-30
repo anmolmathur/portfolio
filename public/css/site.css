@@ -1857,3 +1857,191 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 .flip-back .project-toggle:hover { color: rgba(255, 255, 255, 0.82); }
 .flip-back .case-body { scrollbar-color: rgba(255,255,255,0.4) transparent; }
 .flip-back .case-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); }
+
+/* ==========================================================================
+   Guide — launcher button and panel (phase 1: text guide, no stage yet)
+
+   THE TRAP, from references/architecture.md: a `display` rule on the panel
+   OUTRANKS the user agent's `[hidden] { display: none }`, because an author
+   rule beats a UA rule regardless of the attribute. The panel is toggled with
+   `root.hidden`, so every display rule below is written against
+   `:not([hidden])` — without that guard the shut panel renders anyway, which
+   is exactly the bug the reference says shipped.
+   ========================================================================== */
+
+.action-guide {
+  background: var(--brand-700);
+}
+
+.guide-panel:not([hidden]) {
+  display: flex;
+}
+
+.guide-panel {
+  position: fixed;
+  right: 20px;
+  /* Clears the floating action stack. The launcher measures the stack and sets
+     --guide-stack-clearance; the fallback covers the case where that never
+     runs. A fixed value overlapped the launcher and would drift whenever the
+     stack gains a button or drops its labels on mobile. */
+  bottom: calc(var(--guide-stack-clearance, 112px) + 12px);
+  z-index: 1200;
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(620px, calc(100vh - 140px));
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--heading);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.guide-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--brand-800);
+  color: #fff;
+}
+
+.guide-heading { display: flex; flex-direction: column; gap: 2px; }
+.guide-heading strong { font-size: 1rem; }
+.guide-sub { font-size: 0.78rem; opacity: 0.85; }
+
+.guide-close {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius);
+  line-height: 0;
+}
+.guide-close:hover { background: rgba(255, 255, 255, 0.15); }
+
+/* Reserved for the phase 2 avatar. Collapsed until it has something in it, so
+   the text guide does not carry an empty gap in the meantime. */
+.guide-stage:empty { display: none; }
+
+.guide-log {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.guide-msg { max-width: 88%; }
+.guide-msg p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
+
+.guide-msg-visitor {
+  align-self: flex-end;
+  background: var(--brand-700);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 14px 14px 4px 14px;
+}
+
+.guide-msg-guide {
+  align-self: flex-start;
+  background: var(--bg-subtle);
+  color: var(--heading);
+  padding: 8px 12px;
+  border-radius: 14px 14px 14px 4px;
+}
+
+.guide-thinking p { opacity: 0.7; font-style: italic; }
+
+.guide-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+.guide-sources-label { font-size: 0.7rem; opacity: 0.65; }
+.guide-source {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  text-decoration: none;
+  border: 1px solid var(--border);
+}
+.guide-source:hover { background: var(--chip-active-bg); color: var(--chip-active-text); }
+
+.guide-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 16px 10px;
+}
+.guide-chips[hidden] { display: none; }
+
+.guide-chip {
+  font-size: 0.75rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  cursor: pointer;
+}
+.guide-chip:hover { background: var(--chip-active-bg); color: var(--chip-active-text); }
+
+.guide-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.guide-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--heading);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+}
+.guide-input:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+.guide-send {
+  flex: 0 0 auto;
+  width: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-700);
+  color: #fff;
+  cursor: pointer;
+  line-height: 0;
+}
+.guide-send:hover { filter: brightness(1.08); }
+
+.guide-note {
+  margin: 0;
+  padding: 0 16px 12px;
+  font-size: 0.68rem;
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .guide-panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: min(70vh, calc(100vh - 120px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-panel { transition: none; }
+}

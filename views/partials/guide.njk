@@ -1,0 +1,22 @@
+{#
+  Guide — the single include. This partial plus public/js/guide/ IS the whole
+  feature; deleting both removes it completely.
+
+  Copy is handed over from content/<locale>.json rather than hard-coded in the
+  JS, so adding Spanish stays a content-only change like everything else on
+  this site.
+
+  `| dump` emits valid JSON. autoescape is on globally, and `| safe` here is
+  deliberate and safe: the value is JSON-serialised by Nunjucks, not raw
+  author HTML. The </script> guard below covers the one case JSON escaping
+  does not — a copy string containing that literal would otherwise close this
+  block early.
+#}
+<script>
+  window.__guideConfig = {
+    endpoint: "/api/guide/ask",
+    locale: {{ locale | dump | safe }},
+    copy: {{ copy.ui.guide | dump | replace("</script", "<\\/script") | safe }}
+  };
+</script>
+<script src="/js/guide/bundle.js?v={{ guideVersion }}" defer></script>

@@ -12,6 +12,8 @@ import { personJsonLd, articleJsonLd } from './lib/json-ld.js';
 import { config, publicConfig, describeConfig } from './lib/config.js';
 import { registerAnalyticsProxy } from './lib/analytics-proxy.js';
 import { ask } from './lib/guide-agent.js';
+import { createGuideBundle } from './lib/guide-bundle.js';
+import { registerReports } from './lib/reports.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT = site.defaultLocale;
@@ -29,6 +31,8 @@ const IMG_MANIFEST = (() => {
 const FONT_DIR = path.join(ROOT, 'public', 'fonts');
 const hasLocalFonts = fs.existsSync(FONT_DIR)
   && fs.readdirSync(FONT_DIR).some((f) => f.endsWith('.woff2'));
+
+const guideBundle = createGuideBundle(ROOT);
 
 const app = Fastify({
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
@@ -85,6 +89,7 @@ function viewModel(locale, { pathname = '/', page = 'home' } = {}) {
     searchIndex: clientIndex(locale),
     jsonLd: personJsonLd(locale),
     publicConfig: publicConfig(),
+    guideVersion: guideBundle.version,
     hasLocalFonts,
     img: IMG_MANIFEST,
     industriesInUse: [...industriesInUse],
@@ -116,6 +121,8 @@ const rendersFor = (locale) => {
 };
 
 registerAnalyticsProxy(app);
+guideBundle.register(app);
+registerReports(app);
 
 for (const locale of availableLocales) rendersFor(locale);
 
@@ -134,7 +141,10 @@ app.get('/favicon.ico', async (req, reply) =>
 app.get('/robots.txt', async (req, reply) =>
   reply
     .type('text/plain')
-    .send(`User-agent: *\nAllow: /\nSitemap: ${site.canonicalOrigin}/sitemap.xml\n`),
+    .send(
+      `User-agent: *\nAllow: /\nDisallow: /reports\nDisallow: /api/\n` +
+        `Sitemap: ${site.canonicalOrigin}/sitemap.xml\n`,
+    ),
 );
 
 app.get('/sitemap.xml', async (req, reply) => {

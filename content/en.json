@@ -58,6 +58,27 @@
     "projects": {
       "readCase": "Read the case",
       "hideCase": "Back"
+    },
+    "guide": {
+      "label": "Ask about Anmol",
+      "aria": "Open the assistant and ask about Anmol's work",
+      "title": "Ask about Anmol",
+      "subtitle": "Answers come from this site only",
+      "close": "Close the assistant",
+      "placeholder": "Ask about a role, a project, a skill…",
+      "send": "Send",
+      "thinking": "Looking that up…",
+      "greeting": "Hi — I can answer questions about Anmol's roles, skills, projects and how to reach him. What would you like to know?",
+      "greetingReturn": "Welcome back. What would you like to know?",
+      "error": "Something went wrong reaching the assistant. Please try again.",
+      "sourceLabel": "On this page",
+      "disclosure": "AI assistant · answers drawn from this site",
+      "suggestions": [
+        "What does he do now?",
+        "Tell me about his time at HSBC",
+        "What are his strongest skills?",
+        "How do I get in touch?"
+      ]
     }
   },
   "nav": [
