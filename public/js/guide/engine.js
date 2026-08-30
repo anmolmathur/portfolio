@@ -29,7 +29,23 @@
       if (!q) return Promise.resolve(null);
 
       var mine = ++token;
+
+      /* Snapshot the history BEFORE recording this turn. Recording first put
+         the current question into `history` as well as into the prompt, so the
+         model saw it twice -- and worse, the server's follow-up resolution
+         looks for the last visitor turn to carry the topic forward, which
+         would have found this very question and carried nothing. */
+      var prior = history.slice(-G.config.limits.historySent);
       remember('visitor', q);
+
+      /* Tier 1. Answered locally, so "hi" costs no network round trip and no
+         model call. A miss returns null and falls through to the server. */
+      var quick = G.quickIntent && G.quickIntent(q, G.config.copy);
+      if (quick) {
+        remember('guide', quick.answer);
+        quick.speech = quick.answer;
+        return Promise.resolve(quick);
+      }
 
       var controller = new AbortController();
       var timer = setTimeout(function () { controller.abort(); }, G.config.limits.askTimeoutMs);
@@ -37,7 +53,13 @@
       return fetch(G.config.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: q, locale: G.config.locale }),
+        // History travels with the question so a bare follow-up ("and before
+        // that?") can resolve against what was already asked.
+        body: JSON.stringify({
+          question: q,
+          locale: G.config.locale,
+          history: prior,
+        }),
         signal: controller.signal,
       })
         .then(function (r) {

@@ -17,8 +17,22 @@ import { config } from './config.js';
 import { site } from './content.js';
 import { excerpts } from './retrieval.js';
 
+const MISS_LINE = 'I don’t have anything about that on this site. '
+  + 'Ask me about Anmol’s roles, skills, education, projects or how to get in touch.';
+
 const TIMEOUT_MS = 20_000;
 const MAX_QUESTION = 500;
+
+/* references/brain.md keeps ~12 turns and sends ~6. Enough for "what about
+   before that?" to resolve; short enough that the model is not re-reading the
+   whole conversation on every question. */
+const HISTORY_SENT = 6;
+const MAX_HISTORY_CHARS = 400;
+
+/* Two renditions, per brain.md: `speech` is what the avatar says aloud,
+   `text` is what the bubble shows. A spoken answer that runs past a few
+   sentences is a monologue; the bubble can afford more. */
+const SPOKEN_CAP = 700;
 
 /**
  * The site's model (`portfolio-website-helper`) carries its own system prompt
@@ -73,6 +87,23 @@ function clean(text) {
   return out;
 }
 
+/**
+ * Sentence-safe trim for the spoken rendition, with a closer so a truncated
+ * answer does not simply stop mid-thought.
+ */
+function forSpeech(text) {
+  const t = String(text || '').trim();
+  if (t.length <= SPOKEN_CAP) return t;
+  const sentences = t.match(/[^.!?]+[.!?]+["”)]*|[^.!?]+$/g) || [t];
+  let out = '';
+  for (const s of sentences) {
+    if ((out + s).length > SPOKEN_CAP) break;
+    out += s;
+  }
+  out = (out || t.slice(0, SPOKEN_CAP)).trim();
+  return `${out} Ask me for more detail if you want it.`;
+}
+
 /** Always-safe answer built from the site's own words, no model involved. */
 function verbatim(found) {
   const top = found[0];
@@ -80,18 +111,36 @@ function verbatim(found) {
   return sentence || top.title;
 }
 
-export async function ask({ question, locale }) {
+export async function ask({ question, locale, history }) {
   const q = String(question ?? '').trim().slice(0, MAX_QUESTION);
   if (!q) return { ok: false, reason: 'empty', answer: 'Ask me something about Anmol’s work.' };
 
-  const found = excerpts(locale, q, { limit: 4 });
+  const turns = Array.isArray(history) ? history.slice(-HISTORY_SENT) : [];
+  const lastVisitor = [...turns].reverse().find((t) => t && t.role === 'visitor' && t.text);
+
+  /* Follow-ups are detected by RESULT, not by shape.
+   *
+   * The first attempt was a word count -- six or fewer words meant "follow-up,
+   * carry the previous topic". It passed on "and what about before that?" (5
+   * words) and failed on "and what did he do before that?" (7), which is the
+   * same question. Any threshold has that arbitrariness somewhere.
+   *
+   * Instead: ask the question on its own first. If the site genuinely has
+   * nothing for it AND there is a previous turn, retry with the previous
+   * question prepended so the topic carries. A question that stands on its own
+   * is never touched, and a true miss with no history still misses. */
+  let found = excerpts(locale, q, { limit: 4 });
+  if (!found.length && lastVisitor) {
+    found = excerpts(locale, `${lastVisitor.text} ${q}`, { limit: 4 });
+  }
 
   // Layer 1 — nothing on the site covers this. Do not call the model at all:
   // with no excerpts it has nothing to be grounded by, and would invent.
   if (!found.length) {
     return {
       ok: true, grounded: false, source: 'miss', sources: [],
-      answer: 'I don’t have anything about that on this site. Ask me about Anmol’s roles, skills, education, projects or how to get in touch.',
+      answer: MISS_LINE,
+      speech: MISS_LINE,
     };
   }
 
@@ -99,7 +148,8 @@ export async function ask({ question, locale }) {
 
   // Layer 3 pre-empted — no key configured, so answer from the site directly.
   if (!config.agent.enabled) {
-    return { ok: true, grounded: true, source: 'verbatim', answer: verbatim(found), sources };
+    const v = verbatim(found);
+    return { ok: true, grounded: true, source: 'verbatim', answer: v, speech: forSpeech(v), sources };
   }
 
   const controller = new AbortController();
@@ -118,6 +168,10 @@ export async function ask({ question, locale }) {
         temperature: 0.2,
         messages: [
           { role: 'system', content: systemPrompt(site.person.name) },
+          ...turns.map((t) => ({
+            role: t.role === 'guide' ? 'assistant' : 'user',
+            content: String(t.text || '').slice(0, MAX_HISTORY_CHARS),
+          })),
           { role: 'user', content: userPrompt(q, found) },
         ],
       }),
@@ -128,11 +182,12 @@ export async function ask({ question, locale }) {
     // An empty answer after cleaning means the model returned nothing but
     // scaffolding. The site's own words are better than an empty bubble.
     if (!answer) throw new Error('empty after cleaning');
-    return { ok: true, grounded: true, source: 'model', answer, sources };
+    return { ok: true, grounded: true, source: 'model', answer, speech: forSpeech(answer), sources };
   } catch (err) {
     return {
       ok: true, grounded: true, source: 'verbatim', sources,
       answer: verbatim(found),
+      speech: forSpeech(verbatim(found)),
       degraded: err.name === 'AbortError' ? 'timeout' : String(err.message ?? err),
     };
   } finally {

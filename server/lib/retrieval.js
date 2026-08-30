@@ -241,11 +241,51 @@ export function search(locale, query, { limit = 5, minScore = 0.35 } = {}) {
 }
 
 /**
+ * Timeline neighbours for "what came before/after X".
+ *
+ * Retrieval carries a TOPIC forward but has no notion of temporal adjacency,
+ * so "and what did he do before that?" retrieved the Hungama records again and
+ * the model answered, honestly but wrongly, that the site did not say -- while
+ * TimesPro sat one row further down the same timeline.
+ *
+ * The roles are already stored in reverse-chronological order (the order the
+ * page renders them), so "before X" is simply the next role and "after X" the
+ * previous one. No date parsing, and it cannot drift from what the page shows.
+ */
+const RELATIVE_TIME = /\b(before|prior to|preceding|after|following|next|previous|earlier|later|then)\b/i;
+
+function withTimelineNeighbours(locale, query, hits) {
+  if (!RELATIVE_TIME.test(query) || !hits.length) return hits;
+  const records = getIndex(locale);
+  const roles = records.filter((r) => r.kind === 'role');
+  if (roles.length < 2) return hits;
+
+  const wantsEarlier = /\b(before|prior to|preceding|previous|earlier)\b/i.test(query);
+  const out = hits.slice();
+  const seen = new Set(hits.map((h) => h.record.id));
+
+  for (const hit of hits.slice(0, 2)) {
+    if (hit.record.kind !== 'role') continue;
+    const i = roles.findIndex((r) => r.id === hit.record.id);
+    if (i === -1) continue;
+    // Reverse-chronological: later index = earlier in time.
+    const neighbour = wantsEarlier ? roles[i + 1] : roles[i - 1];
+    if (neighbour && !seen.has(neighbour.id)) {
+      seen.add(neighbour.id);
+      // Just under the role it neighbours, so it is offered as context rather
+      // than displacing what was actually asked about.
+      out.push({ record: neighbour, score: hit.score * 0.9 });
+    }
+  }
+  return out.sort((a, b) => b.score - a.score);
+}
+
+/**
  * Retrieved records as excerpts for the model, with the body trimmed. The
  * model sees only these; anything it says beyond them is ungrounded.
  */
 export function excerpts(locale, query, opts = {}) {
-  return search(locale, query, opts).map(({ record, score }) => ({
+  return withTimelineNeighbours(locale, query, search(locale, query, opts)).map(({ record, score }) => ({
     id: record.id,
     kind: record.kind,
     title: record.title,

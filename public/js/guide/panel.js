@@ -154,7 +154,7 @@
         log.scrollTop = log.scrollHeight;
         busy = false;
         input.focus();
-        deliver(res.answer || '');
+        deliver(res.speech || res.answer || '', res.gesture);
       });
     }
 
@@ -163,8 +163,8 @@
        this runs: text must never wait on speech, which may be off, unsupported
        or slow. */
     var beatTimer = null;
-    function deliver(text) {
-      if (stageApi) stageApi.playFromPool();
+    function deliver(text, gesture) {
+      if (stageApi) { if (gesture) stageApi.play(gesture); else stageApi.playFromPool(); }
       if (!speaker.isEnabled() || !text) return;
 
       /* Talk beats: re-fire a gesture every ~5.5s while speaking, or the hands

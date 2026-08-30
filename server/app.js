@@ -186,9 +186,9 @@ app.get('/sitemap.xml', async (req, reply) => {
  * to the site's own copy rather than surfacing an error to the visitor.
  */
 app.post('/api/guide/ask', async (req, reply) => {
-  const { question, locale } = req.body ?? {};
+  const { question, locale, history } = req.body ?? {};
   const loc = availableLocales.includes(locale) ? locale : DEFAULT;
-  const result = await ask({ question, locale: loc });
+  const result = await ask({ question, locale: loc, history });
   // Answers are visitor-specific and cheap to recompute; caching them at the
   // edge would serve one visitor's answer to the next.
   return reply.header('Cache-Control', 'no-store').send(result);

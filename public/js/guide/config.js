@@ -55,7 +55,8 @@
     limits: {
       question: 500,      // matches MAX_QUESTION on the server
       askTimeoutMs: 25000, // ceiling above the server's own 20s
-      historyTurns: 12,    // kept locally; sending them is phase 5 work
+      historyTurns: 12,    // kept locally
+      historySent: 6,      // sent with each question, per brain.md
     },
 
     storageKeys: {

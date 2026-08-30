@@ -17,7 +17,7 @@ import path from 'node:path';
 
 // Order matters: config defines the namespace, engine and panel attach to it,
 // launcher runs last because it mounts immediately.
-const FILES = ['config.js', 'engine.js', 'speech.js', 'panel.js', 'launcher.js'];
+const FILES = ['config.js', 'intent.js', 'engine.js', 'speech.js', 'panel.js', 'launcher.js'];
 
 export function createGuideBundle(root) {
   const dir = path.join(root, 'public', 'js', 'guide');
