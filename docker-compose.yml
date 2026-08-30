@@ -40,6 +40,13 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+    networks:
+      # `default` keeps the loopback port publish working; `tunnel` lets the
+      # existing cloudflared container reach this one by name. Without the
+      # second, a `docker compose up -d` would recreate the container off the
+      # shared network and the public hostname would start 502-ing.
+      - default
+      - tunnel
 
   # Optional. Only starts with: docker compose --profile edge up -d
   caddy:
@@ -60,6 +67,13 @@ services:
     environment:
       SITE_DOMAIN: ${SITE_DOMAIN:?set SITE_DOMAIN in .env}
       ACME_EMAIL: ${ACME_EMAIL:-}
+
+networks:
+  # Created by the cloud stack, not by this file. Declared external so compose
+  # attaches to it rather than trying to own it.
+  tunnel:
+    external: true
+    name: cloud-stack_cloud_network
 
 volumes:
   caddy_data:
