@@ -62,6 +62,17 @@ or the eyeballs stay open while the lids close.
 - Legs, feet and shoes are modelled but cropped out by waist-up framing (`hips.y - 0.02`).
   Expected; no action needed.
 - Mesh list includes `avaturn_glasses_0/1`, `avaturn_hair_0/1`, `avaturn_shoes_0`,
-  `avaturn_look_0` (outfit). Textures have NOT yet been visually inspected at the final
-  waist-up crop — filenames lie (pitfall 8), so confirm the outfit reads correctly before
-  this ships as the site's hero.
+  `avaturn_look_0` (outfit).
+
+## Texture inspection — DONE 2026-08-30
+
+Pitfall 8 says filenames lie, so the embedded images were extracted from the GLB binary
+chunk and looked at directly, not trusted by name.
+
+| Material | Image | What it actually shows |
+|---|---|---|
+| `avaturn_look_0_material` (outfit) | 26 | Charcoal/black panels with white collar and cuff pieces — reads as a dark suit over a white shirt. Business attire, appropriate for the site's hero. |
+| `Head` | 11 | UV-unwrapped head: middle-aged South Asian man, short dark hair, trimmed beard. Plausible likeness basis. |
+
+Not the gym-clothes failure mode the skill warns about. **The model gate is now fully
+closed** — skeleton, visemes, morphs and appearance all verified.

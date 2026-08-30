@@ -11,6 +11,7 @@ import { clientIndex } from './lib/search-index.js';
 import { personJsonLd, articleJsonLd } from './lib/json-ld.js';
 import { config, publicConfig, describeConfig } from './lib/config.js';
 import { registerAnalyticsProxy } from './lib/analytics-proxy.js';
+import { ask } from './lib/guide-agent.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT = site.defaultLocale;
@@ -156,6 +157,23 @@ app.get('/sitemap.xml', async (req, reply) => {
       .join('\n') +
     `\n</urlset>\n`;
   return reply.type('application/xml').send(body);
+});
+
+/**
+ * The guide's ask endpoint.
+ *
+ * Deliberately server-side: the OpenWebUI key never reaches the browser, and
+ * retrieval gates the model so an ungrounded question never becomes a prompt.
+ * Always resolves with an answer — the layers in guide-agent.js fall through
+ * to the site's own copy rather than surfacing an error to the visitor.
+ */
+app.post('/api/guide/ask', async (req, reply) => {
+  const { question, locale } = req.body ?? {};
+  const loc = availableLocales.includes(locale) ? locale : DEFAULT;
+  const result = await ask({ question, locale: loc });
+  // Answers are visitor-specific and cheap to recompute; caching them at the
+  // edge would serve one visitor's answer to the next.
+  return reply.header('Cache-Control', 'no-store').send(result);
 });
 
 app.get('/healthz', async () => ({

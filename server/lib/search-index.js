@@ -1,4 +1,4 @@
-import { locales, articleUrl, localeUrl } from './content.js';
+import { site, locales, articleUrl, localeUrl } from './content.js';
 
 const text = (html) => String(html ?? '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 const join = (...parts) => parts.flat().filter(Boolean).map(text).join(' ').trim();
@@ -98,10 +98,24 @@ export function buildIndex(locale) {
     });
   }
 
+  /* The actual channels are part of the record, not just the invitation to get
+     in touch. "How do I contact him?" is the conversion question on a
+     portfolio, and with only the subheading indexed the guide had to answer
+     that it did not have his email -- while the page displayed it directly
+     above. These values are already public on the rendered page; putting them
+     in the index changes nothing about who can see them. */
   push({
     id: 'contact', kind: 'section', anchor: 'contact', url: at('contact'),
-    title: copy.contact.heading, body: text(copy.contact.subheading),
-    keywords: ['contact', 'email', 'phone', 'whatsapp', 'reach', 'hire', 'connect'],
+    title: copy.contact.heading,
+    body: join(
+      text(copy.contact.subheading),
+      `Email: ${site.person.email}.`,
+      `Phone: ${site.person.phone}.`,
+      `WhatsApp is available on the same number.`,
+      `Website: ${site.canonicalOrigin}.`,
+    ),
+    keywords: ['contact', 'email', 'phone', 'whatsapp', 'reach', 'hire', 'connect',
+      'get in touch', 'talk', 'call', 'message', site.person.email],
   });
 
   return records;
