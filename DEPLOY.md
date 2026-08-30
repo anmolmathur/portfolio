@@ -168,6 +168,43 @@ Consider putting Cloudflare in front. A single box in one region is slower for
 distant visitors than GitHub's edge, and it becomes a single point of failure
 with you as the on-call.
 
+## Rollback record — the apex records as they were before cutover
+
+Captured from the Cloudflare dashboard on 2026-08-30, before `anmolmathur.com`
+was pointed at the tunnel. **These are what you restore to put GitHub Pages
+back.** All eight were proxied (orange cloud) with TTL `Auto`.
+
+| Name | Type | Content |
+|---|---|---|
+| anmolmathur.com | A | 185.199.108.153 |
+| anmolmathur.com | A | 185.199.109.153 |
+| anmolmathur.com | A | 185.199.110.153 |
+| anmolmathur.com | A | 185.199.111.153 |
+| anmolmathur.com | AAAA | 2606:50c0:8000::153 |
+| anmolmathur.com | AAAA | 2606:50c0:8001::153 |
+| anmolmathur.com | AAAA | 2606:50c0:8002::153 |
+| anmolmathur.com | AAAA | 2606:50c0:8003::153 |
+
+These are GitHub's published Pages addresses, so they are recoverable from
+GitHub's docs even if this table is lost — but restoring from here is faster
+under pressure, and confirms all four of each were present.
+
+**To roll back:** delete the apex Tunnel record, recreate the eight rows above
+proxied, and the GitHub Pages site serves again within minutes. Keep the Pages
+deployment itself intact — DNS is the only thing that changed.
+
+Unaffected by the cutover, and left alone: `ayaansh` (CNAME to
+`anmolmathur.github.io`), `app` (tunnel `anmolmathur-tunnel`), and the
+`hetzner-stack` tunnel hostnames `ai`, `bg`, `contest`, `eu`, `immersive`,
+`mcp-posthog`.
+
+### Note on adding the apex hostname
+
+Cloudflare will not create a tunnel route for a hostname that already has
+conflicting `A`/`AAAA` records, so **the eight rows above must be deleted
+first**. That is the moment this table matters: between deleting them and the
+tunnel route working, the apex has no valid origin.
+
 ## Automated deploys (recommended over doing it by hand)
 
 `.github/workflows/deploy.yml` deploys from GitHub Actions. The SSH key lives in
