@@ -31,7 +31,13 @@
     const ease = (t) => 1 - Math.pow(1 - t, 3);
 
     const step = (now) => {
-      const t = Math.min(1, (now - start) / duration);
+      /* Clamped at BOTH ends. `now` is the rAF timestamp, which is the time the
+         frame started and can therefore precede the performance.now() captured
+         in this same task a moment earlier. A negative t made easeOutCubic go
+         negative (1 - (1-t)^3 at t=-0.1 is -0.33), and the counters rendered
+         "-327+ University partners" and "₹-0.0 Cr" for a frame or two before
+         correcting themselves. Seen on the page, not theorised. */
+      const t = Math.max(0, Math.min(1, (now - start) / duration));
       node.textContent = format(target * ease(t), { decimals, compact });
       if (t < 1) requestAnimationFrame(step);
       else node.textContent = format(target, { decimals, compact });

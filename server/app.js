@@ -14,6 +14,7 @@ import { registerAnalyticsProxy } from './lib/analytics-proxy.js';
 import { ask } from './lib/guide-agent.js';
 import { createGuideBundle } from './lib/guide-bundle.js';
 import { createAssetVersions } from './lib/asset-version.js';
+import { createStageModules } from './lib/stage-modules.js';
 import { registerReports } from './lib/reports.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -35,6 +36,7 @@ const hasLocalFonts = fs.existsSync(FONT_DIR)
 
 const guideBundle = createGuideBundle(ROOT);
 const assets = createAssetVersions(ROOT);
+const stageModules = createStageModules(ROOT);
 
 const app = Fastify({
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
@@ -92,6 +94,7 @@ function viewModel(locale, { pathname = '/', page = 'home' } = {}) {
     jsonLd: personJsonLd(locale),
     publicConfig: publicConfig(),
     guideVersion: guideBundle.version,
+    stageEntry: stageModules.entryUrl(),
     assetUrl: assets.assetUrl,
     hasLocalFonts,
     img: IMG_MANIFEST,
@@ -126,6 +129,7 @@ const rendersFor = (locale) => {
 registerAnalyticsProxy(app);
 guideBundle.register(app);
 assets.register(app);
+stageModules.register(app);
 registerReports(app);
 
 for (const locale of availableLocales) rendersFor(locale);

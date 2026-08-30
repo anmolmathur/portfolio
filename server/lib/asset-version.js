@@ -56,6 +56,8 @@ export function createAssetVersions(root) {
   function register(app) {
     app.addHook('onSend', async (req, reply, payload) => {
       const url = req.raw.url || '';
+
+
       if (!/^\/(css|js|fonts)\//.test(url)) return payload;
       const q = url.indexOf('?');
       if (q === -1) return payload;

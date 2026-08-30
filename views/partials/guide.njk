@@ -16,6 +16,7 @@
   window.__guideConfig = {
     endpoint: "/api/guide/ask",
     locale: {{ locale | dump | safe }},
+    stageEntry: {{ stageEntry | dump | safe }},
     copy: {{ copy.ui.guide | dump | replace("</script", "<\\/script") | safe }}
   };
 </script>

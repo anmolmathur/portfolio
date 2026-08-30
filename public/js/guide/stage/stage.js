@@ -6,6 +6,8 @@
  */
 import * as THREE from 'three';
 import { loadGlbAvatar, UnusableModelError } from './glbAvatar.js';
+import { applyRestPose } from './restPose.js';
+import { createAnimator } from './animator.js';
 
 export { UnusableModelError };
 
@@ -81,8 +83,23 @@ export async function createStage(host, opts = {}) {
   }
   const framing = frame();
 
-  function renderFrame() {
-    avatar.update();
+  const animator = createAnimator(avatar, { persona: opts.persona });
+
+  /* The frame pipeline, in the order references/animation.md requires:
+   *
+   *   applyRestPose -> idle -> gesture -> viseme -> look-at -> adapter.update
+   *
+   * Rest WRITES the base every frame; every layer after it ADDS. That is what
+   * makes an interrupted gesture harmless and stops any drift accumulating.
+   *
+   * `t` is seconds from performance.now(), never THREE.Clock and never the rAF
+   * timestamp — both run fast under shims and headless browsers, and the
+   * symptom is animation that subtly speeds up. */
+  function renderFrame(t) {
+    const time = (typeof t === 'number' ? t : performance.now() / 1000);
+    applyRestPose(avatar.proxies);
+    animator.update(time);
+    avatar.update();              // proxy -> real bone conjugation
     renderer.render(scene, camera);
   }
 
@@ -95,6 +112,8 @@ export async function createStage(host, opts = {}) {
     const tick = () => {
       if (disposed) return;
       raf = requestAnimationFrame(tick);
+      // Deliberately called with NO argument: renderFrame reads
+      // performance.now() itself rather than trusting the rAF timestamp.
       renderFrame();
     };
     raf = requestAnimationFrame(tick);
@@ -128,6 +147,8 @@ export async function createStage(host, opts = {}) {
     scene, camera, renderer, avatar, framing,
     renderFrame, start, stop, resize, dispose,
     setExpression: (n, w) => avatar.expressionManager.setValue(n, w),
+    play: animator.play,
+    playFromPool: animator.playFromPool,
     setLookTarget: avatar.setLookTarget,
   };
 
@@ -142,7 +163,8 @@ export async function createStage(host, opts = {}) {
     bones: avatar.bones,
     proxies: avatar.proxies,
     expressions: avatar.availableExpressions,
-    step: renderFrame,
+    step: renderFrame,          // call with an explicit t to advance deterministically
+    animator,
     boneWorldY: (name) => {
       const b = avatar.bones[name];
       if (!b) return null;

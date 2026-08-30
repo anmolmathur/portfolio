@@ -166,7 +166,7 @@
       if (w === 0) return;
 
       stageTried = true;
-      import('/js/guide/stage/stage.js')
+      import(G.config.stageEntry)
         .then(function (mod) {
           return mod.createStage(stage, {
             modelUrl: '/assets/guide/models/anmol.glb',

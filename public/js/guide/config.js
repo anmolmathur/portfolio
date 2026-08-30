@@ -29,6 +29,8 @@
     // the browser, and so retrieval gates the model before it is ever called.
     endpoint: injected.endpoint || '/api/guide/ask',
     locale: injected.locale || 'en',
+    // Versioned entry for the stage module graph; see server/lib/stage-modules.js
+    stageEntry: injected.stageEntry || '/js/guide/stage/stage.js',
     copy: injected.copy || {},
 
     // The panel is built on first open, not on page load. The three.js stage
