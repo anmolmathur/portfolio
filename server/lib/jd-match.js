@@ -21,7 +21,7 @@ import { locales, site } from './content.js';
 import { careerFacts } from './career-facts.js';
 import { fetchReadable } from './fetch-url.js';
 
-const TIMEOUT_MS = 45_000;        // longer than a normal answer: more to read
+const TIMEOUT_MS = 75_000;        // a whole JD against a whole career takes time
 const MAX_JD_CHARS = 9_000;
 
 /** Everything the site says about him, flattened for the prompt. */
@@ -73,8 +73,11 @@ export function buildProfile(locale = 'en') {
 
 const strip = (s) => String(s ?? '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-function systemPrompt() {
+function systemPrompt(today) {
   return [
+    `Today's date is ${today}. Use it for any "how long" or "is this current" reasoning.`,
+    'A role dated "Present" is ongoing as of today. Never describe a start date in the past as future-dated -- your own training cutoff is not today.',
+    '',
     `You assess how well ${site.person.name} fits a specific job description.`,
     'You are on his own portfolio site, and BOTH he and recruiters read your answer.',
     '',
@@ -134,11 +137,11 @@ export async function analyseJd({ url, text, locale = 'en' }) {
         Authorization: `Bearer ${config.agent.apiKey}`,
       },
       body: JSON.stringify({
-        model: config.agent.model,
+        model: config.agent.jdModel || config.agent.model,
         stream: false,
         temperature: 0.25,
         messages: [
-          { role: 'system', content: systemPrompt() },
+          { role: 'system', content: systemPrompt(new Date().toISOString().slice(0, 10)) },
           {
             role: 'user',
             content: `CANDIDATE PROFILE:\n${buildProfile(locale)}\n\n`
@@ -173,6 +176,9 @@ function clean(text) {
     .replace(/\*\*(.+?)\*\*/g, '$1')
     .replace(/^#{1,6}\s+/gm, '')
     .replace(/^\s*(reasoning|next actions?|analysis)\s*:\s*$/gim, '')
+    // It emits markdown bullets despite the format rule; in a pre-wrap bubble
+    // those render as literal asterisks. Normalise rather than re-ask.
+    .replace(/^\s*[*-]\s+/gm, '• ')
     .replace(/\(?\bPillar\s*\d+[^)\n]*\)?/gi, '')
     .replace(/\n{3,}/g, '\n\n')
     .trim();

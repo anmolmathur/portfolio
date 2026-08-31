@@ -18,7 +18,29 @@ export const config = {
   /** Open WebUI — the avatar's agent tier. */
   agent: {
     baseUrl: (env.OPENWEBUI_URL ?? 'https://ai.anmolmathur.com').replace(/\/+$/, ''),
-    model: env.OPENWEBUI_MODEL ?? 'portfolio-website-helper',
+    /* A PLAIN base model, deliberately — not the custom `portfolio-website-helper`.
+     *
+     * That custom model carries two knowledge collections, web search and
+     * built-in tools. For the guide every one of those is dead weight: the
+     * guide does its OWN retrieval and hands the model finished excerpts and
+     * computed career facts, so the model's job is to phrase, not to research.
+     *
+     * It is also actively harmful. Measured 2026-08-31: the base models answer
+     * in 1.5-3.3s while the custom wrapper hung past 90s with no completion
+     * ever logged -- OpenWebUI never returned from its RAG/tool pipeline, and
+     * the guide fell back to verbatim copy for every visitor. Its planning
+     * persona ("Reasoning / Next actions / Pillar 3") also had to be actively
+     * countermanded in the prompt and stripped from the output.
+     *
+     * Set OPENWEBUI_MODEL to go back to it. */
+    model: env.OPENWEBUI_MODEL ?? 'models/gemini-2.5-flash',
+    /* The fitment analysis reads a whole job description against a whole
+       career -- a ~17KB prompt. The pro model handles it but is slow: measured
+       at over 45s, which times out and leaves the visitor with nothing. Flash
+       returns the same structure in a few seconds, and the analysis is bounded
+       by the profile it is given rather than by model reasoning depth, so the
+       speed is worth more here than the extra capability. */
+    jdModel: env.OPENWEBUI_JD_MODEL ?? 'models/gemini-2.5-flash',
     apiKey: env.OPENWEBUI_API_KEY ?? '',
     knowledgeId: env.OPENWEBUI_KNOWLEDGE_ID ?? '',
     timeoutMs: Number(env.AGENT_TIMEOUT_MS ?? 12000),
