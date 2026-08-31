@@ -1,6 +1,7 @@
 {
   "domain": "anmolmathur.com",
   "canonicalOrigin": "https://anmolmathur.com",
+  "immersiveUrl": "https://immersive.anmolmathur.com",
   "defaultLocale": "en",
   "locales": [
     "en",

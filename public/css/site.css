@@ -2062,6 +2062,9 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
 .guide-ctl-voice[aria-pressed="true"] { background: var(--brand-700); color: #fff; border-color: var(--brand-700); }
 
 .action-guide { background: var(--brand-700); }
+/* The immersive site is a different kind of thing from a contact channel, so
+   it gets its own colour rather than blending into the stack. */
+.action-immersive { background: #6b4fd8; }
 
 /* --- small screens -------------------------------------------------------
    The figure is a still image here (see panel.js), and the dialog takes the
@@ -2173,3 +2176,17 @@ section[id], main [id] { scroll-margin-top: calc(var(--header-h, 90px) + 16px); 
   .guide-root.no-figure { left: 10px; right: 10px; bottom: calc(var(--guide-stack-clearance, 96px) + 8px); }
   .guide-root.no-figure .guide-dialog { width: 100%; max-height: min(70vh, calc(100vh - 130px)); }
 }
+
+/* A fitment analysis is a report, not a chat reply: several labelled lines that
+   need to breathe, and wide enough to scan. It keeps the assistant's bubble
+   shape so it still reads as the guide talking, but drops the width cap. */
+.guide-msg-analysis { max-width: 100%; }
+.guide-msg-analysis p { white-space: pre-wrap; font-size: 0.86rem; }
+.guide-msg-analysis .guide-analysis-source {
+  margin-top: 8px;
+  font-size: 0.7rem;
+  opacity: 0.6;
+  white-space: normal;
+  word-break: break-word;
+}
+.guide-root.no-figure .guide-log { scroll-behavior: smooth; }

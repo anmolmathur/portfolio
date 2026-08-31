@@ -77,7 +77,7 @@
         "What does he do now?",
         "Tell me about his time at HSBC",
         "What are his strongest skills?",
-        "How do I get in touch?"
+        "Paste a job link to check fit"
       ],
       "speakOn": "Turn voice on",
       "speakOff": "Turn voice off",
@@ -88,7 +88,14 @@
         "keywords": "assistant, chatbot, bot, ai, guide, avatar, help, how does this work, what can you do, who are you, are you real, are you anmol, voice, speak, sound, audio, privacy, do you store, is this ai, how do i use this"
       },
       "switchSide": "Move me to the other side",
-      "reset": "Start a new conversation"
+      "reset": "Start a new conversation",
+      "jdThinking": "Reading that role and comparing it with his background…",
+      "jdSource": "Analysed from",
+      "jdTimeout": "That took too long to read. Paste the job description text instead and I will analyse it."
+    },
+    "immersive": {
+      "label": "Immersive journey",
+      "aria": "Open Anmol's immersive journey in a new tab"
     }
   },
   "nav": [

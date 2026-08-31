@@ -111,8 +111,50 @@
         .finally(function () { clearTimeout(timer); });
     }
 
+    /* Job-description fitment.
+     *
+     * Its own call, not a variant of ask(): it makes the server fetch a URL,
+     * takes far longer, and returns an analysis rather than a grounded answer.
+     * Shares the stale-response token so a JD analysis cannot land after the
+     * visitor has moved on to a different question. */
+    function analyseJd(payload) {
+      var mine = ++token;
+      remember('visitor', payload.url || 'Job description');
+
+      var controller = new AbortController();
+      var timer = setTimeout(function () { controller.abort(); }, G.config.limits.jdTimeoutMs);
+
+      return fetch(G.config.jdEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: payload.url || null,
+          text: payload.text || null,
+          locale: G.config.locale,
+        }),
+        signal: controller.signal,
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (mine !== token) return null;
+          remember('guide', data.answer || '');
+          return data;
+        })
+        .catch(function (err) {
+          if (mine !== token) return null;
+          return {
+            ok: false,
+            answer: err && err.name === 'AbortError'
+              ? G.copy('jdTimeout', 'That took too long. Try pasting the job text instead.')
+              : G.copy('error', 'Something went wrong. Please try again.'),
+          };
+        })
+        .finally(function () { clearTimeout(timer); });
+    }
+
     return {
       ask: ask,
+      analyseJd: analyseJd,
       history: function () { return history.slice(); },
       clear: function () {
         history.length = 0;

@@ -12,6 +12,7 @@ import { personJsonLd, articleJsonLd } from './lib/json-ld.js';
 import { config, publicConfig, describeConfig } from './lib/config.js';
 import { registerAnalyticsProxy } from './lib/analytics-proxy.js';
 import { ask } from './lib/guide-agent.js';
+import { analyseJd } from './lib/jd-match.js';
 import { createGuideBundle } from './lib/guide-bundle.js';
 import { createAssetVersions } from './lib/asset-version.js';
 import { createStageModules } from './lib/stage-modules.js';
@@ -192,6 +193,63 @@ app.post('/api/guide/ask', async (req, reply) => {
   // Answers are visitor-specific and cheap to recompute; caching them at the
   // edge would serve one visitor's answer to the next.
   return reply.header('Cache-Control', 'no-store').send(result);
+});
+
+/**
+ * Job-description fitment.
+ *
+ * Separate from /api/guide/ask because it behaves differently: it makes an
+ * OUTBOUND request on a visitor's behalf, takes far longer, and must not be
+ * cached. Keeping it apart also means the ordinary chat path cannot be slowed
+ * or broken by anything here.
+ *
+ * Rate limited by IP. This is the one endpoint a visitor can use to make the
+ * server fetch a URL, so it is also the one worth abusing -- as a scanner, or
+ * simply to burn model spend. The limit is deliberately low; nobody legitimately
+ * analyses ten jobs a minute.
+ */
+const jdHits = new Map();
+const JD_WINDOW_MS = 60_000;
+const JD_MAX_PER_WINDOW = 5;
+
+function jdRateLimited(ip) {
+  const now = Date.now();
+  const hits = (jdHits.get(ip) ?? []).filter((t) => now - t < JD_WINDOW_MS);
+  hits.push(now);
+  jdHits.set(ip, hits);
+  // Bound the map so a stream of distinct IPs cannot grow it without limit.
+  if (jdHits.size > 2000) {
+    for (const [k, v] of jdHits) {
+      if (!v.length || now - v[v.length - 1] > JD_WINDOW_MS) jdHits.delete(k);
+    }
+  }
+  return hits.length > JD_MAX_PER_WINDOW;
+}
+
+app.post('/api/guide/jd', async (req, reply) => {
+  const { url, text, locale } = req.body ?? {};
+  const loc = availableLocales.includes(locale) ? locale : DEFAULT;
+
+  if (jdRateLimited(req.ip)) {
+    return reply.code(429).header('Cache-Control', 'no-store').send({
+      ok: false,
+      reason: 'rate-limited',
+      answer: 'That is a lot of job descriptions at once. Give it a minute and try again.',
+    });
+  }
+
+  try {
+    const result = await analyseJd({ url, text, locale: loc });
+    return reply.header('Cache-Control', 'no-store').send(result);
+  } catch (err) {
+    // fetchReadable throws messages written to be shown to a visitor.
+    return reply.header('Cache-Control', 'no-store').send({
+      ok: false,
+      reason: 'fetch-failed',
+      answer: `I could not read that link — ${err.message}. `
+        + 'Paste the job description text into the chat instead and I will analyse it.',
+    });
+  }
 });
 
 app.get('/healthz', async () => ({

@@ -28,6 +28,7 @@
     // Where the brain lives. Server-side so the OpenWebUI key never ships to
     // the browser, and so retrieval gates the model before it is ever called.
     endpoint: injected.endpoint || '/api/guide/ask',
+    jdEndpoint: injected.jdEndpoint || '/api/guide/jd',
     locale: injected.locale || 'en',
     // Versioned entry for the stage module graph; see server/lib/stage-modules.js
     stageEntry: injected.stageEntry || '/js/guide/stage/stage.js',
@@ -69,6 +70,8 @@
     limits: {
       question: 500,      // matches MAX_QUESTION on the server
       askTimeoutMs: 25000, // ceiling above the server's own 20s
+      jdTimeoutMs: 60000,  // fetching a page and reading a JD takes much longer
+      pasted: 9000,        // room to paste a whole job description
       historyTurns: 12,    // kept locally
       historySent: 6,      // sent with each question, per brain.md
     },

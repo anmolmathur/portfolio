@@ -12,6 +12,19 @@
     {{ icon("whatsapp", "ico ico-lg") }}
     <span class="action-label">{{ copy.ui.whatsapp.label }}</span>
   </a>
+  {#
+    The immersive site is a separate experience on its own host, so this opens
+    in a new tab: sending a visitor away from the portfolio mid-read, with no
+    way back but the back button, loses them.
+  #}
+  <a class="action-btn action-immersive"
+     href="{{ site.immersiveUrl }}"
+     target="_blank" rel="noopener noreferrer"
+     data-immersive
+     aria-label="{{ copy.ui.immersive.aria }}">
+    {{ icon("sparkle", "ico ico-lg") }}
+    <span class="action-label">{{ copy.ui.immersive.label }}</span>
+  </a>
   {# Avatar launcher mounts here — see assets/guide/ #}
   <div id="guideLauncherSlot"></div>
 </div>

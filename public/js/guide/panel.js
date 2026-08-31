@@ -71,7 +71,11 @@
     input.autocomplete = 'off';
     input.placeholder = G.copy('placeholder', 'Ask me anything...');
     input.setAttribute('aria-label', G.copy('placeholder', 'Ask me anything'));
-    input.maxLength = G.config.limits.question;
+    /* Long enough to PASTE a job description into.
+       The ask path is still capped at 500 server-side; this only has to let a
+       JD through, and at 500 the paste route was unreachable -- the JD
+       threshold is 600, so the field could never hold enough to trigger it. */
+    input.maxLength = G.config.limits.pasted;
     var send = el('button', 'guide-send');
     send.type = 'submit';
     send.setAttribute('aria-label', G.copy('send', 'Send'));
@@ -203,6 +207,17 @@
     }
 
     // ---- ask -> deliver --------------------------------------------------
+    /* A message is a job description when it carries a link, or when it is long
+       enough that nobody types it as a question. 600 chars is well past any
+       real question and well under any real JD, so the two do not collide. */
+    var URL_RE = /\bhttps?:\/\/[^\s<>"']+/i;
+    function asJobDescription(message) {
+      var link = message.match(URL_RE);
+      if (link) return { url: link[0] };
+      if (message.length >= 600) return { text: message };
+      return null;
+    }
+
     var busy = false;
     var beatTimer = null;
 
@@ -229,6 +244,26 @@
       input.value = '';
       chips.hidden = true;
       bubble('visitor', q);
+
+      var jd = asJobDescription(q);
+      if (jd) {
+        var jdThinking = bubble('guide guide-thinking',
+          G.copy('jdThinking', 'Reading that role and comparing it with his background...'));
+        engine.analyseJd(jd).then(function (res) {
+          if (!res) { jdThinking.remove(); busy = false; return; }
+          jdThinking.remove();
+          var b = bubble('guide guide-analysis', res.answer || '');
+          if (res.source) {
+            var cite = el('p', 'guide-analysis-source', G.copy('jdSource', 'Analysed from') + ' ' + res.source);
+            b.appendChild(cite);
+          }
+          log.scrollTop = log.scrollHeight;
+          busy = false;
+          input.focus();
+        });
+        return;
+      }
+
       var thinking = bubble('guide guide-thinking', G.copy('thinking', 'Thinking...'));
 
       engine.ask(q).then(function (res) {
