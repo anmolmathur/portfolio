@@ -18,6 +18,19 @@ const STOP = new Set(`a an and are as at be been by for from has have he her his
 is it its of on or that the this to was were what when where which who will with you your
 about tell me please can could would should do does did there their they them`.split(/\s+/));
 
+/* The same idea for the Spanish pages. Written without accents because
+   tokenize() strips them before the lookup. "el", "la", "de" and friends occur
+   in every Spanish record and would otherwise swamp the scoring. */
+for (const w of `el la los las un una unos unas y o u e de del al a en con por para
+  que como cual cuales quien quienes cuando donde es son fue era ha han he hay ser estar
+  esta este esto estos estas ese esa eso su sus se lo le les me mi mis tu tus te nos
+  sobre entre sin muy mas pero porque puedes puede podria dime cuentame hablame
+  sabes saber ha hizo hace tiene tenia opina opinas piensa cree dedica
+  ahora actual actualmente hoy dia empresa trabaja`.split(/\s+/)) STOP.add(w);
+/* The "now" words are stop words for SCORING only — NOW_WORDS still reads the
+   raw question and applies the current-role bonus. Without this, "¿a qué se
+   dedica ahora?" matched "ahora mismo" in an article and outranked his job. */
+
 /**
  * Light suffix stripping. Per references/brain.md: "import"/"importing" must
  * meet, and ~30 lines is enough — no stemmer library.
@@ -45,7 +58,11 @@ function stem(t) {
   return t;
 }
 
-const tokenize = (s) => String(s ?? '')
+/* Accents are folded so "tecnologia" typed on a keyboard without them still
+   meets "tecnología" in the Spanish copy. Harmless for English. */
+const fold = (s) => String(s ?? '').normalize('NFD').replace(/\p{M}/gu, '');
+
+const tokenize = (s) => fold(s)
   .toLowerCase()
   .replace(/[^\p{L}\p{N}\s+#.-]/gu, ' ')
   .split(/\s+/)
@@ -81,9 +98,10 @@ const B = 0.72;   // length normalisation
  * question asked. Detection uses the same "Present" marker the timeline renders
  * from, so it cannot drift from what the page shows.
  */
-const NOW_WORDS = /\b(now|current|currently|today|present|latest|nowadays|these days|at the moment|right now)\b/i;
+const NOW_WORDS = /\b(now|current|currently|today|present|latest|nowadays|these days|at the moment|right now|ahora|actual|actualmente|hoy|hoy en dia|en este momento|ultimo|ultima)\b/i;
 const CURRENT_BONUS = 3.0;
-const isOngoing = (r) => /present/i.test(r.subtitle ?? '');
+// "Actualidad" is how the Spanish timeline says "Present".
+const isOngoing = (r) => /present|actualidad/i.test(r.subtitle ?? '');
 
 const built = new Map();
 
@@ -209,8 +227,9 @@ function namesUnknownEntity(rawQuery, vocabulary) {
     // A capital merely because it opens the sentence carries no signal.
     if (i === 0 || SENTENCE_START.test(bare)) return false;
     if (!/^\p{Lu}/u.test(bare)) return false;
-    const t = stem(bare.toLowerCase());
-    return !vocabulary.has(t) && !vocabulary.has(bare.toLowerCase());
+    // Folded like tokenize(), or "Fórmula" never matches the stored "formula".
+    const lower = fold(bare).toLowerCase();
+    return !vocabulary.has(stem(lower)) && !vocabulary.has(lower);
   });
 }
 
@@ -219,10 +238,12 @@ function namesUnknownEntity(rawQuery, vocabulary) {
  */
 export function search(locale, query, { limit = 5, minScore = 0.35 } = {}) {
   const terms = tokenize(query);
-  if (!terms.length) return [];
+  const asksAboutNow = NOW_WORDS.test(fold(query));
+  // A question made only of stop words has nothing to score — unless it asks
+  // about the present, which the current-role bonus answers on its own.
+  if (!terms.length && !asksAboutNow) return [];
 
   const { docs, avgLength, idf, vocabulary } = indexFor(locale);
-  const asksAboutNow = NOW_WORDS.test(query);
 
   // Asking about an entity the site has never mentioned: answer nothing,
   // regardless of what else in the question happens to match.

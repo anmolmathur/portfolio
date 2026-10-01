@@ -11,6 +11,7 @@
   },
   "ui": {
     "skipToContent": "Skip to content",
+    "primaryNav": "Primary",
     "readMore": "Read More",
     "readLess": "Read Less",
     "downloadResume": "Download Resume",
@@ -22,6 +23,7 @@
     "themeDark": "Dark",
     "languageName": "English",
     "switchLanguage": "Ver en español",
+    "logoAlt": "{name} logo",
     "commandPalette": {
       "open": "Search",
       "hint": "Press {key} to search",
@@ -170,6 +172,7 @@
   "workExperience": {
     "heading": "Work Experience",
     "subheading": "Explore my professional journey and key roles.",
+    "achievementsLabel": "Achievements",
     "roles": [
       {
         "id": "teamlease-edtech",

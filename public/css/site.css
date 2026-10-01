@@ -1754,6 +1754,15 @@ body { overflow-wrap: break-word; }
   .hamburger { display: none !important; }
 }
 
+/* Just above the breakpoint the full row is tight: English overflowed by ~20px
+   at 1101px and the Spanish labels ("Competencias", "Publicaciones") by ~140px,
+   pushing search, theme and the language switch off-screen. Tighter spacing in
+   this band only; wide screens keep the original rhythm. */
+@media (min-width: 1101px) and (max-width: 1360px) {
+  .nav-links { gap: 4px; }
+  .nav-links li a { padding: 10px 9px; }
+}
+
 .navbar { position: relative; }
 
 /* --- Tap targets ---------------------------------------------------------

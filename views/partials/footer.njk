@@ -14,8 +14,8 @@
        <a href="tel:{{ site.person.phone | replace('-', '') }}" data-contact="phone">{{ site.person.phone }}</a></p>
   </div>
   <div class="footer-resume">
-    <a href="{{ site.resumes.general.path }}" class="footer-download-btn" download
-       data-resume="general" title="{{ copy.ui.downloadResume }}">
+    <a href="{{ resume.path }}" class="footer-download-btn" download
+       data-resume="{{ resume.id }}" title="{{ copy.ui.downloadResume }}">
       {{ icon("download") }} {{ copy.ui.downloadResume }}
     </a>
   </div>

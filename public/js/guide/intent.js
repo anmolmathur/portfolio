@@ -17,35 +17,49 @@
      message. A sloppy /yes/ test matches "show me the dashboard" (no "yes" in
      sight, but sloppier patterns like /ok/ match "look"), and the guide then
      accepts an offer the visitor never made. Anchored, whole-message only. */
-  var YES = /^(yes|yeah|yep|yup|sure|ok|okay|go on|please do|sounds good)[.! ]*$/i;
-  var NO = /^(no|nope|nah|no thanks|not now)[.! ]*$/i;
+  var YES = /^(yes|yeah|yep|yup|sure|ok|okay|go on|please do|sounds good|s[ií]|vale|claro|de acuerdo|venga|por favor)[.! ]*$/i;
+  var NO = /^(no|nope|nah|no thanks|not now|no,? gracias|ahora no)[.! ]*$/i;
+
+  /* Replies in the page's language. The PATTERNS accept both languages, since a
+     visitor on either version may type either; only the answer follows the page. */
+  function say(en, es) {
+    var locale = (G.config && G.config.locale) || document.documentElement.lang || 'en';
+    return locale === 'es' ? es : en;
+  }
 
   var RULES = [
     {
       id: 'greeting',
-      test: /^(hi|hey|hello|yo|good (morning|afternoon|evening)|namaste)\b[\s!.,]*$/i,
+      test: /^(hi|hey|hello|yo|good (morning|afternoon|evening)|namaste|hola|buenas|buenos d[ií]as|buenas (tardes|noches))[\s!.,¡]*$/i,
       reply: function (copy) { return copy.greeting; },
       gesture: 'wave',
     },
     {
       id: 'thanks',
-      test: /^(thanks|thank you|thanks a lot|cheers|ta|much appreciated)[\s!.,]*$/i,
-      reply: function () { return 'You’re welcome. Anything else you’d like to know?'; },
+      test: /^(thanks|thank you|thanks a lot|cheers|ta|much appreciated|gracias|muchas gracias|mil gracias)[\s!.,]*$/i,
+      reply: function () {
+        return say('You’re welcome. Anything else you’d like to know?',
+          'De nada. ¿Quieres saber algo más?');
+      },
       gesture: 'nod',
     },
     {
       id: 'bye',
-      test: /^(bye|goodbye|see you|that's all|thats all|done)[\s!.,]*$/i,
-      reply: function () { return 'Thanks for stopping by.'; },
+      test: /^(bye|goodbye|see you|that's all|thats all|done|adi[oó]s|hasta luego|eso es todo|nada m[aá]s)[\s!.,]*$/i,
+      reply: function () { return say('Thanks for stopping by.', 'Gracias por tu visita.'); },
       gesture: 'nod',
     },
     {
       id: 'capability',
-      test: /^(what can you do|who are you|what are you|help|how does this work|what is this)[\s?.!]*$/i,
+      test: /^[¿]?(what can you do|who are you|what are you|help|how does this work|what is this|qu[eé] puedes hacer|qui[eé]n eres|qu[eé] eres|ayuda|c[oó]mo funciona(s)?|qu[eé] es esto)[\s?.!]*$/i,
       reply: function () {
-        return 'I answer questions about Anmol using only what is written on this site — '
-          + 'his roles, skills, education, projects, publications and how to reach him. '
-          + 'If something is not on the site, I will say so rather than guess.';
+        return say(
+          'I answer questions about Anmol using only what is written on this site — '
+            + 'his roles, skills, education, projects, publications and how to reach him. '
+            + 'If something is not on the site, I will say so rather than guess.',
+          'Respondo preguntas sobre Anmol usando solo lo que está escrito en este sitio: '
+            + 'sus puestos, competencias, formación, proyectos, publicaciones y cómo contactar con él. '
+            + 'Si algo no aparece en el sitio, te lo diré en lugar de suponerlo.');
       },
       gesture: 'explain',
     },
@@ -58,32 +72,40 @@
        * irrelevant answers. The indexed self-description still covers the long
        * tail of phrasings; these are the ones worth answering exactly. */
       id: 'identity',
-      test: /^(are you (really |actually )?(anmol|a ?(bot|robot|human|person|real))|is (this|it) (an? )?(ai|bot|robot|real person)|who am i (talking|speaking) to|are you real)[\s?.!]*$/i,
+      test: /^[¿]?(are you (really |actually )?(anmol|a ?(bot|robot|human|person|real))|is (this|it) (an? )?(ai|bot|robot|real person)|who am i (talking|speaking) to|are you real|eres (de verdad |realmente )?(anmol|un ?(bot|robot|humano|persona)|una persona|real)|es (esto )?(una )?(ia|un bot)|con qui[eé]n (hablo|estoy hablando))[\s?.!]*$/i,
       reply: function () {
-        return 'No — I’m an AI assistant on Anmol’s site, not Anmol himself. '
-          + 'I answer using only what is written on these pages, and the figure you see is an animated likeness.';
+        return say(
+          'No — I’m an AI assistant on Anmol’s site, not Anmol himself. '
+            + 'I answer using only what is written on these pages, and the figure you see is an animated likeness.',
+          'No: soy un asistente de IA del sitio de Anmol, no el propio Anmol. '
+            + 'Respondo solo con lo que está escrito en estas páginas, y la figura que ves es una representación animada.');
       },
       gesture: 'offer',
     },
     {
       id: 'privacy',
-      test: /^(do you (store|save|record|keep) (my )?(questions|data|messages|chats)|is this private|what do you do with my data)[\s?.!]*$/i,
+      test: /^[¿]?(do you (store|save|record|keep) (my )?(questions|data|messages|chats)|is this private|what do you do with my data|(guardas|almacenas|grabas) (mis )?(preguntas|datos|mensajes|conversaciones)|es (esto )?privado|qu[eé] haces con mis datos)[\s?.!]*$/i,
       reply: function () {
-        return 'Your questions go to this site’s own server to be answered, and are not stored or used to identify you. '
-          + 'The voice, if you turn it on, uses your browser’s built-in speech — no audio leaves your device.';
+        return say(
+          'Your questions go to this site’s own server to be answered, and are not stored or used to identify you. '
+            + 'The voice, if you turn it on, uses your browser’s built-in speech — no audio leaves your device.',
+          'Tus preguntas se envían al servidor de este sitio para responderlas, y no se guardan ni se usan para identificarte. '
+            + 'La voz, si la activas, usa la síntesis de voz de tu navegador: ningún audio sale de tu dispositivo.');
       },
       gesture: 'explain',
     },
     {
       id: 'affirm',
       test: YES,
-      reply: function () { return 'What would you like to know?'; },
+      reply: function () { return say('What would you like to know?', '¿Qué te gustaría saber?'); },
       gesture: 'offer',
     },
     {
       id: 'decline',
       test: NO,
-      reply: function () { return 'No problem. I’m here if you change your mind.'; },
+      reply: function () {
+        return say('No problem. I’m here if you change your mind.', 'Sin problema. Aquí estaré si cambias de idea.');
+      },
       gesture: 'nod',
     },
   ];

@@ -58,6 +58,16 @@
     'en-GB', 'en-AU', 'en-US', 'en',
   ];
 
+  /* The Spanish pages speak Spanish from Spain: male es-ES voices first, then
+     any es-ES, then any Spanish at all. An English voice reading Spanish text is
+     worse than no voice. */
+  var VOICE_PREFERENCES_ES = [
+    'Jorge', 'Microsoft Alvaro', 'Microsoft Pablo', 'Álvaro', 'Pablo',
+    'es-ES', 'es_ES', 'es-',
+  ];
+  var pageLocale = (G.config && G.config.locale) || document.documentElement.lang || 'en';
+  if (pageLocale === 'es') VOICE_PREFERENCES = VOICE_PREFERENCES_ES;
+
   var voicesReady = null;
   function loadVoices() {
     if (voicesReady) return voicesReady;
@@ -138,7 +148,7 @@
         var u = new SpeechSynthesisUtterance(text);
         u.rate = Math.max(0.5, Math.min(2, RATE));
         if (createSpeaker.voice) u.voice = createSpeaker.voice;
-        u.lang = (createSpeaker.voice && createSpeaker.voice.lang) || 'en-IN';
+        u.lang = (createSpeaker.voice && createSpeaker.voice.lang) || (pageLocale === 'es' ? 'es-ES' : 'en-IN');
 
         var words = text.split(/\s+/).filter(Boolean);
         var gotBoundary = false;

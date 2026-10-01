@@ -73,8 +73,31 @@ export function buildProfile(locale = 'en') {
 
 const strip = (s) => String(s ?? '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-function systemPrompt(today) {
-  return [
+/* Visitor-facing lines this module says itself, per site language. */
+const LINES = {
+  en: {
+    tooShort: 'I could not read enough of that page to assess it — a lot of job boards '
+      + 'block automated readers or need a login. Paste the job description text '
+      + 'straight into the chat instead and I will analyse it.',
+    disabled: 'The assistant that does this analysis is not configured right now.',
+    timeout: 'That analysis took too long. Try pasting a shorter version of the job description.',
+    error: 'Something went wrong running the analysis. Please try again.',
+    pasted: 'pasted text',
+  },
+  es: {
+    tooShort: 'No he podido leer lo suficiente de esa página para valorarla: muchos portales de empleo '
+      + 'bloquean la lectura automática o exigen iniciar sesión. Pega el texto de la oferta '
+      + 'directamente en el chat y lo analizaré.',
+    disabled: 'El asistente que hace este análisis no está configurado en este momento.',
+    timeout: 'El análisis ha tardado demasiado. Prueba a pegar una versión más corta de la oferta.',
+    error: 'Algo ha fallado al hacer el análisis. Inténtalo de nuevo.',
+    pasted: 'texto pegado',
+  },
+};
+export const jdLines = (locale) => LINES[locale] ?? LINES.en;
+
+function systemPrompt(today, locale) {
+  const rules = [
     `Today's date is ${today}. Use it for any "how long" or "is this current" reasoning.`,
     'A role dated "Present" is ongoing as of today. Never describe a start date in the past as future-dated -- your own training cutoff is not today.',
     '',
@@ -93,12 +116,22 @@ function systemPrompt(today) {
     'Then "Where he fits:" followed by 3-5 short lines, each pairing a requirement with evidence.',
     'Then "Gaps:" followed by 2-4 short lines, each naming a requirement and what is missing.',
     'Then one closing line on how he should position himself for this role.',
-  ].join('\n');
+  ];
+  if (locale === 'es') {
+    rules.push(
+      '',
+      'LANGUAGE: the reader is on the SPANISH version of the site. Write the entire assessment in Spanish as '
+        + 'written in Spain (castellano). Use the fit levels "sólido" / "parcial" / "débil", and the headings '
+        + '"Dónde encaja:" and "Carencias:" in place of the English ones. Keep employer and product names unchanged.',
+    );
+  }
+  return rules.join('\n');
 }
 
 export async function analyseJd({ url, text, locale = 'en' }) {
   let jdText = String(text ?? '').trim();
-  let source = 'pasted text';
+  const say = jdLines(locale);
+  let source = say.pasted;
 
   if (url) {
     const page = await fetchReadable(url);        // throws with a readable message
@@ -110,9 +143,7 @@ export async function analyseJd({ url, text, locale = 'en' }) {
     return {
       ok: false,
       reason: 'too-short',
-      answer: 'I could not read enough of that page to assess it — a lot of job boards '
-        + 'block automated readers or need a login. Paste the job description text '
-        + 'straight into the chat instead and I will analyse it.',
+      answer: say.tooShort,
     };
   }
 
@@ -120,7 +151,7 @@ export async function analyseJd({ url, text, locale = 'en' }) {
     return {
       ok: false,
       reason: 'agent-disabled',
-      answer: 'The assistant that does this analysis is not configured right now.',
+      answer: say.disabled,
     };
   }
 
@@ -141,7 +172,7 @@ export async function analyseJd({ url, text, locale = 'en' }) {
         stream: false,
         temperature: 0.25,
         messages: [
-          { role: 'system', content: systemPrompt(new Date().toISOString().slice(0, 10)) },
+          { role: 'system', content: systemPrompt(new Date().toISOString().slice(0, 10), locale) },
           {
             role: 'user',
             content: `CANDIDATE PROFILE:\n${buildProfile(locale)}\n\n`
@@ -160,9 +191,7 @@ export async function analyseJd({ url, text, locale = 'en' }) {
     return {
       ok: false,
       reason: err.name === 'AbortError' ? 'timeout' : 'agent-error',
-      answer: err.name === 'AbortError'
-        ? 'That analysis took too long. Try pasting a shorter version of the job description.'
-        : 'Something went wrong running the analysis. Please try again.',
+      answer: err.name === 'AbortError' ? say.timeout : say.error,
     };
   } finally {
     clearTimeout(timer);

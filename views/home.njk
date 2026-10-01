@@ -19,8 +19,8 @@
     <p>{{ copy.hero.intro }}</p>
   </div>
   <div class="hero-buttons">
-    <a href="{{ site.resumes.general.path }}" class="btn resume-download-btn" download
-       data-resume="general" data-source="hero" title="{{ copy.ui.downloadResume }}">
+    <a href="{{ resume.path }}" class="btn resume-download-btn" download
+       data-resume="{{ resume.id }}" data-source="hero" title="{{ copy.ui.downloadResume }}">
       {{ icon("download") }} {{ copy.ui.downloadResume }}
     </a>
   </div>
@@ -95,7 +95,7 @@
            data-role="{{ role.id }}" data-industries="{{ role.industries | join(' ') }}">
         <div class="content company-details">
           <p><span class="timeline-date">{{ role.dates }}</span></p>
-          <img src="/logos/{{ role.logo }}" alt="{{ role.company }} logo" loading="lazy" decoding="async">
+          <img src="/logos/{{ role.logo }}" alt="{{ copy.ui.logoAlt | replace('{name}', role.company) }}" loading="lazy" decoding="async">
           <h4>{{ role.company }}</h4>
           <p><span class="timeline-location">{{ role.location }}</span></p>
         </div>
@@ -103,7 +103,7 @@
           <h3>{{ role.title }}</h3>
           {% for p in role.summary %}<p>{{ p }}</p>{% endfor %}
           {% if role.achievements.length %}
-          <p><strong>{{ "Achievements" if locale == 'en' else "Logros" }}:</strong></p>
+          <p><strong>{{ copy.workExperience.achievementsLabel }}:</strong></p>
           <ul>
             {# Author-written emphasis markup, not user input — safe by construction. #}
             {% for a in role.achievements %}<li>{{ a | safe }}</li>{% endfor %}

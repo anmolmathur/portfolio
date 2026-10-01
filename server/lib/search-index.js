@@ -157,18 +157,22 @@ export function buildIndex(locale) {
      that it did not have his email -- while the page displayed it directly
      above. These values are already public on the rendered page; putting them
      in the index changes nothing about who can see them. */
+  const labels = copy.contact.labels;
   push({
     id: 'contact', kind: 'section', anchor: 'contact', url: at('contact'),
     title: copy.contact.heading,
     body: join(
       text(copy.contact.subheading),
-      `Email: ${site.person.email}.`,
-      `Phone: ${site.person.phone}.`,
-      `WhatsApp is available on the same number.`,
-      `Website: ${site.canonicalOrigin}.`,
+      `${labels.email}: ${site.person.email}.`,
+      `${labels.phone}: ${site.person.phone}.`,
+      locale === 'es' ? 'WhatsApp está disponible en el mismo número.' : 'WhatsApp is available on the same number.',
+      `${labels.website}: ${site.canonicalOrigin}.`,
     ),
     keywords: ['contact', 'email', 'phone', 'whatsapp', 'reach', 'hire', 'connect',
-      'get in touch', 'talk', 'call', 'message', site.person.email],
+      'get in touch', 'talk', 'call', 'message', site.person.email,
+      ...(locale === 'es'
+        ? ['contacto', 'contactar', 'correo', 'teléfono', 'llamar', 'mensaje', 'escribir', 'contratar']
+        : [])],
   });
 
   return records;

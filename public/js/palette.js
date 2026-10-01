@@ -21,7 +21,7 @@
 
   const actions = [
     { id: 'a:resume', kind: 'action', title: strings.actionResume, icon: 'fa-file-download',
-      run: () => download(S.resumes && S.resumes.general && S.resumes.general.path, 'general') },
+      run: () => download(S.resume && S.resume.path, S.resume && S.resume.id) },
     { id: 'a:resume-bfsi', kind: 'action', title: strings.actionResumeBfsi, icon: 'fa-file-download',
       run: () => download(S.resumes && S.resumes.bfsi && S.resumes.bfsi.path, 'bfsi') },
     { id: 'a:whatsapp', kind: 'action', title: strings.actionWhatsapp, icon: 'fa-whatsapp',

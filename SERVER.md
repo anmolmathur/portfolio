@@ -62,6 +62,46 @@ what the site contains.
 
 The URL segment per locale is set in `ARTICLE_SEGMENT` in `server/lib/content.js`.
 
+## Spanish, and who sees it
+
+Spanish is live at `/es` (articles under `/es/articulos/<slug>`). Which language
+a visitor gets on the home page `/` is decided in `server/app.js`:
+
+1. **An explicit choice wins.** The EN/ES switcher (header and ⌘K palette)
+   links to `…?lang=<locale>`. An `onRequest` hook turns that into a `lang`
+   cookie (1 year, `SameSite=Lax`) and 302s to the clean URL. After that, `/`
+   always honours the cookie, so a Spanish visitor who picks English is never
+   bounced back.
+2. **Otherwise, the country is a first guess.** Cloudflare adds
+   `CF-IPCountry` to every request and the tunnel passes it through. `ES` goes to
+   `/es` (`GEO_LOCALE` maps countries to locales; add Latin America there if
+   wanted).
+3. **Crawlers are never redirected.** They see English at `/` and discover `/es`
+   through `hreflang`. Deep links (an English article URL) are never redirected
+   either; only the home page is.
+
+The redirect is a 302 with `Cache-Control: private, no-store` and
+`Vary: Cookie, CF-IPCountry`, so no cache can serve one visitor's language to
+another.
+
+**The `lang` cookie and consent.** It is set only when the visitor clicks the
+language switch, and it records the preference they asked for, so it is a
+strictly necessary preference cookie, not tracking. The "nothing stored
+before consent" guarantee below still holds for anyone who does not touch the
+switcher.
+
+**The guide speaks Spanish on `/es`.** Server lines (no-answer, fallbacks, JD
+errors) come from per-locale tables in `guide-agent.js` and `jd-match.js`; the
+model is told to answer in Spain's Spanish. Retrieval folds accents
+("tecnologia" finds "tecnología"), has a Spanish stop-word list, and the
+current-role boost understands "ahora/actualmente". Dates in `es.json` use
+Spanish abbreviations (`Ene`, `Ago`, `Dic`) and `Actualidad`, which
+`career-facts.js` parses.
+
+**Still English on the Spanish site, deliberately:** the two external
+publications, the AI audio conversation, the BFSI résumé, and the immersive
+site. Each is labelled "(en inglés)" where it appears.
+
 ## Theming
 
 `public/css/tokens.css` is the only file that names a colour. Three states:
@@ -171,6 +211,15 @@ node tools/build-images.mjs
 It is a build-time tool only — `sharp` is not a runtime dependency.
 
 ## Known gaps
+
+- **PostHog login lockouts are IP-spoof-proof as of 30 Aug 2026.** django-axes was
+  bucketing failed logins by the leftmost `X-Forwarded-For`, which Cloudflare only
+  appends to — so a caller could forge it. There is no env var for this, so
+  `/root/posthog-hobby/overrides/posthog_local_settings.py` inherits
+  `posthog.settings` with a star import and overrides one value to prefer
+  `CF-Connecting-IP`, selected via `DJANGO_SETTINGS_MODULE`. This works only
+  because Nginx Unit serves `posthog.wsgi` (which uses `setdefault`); `posthog.asgi`
+  hard-assigns the module and would ignore it.
 
 - **PostHog GeoIP: fixed 30 Aug 2026**, but events recorded before then keep a
   null country — the Countries panel shows a large "—" bucket until the old data

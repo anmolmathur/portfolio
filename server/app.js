@@ -42,6 +42,8 @@ const stageModules = createStageModules(ROOT);
 const app = Fastify({
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
   trustProxy: true,
+  // /es and /es/ are the same page; people type the slash.
+  routerOptions: { ignoreTrailingSlash: true },
 });
 
 await app.register(fastifyView, {
@@ -67,8 +69,44 @@ for (const dir of ['public', 'images', 'logos', 'docs', 'audio', 'assets']) {
   });
 }
 
+/**
+ * Language choice.
+ *
+ * Visitors from Spain are sent to /es/ when they land on the English home page
+ * (see the root route below), so a Spanish visitor who then picks English must
+ * be remembered — otherwise the next visit to / bounces them straight back.
+ *
+ * The switcher links carry `?lang=<locale>`; the hook below turns that into a
+ * cookie and redirects to the clean URL, so the choice sticks with or without
+ * JavaScript and the query string never lingers in the address bar or the
+ * index. The cookie is set only on that explicit click: it records a
+ * preference the visitor asked for, not anything about them.
+ */
+const LANG_COOKIE = 'lang';
+const LANG_MAX_AGE = 60 * 60 * 24 * 365;
+
+function chosenLocale(req) {
+  const m = new RegExp(`(?:^|;\\s*)${LANG_COOKIE}=([a-z]{2})(?:;|$)`).exec(req.headers.cookie ?? '');
+  return m && availableLocales.includes(m[1]) ? m[1] : null;
+}
+
+/* Crawlers are never geo-redirected. Google crawls mostly from the US, but a
+   crawler that did arrive from Spain must still see the English page at the
+   English URL; hreflang is how search engines learn about /es/. */
+const BOT_UA = /bot|crawl|spider|slurp|facebookexternalhit|embedly|preview|lighthouse|headless/i;
+
+/** The locale a visitor from this country should see first, or null. */
+const GEO_LOCALE = { ES: 'es' };
+
+/** Language switcher target: the same article in the other language, else its home page. */
+function switchUrl(locale, slug) {
+  if (!locale) return null;
+  const target = slug && locales[locale].articles[slug] ? articleUrl(locale, slug) : localeUrl(locale, '/');
+  return `${target}?${LANG_COOKIE}=${locale}`;
+}
+
 /** Everything a template needs, assembled once per request. */
-function viewModel(locale, { pathname = '/', page = 'home' } = {}) {
+function viewModel(locale, { pathname = '/', page = 'home', slug = null } = {}) {
   const copy = locales[locale].copy;
   const other = availableLocales.filter((l) => l !== locale);
 
@@ -90,7 +128,9 @@ function viewModel(locale, { pathname = '/', page = 'home' } = {}) {
       href: `${site.canonicalOrigin}${localeUrl(l, '/')}`,
     })),
     otherLocale: other[0] ?? null,
-    otherLocaleUrl: other[0] ? localeUrl(other[0], '/') : null,
+    otherLocaleUrl: switchUrl(other[0], slug),
+    // The designed CV exists in both languages; the BFSI variant is English only.
+    resume: (locale === 'es' && site.resumes.es) || site.resumes.general,
     searchIndex: clientIndex(locale),
     jsonLd: personJsonLd(locale),
     publicConfig: publicConfig(),
@@ -112,9 +152,22 @@ const rendersFor = (locale) => {
   const prefix = locale === DEFAULT ? '' : `/${locale}`;
   const segment = ARTICLE_SEGMENT[locale] ?? 'articles';
 
-  app.get(prefix || '/', async (req, reply) =>
-    reply.view('home', viewModel(locale, { pathname: localeUrl(locale, '/'), page: 'home' })),
-  );
+  app.get(prefix || '/', async (req, reply) => {
+    if (locale === DEFAULT) {
+      // The answer depends on who is asking, so no shared cache may reuse it.
+      reply.header('Vary', 'Cookie, CF-IPCountry');
+      // An explicit choice always wins; the country is only a first guess.
+      const wanted = chosenLocale(req)
+        ?? GEO_LOCALE[String(req.headers['cf-ipcountry'] ?? '').toUpperCase()];
+      if (wanted && wanted !== DEFAULT && availableLocales.includes(wanted)
+          && !BOT_UA.test(req.headers['user-agent'] ?? '')) {
+        // 302, not 301: this is a per-visitor decision and must never be cached
+        // as a permanent move of the English home page.
+        return reply.header('Cache-Control', 'private, no-store').redirect(localeUrl(wanted, '/'), 302);
+      }
+    }
+    return reply.view('home', viewModel(locale, { pathname: localeUrl(locale, '/'), page: 'home' }));
+  });
 
   app.get(`${prefix}/${segment}/:slug`, async (req, reply) => {
     const article = locales[locale].articles[req.params.slug];
@@ -122,10 +175,23 @@ const rendersFor = (locale) => {
     const model = viewModel(locale, {
       pathname: articleUrl(locale, req.params.slug),
       page: 'article',
+      slug: req.params.slug,
     });
     return reply.view('article', { ...model, article, jsonLd: articleJsonLd(locale, article) });
   });
 };
+
+app.addHook('onRequest', async (req, reply) => {
+  const wanted = req.query?.[LANG_COOKIE];
+  if (req.method !== 'GET' || !wanted || !availableLocales.includes(wanted)) return;
+  const secure = req.protocol === 'https' ? '; Secure' : '';
+  const clean = req.url.split('?')[0];
+  reply
+    .header('Set-Cookie', `${LANG_COOKIE}=${wanted}; Path=/; Max-Age=${LANG_MAX_AGE}; SameSite=Lax${secure}`)
+    .header('Cache-Control', 'private, no-store')
+    .redirect(clean, 302);
+  return reply;
+});
 
 registerAnalyticsProxy(app);
 guideBundle.register(app);
@@ -234,7 +300,9 @@ app.post('/api/guide/jd', async (req, reply) => {
     return reply.code(429).header('Cache-Control', 'no-store').send({
       ok: false,
       reason: 'rate-limited',
-      answer: 'That is a lot of job descriptions at once. Give it a minute and try again.',
+      answer: loc === 'es'
+        ? 'Son muchas ofertas a la vez. Espera un minuto y vuelve a intentarlo.'
+        : 'That is a lot of job descriptions at once. Give it a minute and try again.',
     });
   }
 
@@ -246,8 +314,11 @@ app.post('/api/guide/jd', async (req, reply) => {
     return reply.header('Cache-Control', 'no-store').send({
       ok: false,
       reason: 'fetch-failed',
-      answer: `I could not read that link — ${err.message}. `
-        + 'Paste the job description text into the chat instead and I will analyse it.',
+      // err.message is English (fetch-url.js); the Spanish line stays generic.
+      answer: loc === 'es'
+        ? 'No he podido leer ese enlace. Pega el texto de la oferta en el chat y lo analizaré.'
+        : `I could not read that link — ${err.message}. `
+          + 'Paste the job description text into the chat instead and I will analyse it.',
     });
   }
 });
@@ -259,9 +330,12 @@ app.get('/healthz', async () => ({
   config: describeConfig(),
 }));
 
-app.setNotFoundHandler(async (req, reply) =>
-  reply.code(404).view('404', viewModel(DEFAULT, { page: '404' })),
-);
+app.setNotFoundHandler(async (req, reply) => {
+  // A missing page under /es/ should apologise in Spanish.
+  const seg = req.url.split('/')[1];
+  const locale = seg !== DEFAULT && availableLocales.includes(seg) ? seg : DEFAULT;
+  return reply.code(404).view('404', viewModel(locale, { page: '404' }));
+});
 
 /**
  * Graceful shutdown.

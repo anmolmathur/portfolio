@@ -1,0 +1,720 @@
+{
+  "locale": "es",
+  "meta": {
+    "title": "Anmol Mathur | Líder Tecnológico y CTO | Mumbai, India",
+    "description": "Portfolio de Anmol Mathur, CTO de TeamLease EdTech: estrategia de plataformas nativas de IA, Visión Tecnológica 2030 y transformación digital a escala empresarial en la educación superior de India.",
+    "keywords": "Anmol Mathur, CTO, Director de Tecnología, TeamLease EdTech, Líder Tecnológico, Transformación Digital, Estrategia de IA, EdTech, Educación Superior, Cloud, Mumbai, FinTech, SaaS, Innovación, Kubernetes, Liderazgo, Visión 2030, Microservicios, Sistema de Gestión Universitaria, España",
+    "ogTitle": "Anmol Mathur | Directivo Tecnológico, CTO, Estratega y Líder Tecnológico",
+    "ogDescription": "Descubre el portfolio tecnológico de Anmol Mathur: más de 25 años de innovación digital en múltiples sectores.",
+    "twitterTitle": "Anmol Mathur | CTO | Estrategia Tecnológica",
+    "twitterDescription": "CTO | Referente del sector | Más de 150 profesionales de tecnología liderados | Experiencias cloud-native impulsadas por IA"
+  },
+  "ui": {
+    "skipToContent": "Saltar al contenido",
+    "primaryNav": "Navegación principal",
+    "readMore": "Leer más",
+    "readLess": "Leer menos",
+    "downloadResume": "Descargar CV",
+    "readPublication": "Leer publicación",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "themeToggle": "Cambiar tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "languageName": "Español",
+    "switchLanguage": "View in English",
+    "logoAlt": "Logotipo de {name}",
+    "commandPalette": {
+      "open": "Buscar",
+      "hint": "Pulsa {key} para buscar",
+      "placeholder": "Busca secciones, proyectos, artículos…",
+      "empty": "No hay resultados. Prueba con otra palabra.",
+      "groupSections": "Secciones",
+      "groupActions": "Acciones",
+      "actionResume": "Descargar CV",
+      "actionResumeBfsi": "Descargar CV (banca y finanzas, en inglés)",
+      "actionWhatsapp": "Enviar un mensaje por WhatsApp",
+      "actionEmail": "Enviar un correo electrónico",
+      "actionLanguage": "View in English",
+      "actionTheme": "Activar o desactivar el modo oscuro",
+      "close": "Cerrar"
+    },
+    "timelineFilter": {
+      "label": "Filtrar por sector",
+      "all": "Todos",
+      "clear": "Quitar filtro",
+      "resultCount": "{n} de {total} puestos"
+    },
+    "whatsapp": {
+      "label": "WhatsApp",
+      "aria": "Enviar un mensaje a Anmol por WhatsApp",
+      "prefill": "Hola, Anmol: he visto tu portfolio en anmolmathur.com y me gustaría ponerme en contacto contigo."
+    },
+    "consent": {
+      "title": "Una nota sobre la analítica",
+      "body": "Este sitio utiliza analítica respetuosa con la privacidad para saber qué contenido resulta útil. No se guarda nada hasta que lo aceptes.",
+      "accept": "Permitir analítica",
+      "decline": "No, gracias",
+      "learnMore": "Cómo funciona"
+    },
+    "projects": {
+      "readCase": "Ver el caso",
+      "hideCase": "Volver"
+    },
+    "guide": {
+      "label": "Pregunta por Anmol",
+      "aria": "Abrir el asistente y preguntar por la trayectoria de Anmol",
+      "title": "Pregunta por Anmol",
+      "subtitle": "Las respuestas salen solo de este sitio",
+      "close": "Cerrar el asistente",
+      "placeholder": "Pregunta por un puesto, un proyecto, una competencia…",
+      "send": "Enviar",
+      "thinking": "Buscando…",
+      "greeting": "Hola. Puedo responder preguntas sobre los puestos, las competencias y los proyectos de Anmol, y sobre cómo contactar con él. ¿Qué te gustaría saber?",
+      "greetingReturn": "Bienvenido de nuevo. ¿Qué te gustaría saber?",
+      "error": "Algo ha fallado al conectar con el asistente. Inténtalo de nuevo.",
+      "sourceLabel": "En esta página",
+      "disclosure": "Asistente de IA · respuestas basadas en este sitio",
+      "suggestions": [
+        "¿A qué se dedica ahora?",
+        "Háblame de su etapa en HSBC",
+        "¿Cuáles son sus principales competencias?",
+        "Pega el enlace de una oferta para ver si encaja"
+      ],
+      "speakOn": "Activar la voz",
+      "speakOff": "Desactivar la voz",
+      "voiceNote": "La voz usa la síntesis de voz integrada en tu navegador: no se envía nada a ningún sitio.",
+      "about": {
+        "title": "Sobre este asistente",
+        "body": "Este asistente responde preguntas sobre Anmol Mathur usando únicamente lo que está escrito en este sitio web. Busca en el propio contenido del sitio —sus puestos, competencias, formación, proyectos, publicaciones y datos de contacto— y responde a partir de lo que encuentra. Si el sitio no trata algo, lo dice en lugar de suponerlo, así que no inventará empresas, fechas, cifras ni tecnologías. Es un asistente de IA, no el propio Anmol. Puedes preguntarle por su puesto actual, cualquier trabajo anterior, lo que estudió, un proyecto concreto, los sectores en los que ha trabajado o cómo ponerte en contacto con él. Admite preguntas de seguimiento: puedes preguntar por un puesto y después por el anterior. En la parte superior del panel hay un botón de altavoz que lee las respuestas en voz alta con la síntesis de voz integrada en tu navegador; está desactivado hasta que lo actives y no se envía ningún audio a ningún sitio. Tus preguntas se envían al servidor de este sitio para responderlas y no se guardan ni se usan para identificarte. La figura en 3D es una representación animada de Anmol, no una grabación suya.",
+        "keywords": "asistente, chatbot, bot, ia, guía, avatar, ayuda, cómo funciona, qué puedes hacer, quién eres, eres real, eres anmol, voz, hablar, sonido, audio, privacidad, guardas, es ia, cómo se usa"
+      },
+      "switchSide": "Muéveme al otro lado",
+      "reset": "Empezar una conversación nueva",
+      "jdThinking": "Leyendo la oferta y comparándola con su trayectoria…",
+      "jdSource": "Analizado a partir de",
+      "jdTimeout": "Ha tardado demasiado en leerse. Pega el texto de la oferta y lo analizaré."
+    },
+    "immersive": {
+      "label": "Recorrido inmersivo",
+      "aria": "Abrir el recorrido inmersivo de Anmol en una pestaña nueva (en inglés)"
+    }
+  },
+  "nav": [
+    {
+      "id": "home",
+      "label": "Inicio"
+    },
+    {
+      "id": "work-experience",
+      "label": "Experiencia"
+    },
+    {
+      "id": "skills",
+      "label": "Competencias"
+    },
+    {
+      "id": "industries",
+      "label": "Sectores"
+    },
+    {
+      "id": "education",
+      "label": "Formación"
+    },
+    {
+      "id": "publications",
+      "label": "Publicaciones"
+    },
+    {
+      "id": "projects",
+      "label": "Proyectos"
+    },
+    {
+      "id": "articles",
+      "label": "Artículos"
+    },
+    {
+      "id": "contact",
+      "label": "Contacto"
+    }
+  ],
+  "hero": {
+    "name": "Anmol Mathur",
+    "tagline": "Líder Tecnológico | CTO | Innovador",
+    "intro": "Bienvenido a mi portfolio. Descubre mi trayectoria y mis logros en el ámbito tecnológico.",
+    "portraitAlt": "Anmol Mathur"
+  },
+  "metrics": {
+    "heading": "En cifras",
+    "labels": {
+      "years": "Años en tecnología",
+      "technologists": "Profesionales de tecnología liderados",
+      "savings": "Ahorro anual en gasto tecnológico",
+      "students": "Estudiantes atendidos",
+      "universities": "Universidades asociadas",
+      "industries": "Sectores"
+    }
+  },
+  "about": {
+    "heading": "Sobre mí",
+    "paragraphs": [
+      "Más de 12 de mis 25 años de experiencia en puestos directivos dedicados a identificar, evaluar e implantar tecnologías y sistemas empresariales que facilitan los procesos de negocio y los objetivos estratégicos.",
+      "He trabajado en entornos que van desde grandes corporaciones hasta startups, y he liderado aplicaciones tecnológicas desde la idea hasta su implantación.",
+      "Amplia experiencia en modelos presenciales (onsite) y deslocalizados (offshore) en empresas de productos y servicios de TI. Me desenvuelvo mejor en entornos dinámicos, cambiantes y orientados a resultados.",
+      "Experiencia en crear y poner en marcha equipos de tecnología, liderando a más de 150 profesionales.",
+      "He colaborado con socios tecnológicos y proveedores de talento locales e internacionales para ejecutar la hoja de ruta tecnológica y de producto.",
+      "Dirijo el área de tecnología con especial atención al control de costes y al crecimiento de los ingresos."
+    ],
+    "audioLabel": "Una conversación generada por IA sobre mi trayectoria (en inglés):",
+    "audioFallback": "Tu navegador no admite el elemento de audio.",
+    "audioNote": "Dos voces sintéticas hablando de mi carrera: no es una grabación mía."
+  },
+  "workExperience": {
+    "heading": "Experiencia profesional",
+    "subheading": "Descubre mi trayectoria profesional y mis principales puestos.",
+    "achievementsLabel": "Logros",
+    "roles": [
+      {
+        "id": "teamlease-edtech",
+        "company": "TeamLease EdTech",
+        "logo": "tle.png",
+        "title": "Director de Tecnología (CTO)",
+        "dates": "Sep 2025 – Actualidad",
+        "location": "Mumbai",
+        "industries": [
+          "edtech"
+        ],
+        "summary": [
+          "Lidero la transformación tecnológica como CTO de la principal plataforma de titulaciones universitarias vinculadas al empleo de India, que da servicio a más de 60 universidades y más de 600.000 estudiantes. Reporto directamente al Fundador y CEO, con plena responsabilidad sobre la estrategia, la arquitectura y la ejecución tecnológicas."
+        ],
+        "achievements": [
+          "Implanté e institucionalicé el <strong>Vibe Coding y la automatización con IA (N8N)</strong> en toda la organización, acelerando la velocidad de entrega y permitiendo que los equipos no técnicos automaticen sus flujos de trabajo.",
+          "Implanté una <strong>solución de data warehouse</strong> para el sistema de inteligencia de negocio, resolviendo carencias críticas de integridad de datos y de reporting que afectaban a más de 60 universidades clientes.",
+          "Dirijo la <strong>modernización de la plataforma UMS 2.0</strong>: migración del sistema central de gestión universitaria desde un monolito heredado en .NET a microservicios (React + .NET Core) mediante el patrón Strangler Fig, reduciendo el riesgo de la plataforma de cara a la salida a bolsa.",
+          "Lancé la <strong>captación de estudiantes impulsada por IA</strong>: alianza estratégica con Nurix AI para la conversión de leads mediante IA de voz y una plataforma propia de entrevistas simuladas con IA, situando a TeamLease EdTech como referente de EdTech nativa en IA."
+        ],
+        "aliases": [
+          "TeamLease",
+          "TLE",
+          "UMS",
+          "edtech"
+        ]
+      },
+      {
+        "id": "hungama",
+        "company": "Hungama Digital Media Entertainment",
+        "logo": "hungama.png",
+        "title": "Director de Tecnología y VP de Ingeniería",
+        "dates": "Jun 2023 – Sep 2025",
+        "location": "Mumbai",
+        "industries": [
+          "media"
+        ],
+        "summary": [
+          "Responsable del departamento de tecnología de Hungama Digital y de marcas como Hungama Gold y Bollywood Hungama.",
+          "Dirijo el desarrollo y las operaciones tecnológicas para que la tecnología impulse el negocio de medios de Hungama: servicios de música y vídeo a través de plataformas OTT, compañías de medios, etc.",
+          "Transformé la pila tecnológica hacia Kubernetes con tecnologías CNCF y buenas prácticas del sector, logrando un ahorro mensual superior al 50%.",
+          "Impulsé la estrategia de IA de la organización con la plataforma sin código Trypromptly e infraestructura GPU, poniendo las capacidades de IA al alcance de todos los departamentos."
+        ],
+        "achievements": [
+          "Dirección de un equipo de tecnología de más de 66 personas para mejorar y mantener la arquitectura de software y prestar servicios tecnológicos a terceros.",
+          "Reducción del gasto operativo (opex) tecnológico en más de un 50%: de 3 Cr de rupias (mayo de 2023) a 1,3 Cr (diciembre de 2024).",
+          "Mejora del gobierno y la implantación tecnológicos, con foco en la innovación y la fiabilidad, garantizando acuerdos de nivel de servicio (SLA) de más del 98% de disponibilidad en todos nuestros servicios.",
+          "Realización con éxito de auditorías cloud y migraciones de servicios en un entorno multicloud, coordinando a socios locales e internacionales."
+        ],
+        "aliases": [
+          "Hungama",
+          "OTT",
+          "Bollywood Hungama"
+        ]
+      },
+      {
+        "id": "timespro",
+        "company": "Times Professional Learning (TimesPro)",
+        "logo": "timespro.png",
+        "title": "Director de Tecnología y VP de Ingeniería",
+        "dates": "Sep 2021 - Mar 2023",
+        "location": "Mumbai",
+        "industries": [
+          "edtech"
+        ],
+        "summary": [
+          "Dirigí los equipos de desarrollo tecnológico, desarrollo de producto y operaciones de TI de Times Professional Learning (TimesPro) para agilizar los procesos de negocio mediante iniciativas tecnológicas y prepararlos para el futuro al servicio de sus clientes y alumnos.",
+          "Conceptualicé los productos de gestión del aprendizaje y de gestión comercial, y puse en marcha el equipo de desarrollo con un ciclo de desarrollo ágil.",
+          "Consolidé todos los proveedores tecnológicos y productos SaaS utilizados e inicié el proceso de transformación digital de la organización."
+        ],
+        "achievements": [
+          "Creé y dirigí un equipo de tecnología de más de 40 personas en un año; definí la arquitectura de software y puse en marcha el departamento de desarrollo de software para crear y mantener las aplicaciones web y móviles.",
+          "Transformé digitalmente la organización con soluciones de producto a medida."
+        ],
+        "aliases": [
+          "TimesPro",
+          "Times",
+          "LMS"
+        ]
+      },
+      {
+        "id": "xfinite",
+        "company": "Xfinite Technologies (Mzaalo)",
+        "logo": "xfinite.png",
+        "title": "Director de Tecnología",
+        "dates": "Ene 2020 - Ago 2021",
+        "location": "Mumbai",
+        "industries": [
+          "media"
+        ],
+        "summary": [
+          "Responsable de Tecnología, de Producto y de Operaciones Publicitarias de Mzaalo, una plataforma OTT y blockchain.",
+          "Creé y dirigí un equipo de más de 20 personas en un año, a cargo de la entrega tecnológica y de producto en el entorno de una startup tecnológica."
+        ],
+        "achievements": [
+          "Trabajé con el Fundador y el COO para definir la arquitectura y la hoja de ruta de producto y tecnología.",
+          "Llevé el producto de 0 a 10.000 usuarios.",
+          "Puse en marcha el negocio de ingresos por publicidad digital en colaboración con editores y socios."
+        ],
+        "aliases": [
+          "Mzaalo",
+          "Xfinite",
+          "OTT",
+          "blockchain"
+        ]
+      },
+      {
+        "id": "digitas",
+        "company": "Digitas India",
+        "logo": "digitas.png",
+        "title": "Director de Tecnología y Responsable de Outsourcing",
+        "dates": "Dic 2016 - Ene 2020",
+        "location": "Londres y Mumbai",
+        "industries": [
+          "media",
+          "sports"
+        ],
+        "summary": [
+          "Responsable de Tecnología de la división india de Digitas UK para uno de los mayores clientes deportivos: la Fórmula 1.",
+          "Creé y dirigí en India un equipo de más de 35 personas —arquitectos, desarrolladores y gestión de proyectos—, incluida la definición de procesos y la implantación tecnológica.",
+          "Externalicé recursos y equipos tecnológicos para organizaciones internacionales."
+        ],
+        "achievements": [
+          "Dirigí y externalicé trabajo tecnológico para los clientes de Digitas, creando y gestionando un equipo de más de 150 profesionales de tecnología.",
+          "Gestioné el cliente Fórmula 1 (Reino Unido) junto a Digitas UK, aportando soluciones de arquitectura y ejecutándolas de forma rentable con metodologías ágiles."
+        ],
+        "aliases": [
+          "Digitas",
+          "Formula 1",
+          "Fórmula 1",
+          "F1",
+          "Publicis"
+        ]
+      },
+      {
+        "id": "ogaan",
+        "company": "Ogaan Media (Elle & SquareInch)",
+        "logo": "ogaanmedia.png",
+        "title": "Director de Tecnología (CTO)",
+        "dates": "Ene 2016 - Dic 2016",
+        "location": "Mumbai",
+        "industries": [
+          "media",
+          "ecommerce"
+        ],
+        "summary": [
+          "Diseño estratégico, desarrollo e implantación de los sitios web de ELLE, ELLE DÉCOR, SquareInch e IndiaDesignID.",
+          "Generación de ingresos mediante publicidad online y gestión de toda la cartera de TI.",
+          "Concepción, desarrollo de producto, implantación y puesta en marcha de una startup de comercio electrónico (SquareInch).",
+          "Dirigí la selección de socios estratégicos, la incorporación de socios comerciales, la gestión del equipo y la gestión de clientes de un modelo de marketplace de comercio electrónico."
+        ],
+        "achievements": [
+          "Formé parte de una startup desde su creación hasta su comercialización, desempeñando múltiples funciones.",
+          "Participé en las inversiones y operaciones financieras de una startup india."
+        ],
+        "aliases": [
+          "Ogaan",
+          "Elle",
+          "SquareInch",
+          "ecommerce"
+        ]
+      },
+      {
+        "id": "hsbc",
+        "company": "Hong Kong & Shanghai Bank",
+        "logo": "HSBC.png",
+        "title": "Vicepresidente de Desarrollo de TI",
+        "dates": "Ago 2008 - Ene 2016",
+        "location": "Hong Kong y Mumbai",
+        "industries": [
+          "banking"
+        ],
+        "summary": [
+          "Gestión del software de cobros para el negocio de banca corporativa de HSBC.",
+          "Responsable de aplicaciones de TI: gestión de costes, implantación y soporte.",
+          "Responsable de aplicaciones de banca corporativa y banca minorista: gestión de proveedores, selección de producto y plataforma, gestión de requisitos y pruebas, despliegues de producto y soporte en producción."
+        ],
+        "achievements": [
+          "Coordiné a múltiples proveedores y la gestión de producto en despliegues globales.",
+          "Apoyé el desarrollo y las pruebas de producto de aplicaciones de banca minorista y de gestión de tesorería (cash management)."
+        ],
+        "aliases": [
+          "HSBC",
+          "Hong Kong Shanghai Bank",
+          "banking",
+          "banca"
+        ]
+      },
+      {
+        "id": "oracle-polaris",
+        "company": "Oracle Financial Services / Polaris Software",
+        "logo": "ofs.png",
+        "title": "Analista de Negocio y Jefe de Proyecto",
+        "dates": "Dic 2001 - Ago 2008",
+        "location": "Nueva York, Mumbai y Chennai",
+        "industries": [
+          "banking"
+        ],
+        "summary": [
+          "Dirigí el Global Cash Management Software (GCMS) con un equipo de entre 12 y 25 personas, abarcando requisitos, ciclo de vida del desarrollo (SDLC), gestión del cambio, diseño, desarrollo, implantación y soporte.",
+          "Cumplimiento de los estándares CMMI Nivel 5 y SQA, y gestión de clientes.",
+          "Desarrollador, diseñador de aplicaciones y responsable de pruebas.",
+          "Participé en proyectos como GCMS, Sapphire, GPOS y CitiDirect."
+        ],
+        "achievements": [
+          "Cumplí los estándares CMMI Nivel 5 y los protocolos SQA.",
+          "Desarrollé y supervisé el desarrollo técnico y el despliegue de proyectos como GCMS y Sapphire."
+        ],
+        "aliases": [
+          "Oracle",
+          "Polaris",
+          "OFSS",
+          "GCMS",
+          "banking",
+          "banca"
+        ]
+      }
+    ]
+  },
+  "skills": {
+    "heading": "Competencias",
+    "subheading": "Descubre mis competencias clave y mi experiencia profesional.",
+    "items": [
+      "Estrategia e implantación de IA",
+      "IA generativa / Integración de LLM",
+      "Consultoría y diseño de soluciones",
+      "Innovación y selección tecnológica",
+      "Gestión de costes e infraestructura de TI",
+      "Gestión de proveedores",
+      "Atención al cliente",
+      "Diseño de arquitectura de sistemas e infraestructura",
+      "Gestión del ciclo de vida completo de proyectos",
+      "Gestión financiera y operativa",
+      "Metodologías ágiles",
+      "Hoja de ruta de procesos y producto",
+      "Gestión de programas y proyectos",
+      "Liderazgo y creación de equipos",
+      "Arquitectura de microservicios",
+      "Análisis de datos"
+    ]
+  },
+  "technologyDomains": {
+    "heading": "Ámbitos tecnológicos y herramientas",
+    "subheading": "Descubre la amplia variedad de tecnologías y herramientas con las que he trabajado.",
+    "items": [
+      {
+        "title": "IA",
+        "body": "Open WebUI, IA agéntica, AutoGen Studio, Hugging Face, Trypromptly, ChatGPT, Llama 3.3, Gemini, Copilot, Grok, Anthropic, API de OpenAI, API de Claude, LangChain, Ollama, Qdrant, N8N"
+      },
+      {
+        "title": "Herramientas SaaS",
+        "body": "Salesforce, Moodle, Strapi, Brightcove, Vimeo, WordPress, Contentful"
+      },
+      {
+        "title": "Cloud y DevOps",
+        "body": "AWS, GCP, Azure, WebSphere, APIGEE, servicios web, API, AEM, Docker, Kubernetes, Terraform"
+      },
+      {
+        "title": "Pila tecnológica",
+        "body": "Java, PHP, Python, Ruby on Rails, Node.js, React.js, Vue.js, bases de datos"
+      },
+      {
+        "title": "Herramientas de comercio electrónico",
+        "body": "Spree Commerce, Magento, WordPress, automatización"
+      },
+      {
+        "title": "Bases de datos y analítica",
+        "body": "Bases de datos SQL y NoSQL, Big Data, BigQuery, Snowflake, Tableau, Power BI, análisis de datos"
+      }
+    ]
+  },
+  "industries": {
+    "heading": "Sectores",
+    "subheading": "Descubre los distintos sectores en los que he trabajado a lo largo de los años.",
+    "items": [
+      {
+        "id": "edtech",
+        "title": "Educación",
+        "body": "EdTech"
+      },
+      {
+        "id": "media",
+        "title": "Medios",
+        "body": "Prensa, OTT, contenido generado por usuarios (UGC)"
+      },
+      {
+        "id": "ecommerce",
+        "title": "Comercio electrónico",
+        "body": ""
+      },
+      {
+        "id": "sports",
+        "title": "Deporte",
+        "body": ""
+      },
+      {
+        "id": "banking",
+        "title": "Banca minorista",
+        "body": ""
+      },
+      {
+        "id": "fintech",
+        "title": "Canales fintech",
+        "body": "Cajeros automáticos, TPV"
+      },
+      {
+        "id": "trade-finance",
+        "title": "Financiación del comercio exterior",
+        "body": ""
+      },
+      {
+        "id": "cash-management",
+        "title": "Gestión global de tesorería",
+        "body": ""
+      }
+    ]
+  },
+  "publications": {
+    "heading": "Publicaciones",
+    "subheading": "Mis publicaciones profesionales (en inglés)",
+    "items": [
+      {
+        "title": "Impact of Technologies and Cloud Computing Applications in Higher Education",
+        "author": "Autor: Anmol Mathur",
+        "journal": "Higher Education Digest, 2022",
+        "logo": "Higher_Education_Logo.png",
+        "logoAlt": "Logotipo de Higher Education Digest",
+        "url": "https://www.highereducationdigest.com/impact-of-technologies-and-cloud-computing-applications-in-higher-education/"
+      },
+      {
+        "title": "CyberSecurity: How India is faring?",
+        "author": "Autor: Anmol Mathur",
+        "journal": "Times of India, 2022",
+        "logo": "Times_Of_India_Logo.png",
+        "logoAlt": "Logotipo de Times of India",
+        "url": "https://timesofindia.indiatimes.com/education/news/cybersecurity-how-is-india-faring/articleshow/90092422.cms"
+      }
+    ]
+  },
+  "education": {
+    "heading": "Formación",
+    "subheading": "Descubre mi formación académica y mis logros.",
+    "labels": {
+      "institute": "Centro",
+      "university": "Universidad",
+      "date": "Fechas",
+      "specialization": "Especialidad"
+    },
+    "items": [
+      {
+        "title": "Curso de certificación en liderazgo",
+        "institute": "Michigan State University",
+        "university": "Michigan State University",
+        "date": "2020 - 2021",
+        "specialization": "Liderazgo y gestión eficaces",
+        "aliases": [
+          "leadership",
+          "liderazgo",
+          "Michigan",
+          "certificación",
+          "estudios",
+          "estudió",
+          "formación académica",
+          "titulación"
+        ]
+      },
+      {
+        "title": "Máster en Administración de Empresas (MBA)",
+        "institute": "NMIMS",
+        "university": "Universidad de Mumbai",
+        "date": "2004 - 2008",
+        "specialization": "Posgrado en Marketing",
+        "aliases": [
+          "MBA",
+          "máster",
+          "posgrado",
+          "NMIMS",
+          "estudios",
+          "estudió",
+          "formación académica",
+          "titulación"
+        ]
+      },
+      {
+        "title": "Grado en Ingeniería (B.E.)",
+        "institute": "V.E.S.I.T",
+        "university": "Universidad de Mumbai",
+        "date": "1997 - 2001",
+        "specialization": "Grado en Electrónica",
+        "aliases": [
+          "BE",
+          "B.E.",
+          "grado",
+          "ingeniería",
+          "VESIT",
+          "estudios",
+          "estudió",
+          "formación académica",
+          "titulación"
+        ]
+      },
+      {
+        "title": "Bachillerato (HSC)",
+        "institute": "Bhavans College",
+        "university": "Universidad de Mumbai",
+        "date": "1995 - 1997",
+        "specialization": "Ciencias",
+        "aliases": [
+          "HSC",
+          "bachillerato",
+          "colegio",
+          "estudios",
+          "estudió",
+          "formación académica",
+          "titulación"
+        ]
+      }
+    ]
+  },
+  "projects": {
+    "heading": "Proyectos",
+    "subheading": "Algunos proyectos en los que tuve una contribución destacada.",
+    "impactLabel": "Impacto",
+    "items": [
+      {
+        "id": "hungama-cost",
+        "org": "Hungama",
+        "logo": "hungama.png",
+        "logoAlt": "Logotipo de Hungama",
+        "theme": "hungama",
+        "title": "Optimización del coste tecnológico y transformación cloud",
+        "impact": "Impacto: 1,7 Cr de rupias de ahorro anual (reducción del 57%)",
+        "period": "Junio de 2023 – diciembre de 2024",
+        "body": "En Hungama Digital lideré una iniciativa estratégica de optimización del coste tecnológico que redujo el gasto anual en tecnología de 3 Cr a 1,3 Cr de rupias. Empecé auditando el uso del cloud, la estructura de los equipos y los contratos con terceros, y después reorganicé los equipos (pods) de ingeniería para ganar agilidad. Migramos a pilas cloud-native optimizadas (Kubernetes, multicloud), implantamos prácticas FinOps y desplegamos cuadros de mando en tiempo real impulsados por IA. Los resultados incluyeron autoescalado, una cobertura de SLA superior al 98% y una mejor colaboración entre Tecnología, Producto y Finanzas: realineando los KPI, reduciendo la deuda técnica e integrando la responsabilidad sobre el coste en la cultura de ingeniería.",
+        "metric": "1,7 Cr ₹",
+        "metricLabel": "de ahorro anual: una reducción del 50%"
+      },
+      {
+        "id": "timespro-lms",
+        "org": "TimesPro",
+        "logo": "timespro.png",
+        "logoAlt": "Logotipo de TimesPro",
+        "theme": "timespro",
+        "title": "LMS unificado y plataforma de habilitación comercial (Salesforce)",
+        "impact": "Impacto: más de 10.000 usuarios en el LMS y el doble de conversión de leads",
+        "period": "Septiembre de 2021 – marzo de 2023",
+        "body": "Concebí y dirigí la construcción de un sistema de gestión del aprendizaje (LMS) completo, integrado con una plataforma de habilitación comercial (Salesforce). Construida sobre una arquitectura de microservicios escalable alojada en AWS e integrada con Moodle, Salesforce y API propias, la plataforma dio a los equipos comerciales y académicos analítica en tiempo real y visibilidad sobre el ciclo de vida de los leads. Mejoró la fiabilidad de la impartición de los cursos y duplicó la conversión de alumnos B2C gracias a flujos de trabajo personalizados. Organicé los equipos de producto y desarrollo para estudiar el comportamiento de los clientes y ofrecer una plataforma educativa de autoservicio.",
+        "metric": "10.000+",
+        "metricLabel": "usuarios en el LMS; conversión de leads duplicada"
+      },
+      {
+        "id": "formula1",
+        "org": "Fórmula 1",
+        "logo": "digitas.png",
+        "logoAlt": "Logotipo de Digitas",
+        "theme": "digitas",
+        "title": "Fórmula 1: outsourcing tecnológico y entrega de programas a escala",
+        "impact": "Impacto: creación y gestión de un equipo de entrega de más de 35 personas entre Digitas India y Reino Unido",
+        "period": "Mayo de 2018 – enero de 2020",
+        "body": "Lideré el programa de entrega tecnológica externalizada para la Fórmula 1 (F1), creando y dirigiendo en India un equipo de más de 35 personas formado por arquitectos, desarrolladores, especialistas en QA y jefes de proyecto. Como principal interlocutor tecnológico entre el cliente británico y el centro de entrega en India, definí la arquitectura de entrega, los procesos de gobierno y las prácticas de ingeniería mobile-first para dar soporte a las complejas plataformas digitales de la F1. El programa incluyó la colaboración entre equipos presenciales y remotos, la adopción de metodologías ágiles y un riguroso control de calidad, lo que permitió una integración fluida entre equipos distribuidos por todo el mundo y garantizó lanzamientos puntuales y de alta calidad en los canales web y móvil.",
+        "metric": "35+",
+        "metricLabel": "personas en el equipo de entrega entre Digitas India y Reino Unido"
+      },
+      {
+        "id": "mzaalo",
+        "org": "Xfinite / Mzaalo",
+        "logo": "xfinite.png",
+        "logoAlt": "Logotipo de Xfinite",
+        "theme": "xfinite",
+        "title": "Plataforma OTT Xfinite/Mzaalo",
+        "impact": "Impacto: 10.000 usuarios activos mensuales; recompensas en criptomonedas y pila adtech integradas",
+        "period": "Enero de 2020 – agosto de 2021",
+        "body": "Como Responsable de Ingeniería, dirigí la arquitectura y el lanzamiento de Mzaalo, una plataforma OTT basada en blockchain que convertía el consumo de contenidos en un juego. La plataforma integraba un monedero para recompensar a los usuarios con micropagos en tokens e incluía motores de interacción con la audiencia en tiempo real. Formé un equipo multidisciplinar de más de 20 personas, incluidos ingenieros móviles y socios externos. Además, creé una capa interna de operaciones publicitarias con gestión dinámica del inventario para respaldar la monetización.",
+        "metric": "10.000",
+        "metricLabel": "usuarios activos mensuales; recompensas en criptomonedas y pila adtech"
+      },
+      {
+        "id": "hsbc-receivables",
+        "org": "HSBC",
+        "logo": "HSBC.png",
+        "logoAlt": "Logotipo de HSBC",
+        "theme": "hsbc",
+        "title": "Intellect NNC: portal de cobros",
+        "impact": "Impacto: seguimiento de cobros en tiempo real y conciliación automatizada para clientes corporativos de toda Asia.",
+        "period": "Enero de 2008 – noviembre de 2010",
+        "body": "En HSBC lideré la implantación de la plataforma Intellect NNC de Polaris, poniendo en marcha un portal de gestión de cobros de nivel empresarial en toda Asia. Trabajé estrechamente con los equipos de producto y operaciones y con los proveedores para integrar el portal con los sistemas de core bancario y las redes de pago. La solución digitalizó la conciliación de facturas, mejoró la visibilidad de la tesorería y permitió la gestión de cuentas virtuales para clientes corporativos en mercados de gran volumen como India y Hong Kong.",
+        "metricLabel": "Seguimiento de cobros en tiempo real y conciliación automatizada para clientes corporativos de toda Asia"
+      },
+      {
+        "id": "squareinch",
+        "org": "Ogaan Media / SquareInch",
+        "logo": "ogaanmedia.png",
+        "logoAlt": "Logotipo de Ogaan Media",
+        "theme": "ogaan",
+        "title": "SquareInch: marketplace de lujo",
+        "impact": "Impacto: digitalización de tiendas físicas de diseño e incorporación de más de 100 marcas para crear el primer marketplace de comercio electrónico de lujo de India.",
+        "period": "Enero de 2016 – diciembre de 2016",
+        "body": "Como CTO de SquareInch, construí y lancé el primer marketplace de comercio electrónico de lujo de India, digitalizando tiendas tradicionales de moda en una plataforma online unificada. Desarrollé la pila tecnológica completa con Ruby on Rails y AWS, integré la gestión de catálogos de las marcas e impulsé el crecimiento del tráfico mediante SEO. La plataforma incorporó con éxito a más de 100 tiendas asociadas y dio una gran visibilidad online a firmas de diseño indias de gama alta.",
+        "metric": "100+",
+        "metricLabel": "marcas incorporadas: el primer marketplace de comercio electrónico de lujo de India"
+      }
+    ]
+  },
+  "articles": {
+    "heading": "Artículos",
+    "items": [
+      {
+        "slug": "edtech-problem-india",
+        "legacyPath": "articles/edtech-problem-india.html",
+        "image": "EdTech_SolvingProblem.png",
+        "imageAlt": "La EdTech ante el problema real",
+        "title": "¿Está la EdTech resolviendo el problema correcto en India?",
+        "excerpt": "Nos llegan constantemente noticias sobre aprendizaje impulsado por IA y aulas de realidad virtual. La innovación es apasionante, pero a menudo pasa por alto una realidad muy dura: la brecha digital y la asequibilidad…"
+      },
+      {
+        "slug": "profitability-puzzle",
+        "legacyPath": "articles/profitability-puzzle.html",
+        "image": "profitability_puzzle.png",
+        "imageAlt": "El rompecabezas de la rentabilidad",
+        "title": "El rompecabezas de la rentabilidad",
+        "excerpt": "Este artículo aborda el «invierno de la EdTech» y presenta el modelo B2B2C de TeamLease EdTech como la alternativa sostenible."
+      },
+      {
+        "slug": "unfulfilled-promise-nep-2020",
+        "legacyPath": "articles/unfulfilled-promise-nep-2020.html",
+        "image": "bridging_academia.png",
+        "imageAlt": "La promesa de la NEP 2020",
+        "title": "La promesa incumplida de la NEP 2020",
+        "excerpt": "Este artículo conecta la propuesta central de TeamLease EdTech con la visionaria política educativa del Gobierno indio y nos sitúa como su principal agente de implantación."
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Contacto",
+    "subheading": "No dudes en escribirme para hablar de oportunidades o simplemente para conectar.",
+    "labels": {
+      "website": "Web",
+      "email": "Correo electrónico",
+      "phone": "Teléfono"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Anmol Mathur | Hecho con cariño y creatividad"
+  }
+}

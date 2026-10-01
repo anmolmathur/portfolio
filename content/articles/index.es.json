@@ -1,0 +1,38 @@
+{
+  "edtech-problem-india": {
+    "slug": "edtech-problem-india",
+    "title": "¿Está la EdTech resolviendo el problema correcto en India?",
+    "byline": "Por Anmol Mathur | Publicado el 25 de octubre de 2025",
+    "description": "¿Está la EdTech resolviendo el problema correcto en India? Una mirada a la brecha digital, la asequibilidad y los argumentos a favor de las titulaciones en alternancia (Degree Apprenticeships).",
+    "keywords": "EdTech India, brecha digital, titulación en alternancia, Degree Apprenticeship, Anmol Mathur, brecha de competencias, empleabilidad, futuro del trabajo",
+    "ogTitle": "¿Está la EdTech resolviendo el problema correcto en India? | Anmol Mathur",
+    "ogDescription": "Una mirada a la brecha digital, la asequibilidad y los argumentos a favor de las titulaciones en alternancia.",
+    "pageTitle": "¿Está la EdTech resolviendo el problema correcto en India? | Anmol Mathur",
+    "image": "EdTech_SolvingProblem.png",
+    "imageAlt": "La EdTech ante el problema real"
+  },
+  "profitability-puzzle": {
+    "slug": "profitability-puzzle",
+    "title": "El rompecabezas de la rentabilidad: por qué el modelo B2B2C es el futuro sostenible de la EdTech",
+    "byline": "Por Anmol Mathur | Publicado el 26 de octubre de 2025",
+    "description": "El «invierno de la financiación» de la EdTech india no fue una estación, sino un cambio climático. Este artículo aborda el rompecabezas de la rentabilidad en la EdTech y presenta el modelo B2B2C de TeamLease EdTech como la alternativa sostenible.",
+    "keywords": "EdTech, modelo de negocio, rentabilidad, startups, futuro del aprendizaje, TeamLease, PuttingIndiaToWork, Anmol Mathur",
+    "ogTitle": "El rompecabezas de la rentabilidad en la EdTech | Anmol Mathur",
+    "ogDescription": "Este artículo aborda el «invierno de la EdTech» y presenta el modelo B2B2C de TeamLease EdTech como la alternativa sostenible.",
+    "pageTitle": "El rompecabezas de la rentabilidad en la EdTech | Anmol Mathur",
+    "image": "profitability_puzzle.png",
+    "imageAlt": "El rompecabezas de la rentabilidad"
+  },
+  "unfulfilled-promise-nep-2020": {
+    "slug": "unfulfilled-promise-nep-2020",
+    "title": "La promesa incumplida de la NEP 2020: tender puentes entre la universidad y la empresa",
+    "byline": "Por Anmol Mathur | Publicado el 26 de octubre de 2025",
+    "description": "Este artículo conecta la propuesta central de TeamLease EdTech con la visionaria política educativa del Gobierno indio y nos sitúa como su principal agente de implantación.",
+    "keywords": "NEP2020, educación superior, SkillsIndia, formación en alternancia, TeamLeaseEdTech, política educativa, futuro del trabajo, Anmol Mathur",
+    "ogTitle": "La promesa incumplida de la NEP 2020 | Anmol Mathur",
+    "ogDescription": "Este artículo conecta la propuesta central de TeamLease EdTech con la visionaria política educativa del Gobierno indio y nos sitúa como su principal agente de implantación.",
+    "pageTitle": "La promesa incumplida de la NEP 2020 | Anmol Mathur",
+    "image": "bridging_academia.png",
+    "imageAlt": "La promesa de la NEP 2020"
+  }
+}

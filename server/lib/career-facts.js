@@ -22,6 +22,8 @@
 const MONTHS = {
   jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
   jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+  // The Spanish timeline's abbreviations, where they differ from English.
+  ene: 0, abr: 3, ago: 7, dic: 11,
 };
 
 /** "Sep 2025", "Sep 2025 " -> Date, or null. */
@@ -43,7 +45,7 @@ export function parseRange(dates, now = new Date()) {
   const start = parseMonth(parts[0]);
   if (!start) return null;
   const endRaw = parts[1].trim();
-  const ongoing = /^present$/i.test(endRaw);
+  const ongoing = /^(present|actualidad)$/i.test(endRaw);
   const end = ongoing ? new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)) : parseMonth(endRaw);
   if (!end) return null;
   return { start, end, ongoing };

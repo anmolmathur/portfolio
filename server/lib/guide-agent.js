@@ -18,8 +18,23 @@ import { site, locales } from './content.js';
 import { excerpts } from './retrieval.js';
 import { factsBlock } from './career-facts.js';
 
-const MISS_LINE = 'I don’t have anything about that on this site. '
-  + 'Ask me about Anmol’s roles, skills, education, projects or how to get in touch.';
+/* Lines the server says itself, without the model, in each site language.
+   A Spanish visitor who gets an English fallback reads it as the site breaking. */
+const LINES = {
+  en: {
+    miss: 'I don’t have anything about that on this site. '
+      + 'Ask me about Anmol’s roles, skills, education, projects or how to get in touch.',
+    empty: 'Ask me something about Anmol’s work.',
+    more: 'Ask me for more detail if you want it.',
+  },
+  es: {
+    miss: 'No tengo información sobre eso en este sitio. '
+      + 'Pregúntame por los puestos, las competencias, la formación o los proyectos de Anmol, o por cómo contactar con él.',
+    empty: 'Pregúntame algo sobre la trayectoria de Anmol.',
+    more: 'Pregúntame si quieres más detalle.',
+  },
+};
+const lines = (locale) => LINES[locale] ?? LINES.en;
 
 const TIMEOUT_MS = 20_000;
 const MAX_QUESTION = 500;
@@ -43,8 +58,8 @@ const SPOKEN_CAP = 700;
  * this instruction has to actively countermand that persona, not merely set a
  * different one. The format rules below exist for that reason.
  */
-function systemPrompt(personName) {
-  return [
+function systemPrompt(personName, locale) {
+  const rules = [
     `You are the assistant on ${personName}'s personal portfolio website.`,
     `You are speaking to a VISITOR to that website — a recruiter, a client, or a peer.`,
     `You are NOT advising ${personName}, and you are NOT a career planner.`,
@@ -57,7 +72,15 @@ function systemPrompt(personName) {
     '4. Reply in plain prose: 1-3 short sentences. This is read aloud, so no markdown, no bullet points, no headings, no emoji.',
     '5. Never output "Reasoning:", "Next actions:", "Pillar", scores, or any planning framework. Those belong to a different task and are wrong here.',
     '6. Do not invent URLs. Do not tell the visitor to look somewhere the excerpts do not mention.',
-  ].join('\n');
+  ];
+  if (locale === 'es') {
+    rules.push(
+      '7. The visitor is reading the SPANISH version of the site. Reply in Spanish as written in Spain (castellano), '
+        + 'addressing the visitor as "tú" and referring to him as "él". Keep company names, product names and '
+        + 'job-title acronyms (CTO, VP) as they appear in the excerpts. Write figures the Spanish way: 600.000, 1,7 Cr.',
+    );
+  }
+  return rules.join('\n');
 }
 
 function userPrompt(question, found, facts) {
@@ -95,7 +118,7 @@ function clean(text) {
  * Sentence-safe trim for the spoken rendition, with a closer so a truncated
  * answer does not simply stop mid-thought.
  */
-function forSpeech(text) {
+function forSpeech(text, locale) {
   const t = String(text || '').trim();
   if (t.length <= SPOKEN_CAP) return t;
   const sentences = t.match(/[^.!?]+[.!?]+["”)]*|[^.!?]+$/g) || [t];
@@ -105,7 +128,7 @@ function forSpeech(text) {
     out += s;
   }
   out = (out || t.slice(0, SPOKEN_CAP)).trim();
-  return `${out} Ask me for more detail if you want it.`;
+  return `${out} ${lines(locale).more}`;
 }
 
 /** Always-safe answer built from the site's own words, no model involved. */
@@ -117,7 +140,7 @@ function verbatim(found) {
 
 export async function ask({ question, locale, history }) {
   const q = String(question ?? '').trim().slice(0, MAX_QUESTION);
-  if (!q) return { ok: false, reason: 'empty', answer: 'Ask me something about Anmol’s work.' };
+  if (!q) return { ok: false, reason: 'empty', answer: lines(locale).empty };
 
   const turns = Array.isArray(history) ? history.slice(-HISTORY_SENT) : [];
   const lastVisitor = [...turns].reverse().find((t) => t && t.role === 'visitor' && t.text);
@@ -143,8 +166,8 @@ export async function ask({ question, locale, history }) {
   if (!found.length) {
     return {
       ok: true, grounded: false, source: 'miss', sources: [],
-      answer: MISS_LINE,
-      speech: MISS_LINE,
+      answer: lines(locale).miss,
+      speech: lines(locale).miss,
     };
   }
 
@@ -153,7 +176,7 @@ export async function ask({ question, locale, history }) {
   // Layer 3 pre-empted — no key configured, so answer from the site directly.
   if (!config.agent.enabled) {
     const v = verbatim(found);
-    return { ok: true, grounded: true, source: 'verbatim', answer: v, speech: forSpeech(v), sources };
+    return { ok: true, grounded: true, source: 'verbatim', answer: v, speech: forSpeech(v, locale), sources };
   }
 
   const controller = new AbortController();
@@ -171,7 +194,7 @@ export async function ask({ question, locale, history }) {
         stream: false,
         temperature: 0.2,
         messages: [
-          { role: 'system', content: systemPrompt(site.person.name) },
+          { role: 'system', content: systemPrompt(site.person.name, locale) },
           ...turns.map((t) => ({
             role: t.role === 'guide' ? 'assistant' : 'user',
             content: String(t.text || '').slice(0, MAX_HISTORY_CHARS),
@@ -186,12 +209,12 @@ export async function ask({ question, locale, history }) {
     // An empty answer after cleaning means the model returned nothing but
     // scaffolding. The site's own words are better than an empty bubble.
     if (!answer) throw new Error('empty after cleaning');
-    return { ok: true, grounded: true, source: 'model', answer, speech: forSpeech(answer), sources };
+    return { ok: true, grounded: true, source: 'model', answer, speech: forSpeech(answer, locale), sources };
   } catch (err) {
     return {
       ok: true, grounded: true, source: 'verbatim', sources,
       answer: verbatim(found),
-      speech: forSpeech(verbatim(found)),
+      speech: forSpeech(verbatim(found), locale),
       degraded: err.name === 'AbortError' ? 'timeout' : String(err.message ?? err),
     };
   } finally {
